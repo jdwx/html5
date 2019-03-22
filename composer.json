@@ -1,0 +1,14 @@
+{
+	"name": "jdwx/html",
+	"type": "library",
+	"description": "Simple PHP tools for building HTML from raw elements.",
+	"keywords": [ "html" ],
+	"homepage": "https://github.com/jdwx/html5",
+	"license": "MIT",
+	"authors": [{
+		"name": "Jeff Wheelhouse",
+		"email": "phplibs@wheelhouse.org",
+		"homepage": "https://github.com/jdwx",
+		"role": "Developer"
+	}]
+}

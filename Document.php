@@ -17,9 +17,6 @@ class Document implements IDocument {
 	protected $strDocType = "html";
 
 	/** @var ?string */
-	protected $nstEncoding = null;
-
-	/** @var ?string */
 	protected $nstTitle = null;
 
 	/** @var Element */
@@ -41,16 +38,16 @@ class Document implements IDocument {
 
 
 	function __toString() : string {
-		$str = "<!DOCTYPE " . $this->strDocType . ">\n<html>\n<head>\n";
-		$str .= "<meta charset=\"" . $this->getEncoding() . "\">\n";
+		$str = "<!DOCTYPE " . $this->strDocType . "><html><head>";
+		$str .= "<meta charset=\"utf-8\">";
 		if ( is_string( $this->nstTitle ) )
-			$str .= "<title>" . $this->nstTitle . "</title>\n";
+			$str .= "<title>" . $this->nstTitle . "</title>";
 		foreach ( $this->rstCSSFiles as $strCSSFile )
 			$str .= "<link href=\"" . $this->escapeValue( $strCSSFile )
-				. "\" rel=\"stylesheet\" type=\"text/css\">\n";
-		$str .= "</head>\n";
+				. "\" rel=\"stylesheet\" type=\"text/css\">";
+		$str .= "</head>";
 		$str .= $this->elBody;
-		$str .= "\n</html>\n";
+		$str .= "</html>";
 		return $str;
 	}
 
@@ -86,18 +83,27 @@ class Document implements IDocument {
 
 	function escapeValue( string $i_strValue ) : string {
 		return htmlspecialchars( $i_strValue, ENT_COMPAT | ENT_HTML5,
-                                 $this->getEncoding() );
-	}
-
-
-	function getEncoding() : string {
-		return $this->nstEncoding ?? ini_get( 'default_charset' );
+                                 'UTF-8' );
 	}
 
 
 	function setTitle( string $i_strTitle ) : Document {
 		$this->nstTitle = $i_strTitle;
 		return $this;
+	}
+
+
+	function tidy() : string {
+		$htm = strval( $this );
+		$cfgTidy = [
+			'indent'     => true,
+			'output-xml' => false,
+			'input-xml'  => false,
+			'wrap'       => 80,
+		];
+		$tidy = new \tidy();
+		$tidy->parseString( $htm, $cfgTidy, 'utf8' );
+		return tidy_get_output( $tidy );
 	}
 
 

@@ -21,6 +21,6 @@ $el = $doc->createElement( "p" )
 	->setID( 'exampleID' );
 $doc->appendToBody( $el );
 
-echo strval( $doc );
+echo $doc->tidy(), "\n";
 
 

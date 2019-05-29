@@ -1,5 +1,5 @@
 {
-	"name": "jdwx/html",
+	"name": "jdwx/html5",
 	"type": "library",
 	"description": "Simple PHP tools for building HTML from raw elements.",
 	"keywords": [ "html" ],

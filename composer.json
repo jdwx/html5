@@ -10,5 +10,10 @@
 		"email": "phplibs@wheelhouse.org",
 		"homepage": "https://github.com/jdwx",
 		"role": "Developer"
-	}]
+	}],
+	"autoload": {
+		"psr-4": {
+			"JDWX\\HTML5\\": "src/"
+		}
+	}
 }

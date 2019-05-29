@@ -10,10 +10,7 @@ namespace JDWX\HTML5;
 require_once __DIR__ . '/IParent.php';
 
 
-interface IDocument extends IParent {
-
-	function escapeValue( string $i_strValue ) : string;
-
+interface IElement extends IParent {
 }
 
 

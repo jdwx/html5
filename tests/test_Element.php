@@ -14,6 +14,9 @@ $doc = new Mockument;
 $el = new \JDWX\HTML5\Element( $doc, 'example' );
 $el->setAttribute( 'foo', 'bar', 'baz' );
 $el->setClass( 'qux', 'quux' );
+$el->setTabIndex( 2 );
+$el->setStyle( "color: red" );
+$el->setTitle( "Titled" );
 
 $str = strval( $el );
 

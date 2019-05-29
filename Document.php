@@ -8,6 +8,7 @@ namespace JDWX\HTML5;
 
 
 require_once __DIR__ . '/Element.php';
+require_once __DIR__ . '/ElementFactory.php';
 require_once __DIR__ . '/IDocument.php';
 
 
@@ -16,29 +17,28 @@ class Document implements IDocument {
 	/** @var string */
 	protected $strDocType = "html";
 
-	/** @var ?string */
-	protected $nstTitle = null;
-
-	/** @var Element */
+	/** @var Elements\HTML */
 	protected $elHTML;
 
-	/** @var Element */
+	/** @var Elements\Head */
 	protected $elHead;
 
-	/** @var Element */
+	/** @var Elements\Body */
 	protected $elBody;
-
-	/** @var string[] */
-	protected $rstCSSFiles = [];
 
 
 	function __construct() {
+		$this->elHead = new Element( $this, 'head' );
 		$this->elBody = new Element( $this, 'body' );
+		$this->elHTML = ElementFactory::html( $this, $this->elHead,
+											  $this->elBody );
 	}
 
 
 	function __toString() : string {
-		$str = "<!DOCTYPE " . $this->strDocType . "><html><head>";
+		$str = "<!DOCTYPE " . $this->strDocType . ">";
+		/*
+		<html><head>";
 		$str .= "<meta charset=\"utf-8\">";
 		if ( is_string( $this->nstTitle ) )
 			$str .= "<title>" . $this->nstTitle . "</title>";
@@ -47,14 +47,29 @@ class Document implements IDocument {
 				. "\" rel=\"stylesheet\" type=\"text/css\">";
 		$str .= "</head>";
 		$str .= $this->elBody;
-		$str .= "</html>";
-		return $str;
+		$str .= "</html>"; */
+		return $str . $this->elHTML;
 	}
 
 
-	function addCSSFile( string $i_strCSSFile ) : Document {
-		$this->rstCSSFiles[] = $i_strCSSFile;
+	function addCSSFile( string $i_strHref ) : Document {
+		ElementFactory::link(
+			$this->elHead, $i_strHref, 'stylesheet', 'text/css'
+		);
 		return $this;
+	}
+
+
+	function addIconFile( string $i_strHref,
+					      string $i_strType = "image/vnd.microsoft.icon" )
+																  : Document {
+		ElementFactory::link( $this->elHead, $i_strHref, 'icon', $i_strType );
+		return $this;
+	}
+
+
+	function appendChild( ... $i_rxChildren ) : void {
+		$this->appendToBody( ... $i_rxChildren );
 	}
 
 
@@ -64,20 +79,18 @@ class Document implements IDocument {
 	}
 
 
-	function body() : Element {
-		return $this->elBody;
+	function appendToTitle( string $i_strTitle ) : Document {
+		$elTitle = $this->elHead->findFirstChildByTagName( 'title' );
+		if ( $elTitle instanceOf IElement )
+			$elTitle->appendChild( $i_strTitle );
+		else
+			$this->setTitle( $i_strTitle );
+		return $this;
 	}
 
 
-	function createElement( string $i_strTagName ) : Element {
-		$strTagName = trim( strtolower( $i_strTagName ) );
-		$el = new Element( $this, $strTagName );
-		switch ( $strTagName ) {
-			case 'br':
-				$el->setAlwaysClose( false );
-				break;
-		}
-		return $el;
+	function body() : Elements\Body {
+		return $this->elBody;
 	}
 
 
@@ -87,8 +100,19 @@ class Document implements IDocument {
 	}
 
 
+	function getDocument() : IDocument {
+		return $this;
+	}
+
+
+	function head() : Elements\Head {
+		return $this->elHead;
+	}
+
+
 	function setTitle( string $i_strTitle ) : Document {
-		$this->nstTitle = $i_strTitle;
+		$this->elHead->dropChildrenByTagName( 'title' );
+		ElementFactory::title( $this->elHead, $i_strTitle );
 		return $this;
 	}
 
@@ -96,10 +120,15 @@ class Document implements IDocument {
 	function tidy() : string {
 		$htm = strval( $this );
 		$cfgTidy = [
-			'indent'     => true,
-			'output-xml' => false,
-			'input-xml'  => false,
-			'wrap'       => 80,
+			'drop-empty-paras'  => false,
+			'indent'            => true,
+			'merge-divs'        => false,
+			'merge-spans'       => false,
+			'output-html'       => true,
+			'output-xml'        => false,
+			'preserve-entities' => true,
+			'input-xml'         => false,
+			'wrap'              => 100,
 		];
 		$tidy = new \tidy();
 		$tidy->parseString( $htm, $cfgTidy, 'utf8' );

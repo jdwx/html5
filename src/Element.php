@@ -7,10 +7,6 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-require_once __DIR__ . '/IDocument.php';
-require_once __DIR__ . '/IElement.php';
-
-
 class Element implements IElement {
 
 	/** @var string */
@@ -54,7 +50,7 @@ class Element implements IElement {
 				if ( null === $rxValues[ 0 ] ) {
 					trigger_error(
 						"Unexpected NULL in attribute {$strAttribute} of "
-						. "element {$this->strTagName}" 
+						. "element {$this->strTagName}"
 					);
 					continue;
 				}
@@ -110,6 +106,22 @@ class Element implements IElement {
 	}
 
 
+	function dropChildByID( string $i_stID,
+							bool $i_bRecursive = false ) : void {
+		$rxNew = [];
+		foreach ( $this->rxChildren as $xChild ) {
+			if ( $xChild instanceOf Element ) {
+				if ( $xChild->getID() === $i_stID )
+					continue;
+				if ( $i_bRecursive )
+					$xChild->dropChildByID( $i_stID, true );
+			}
+			$rxNew[] = $xChild;
+		}
+		$this->rxChildren = $rxNew;
+	}
+
+
 	function dropChildrenByTagName( string $i_strTagName,
 									bool $i_bRecursive = false ) : void {
 		$rxNew = [];
@@ -126,17 +138,39 @@ class Element implements IElement {
 	}
 
 
-	function findFirstChildByTagName( string $i_strTagName ) : ?Element {
+	function findChildByID( string $i_stID ) : ?Element {
 		foreach ( $this->rxChildren as $xChild )
 			if ( $xChild instanceOf Element
-					&& $xChild->strTagName == $i_strTagName )
+					&& $xChild->getID() === $i_stID )
 				return $xChild;
 		return null;
 	}
 
 
+	function findFirstChildByTagName( string $i_strTagName ) : ?Element {
+		foreach ( $this->rxChildren as $xChild )
+			if ( $xChild instanceOf Element
+					&& $xChild->strTagName === $i_strTagName )
+				return $xChild;
+		return null;
+	}
+
+
+	function getAttribute( string $i_stAttribute ) : ?string {
+		return $this->hasAttribute( $i_stAttribute )
+			? join( ' ', $this->rstAttributes[ $i_stAttribute ] )
+			: null;
+	}
+
+
 	function getDocument() : IDocument {
 		return $this->doc;
+	}
+
+
+	function getID() : ?string {
+		$nstID = $this->getAttribute( 'id' );
+		return $nstID;
 	}
 
 

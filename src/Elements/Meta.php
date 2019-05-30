@@ -16,6 +16,11 @@ class Meta extends \JDWX\HTML5\Element {
 	}
 
 
+	function setCharset( string $i_stCharset ) {
+		$this->setAttribute( 'charset', $i_stCharset );
+	}
+
+
 }
 
 

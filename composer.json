@@ -15,5 +15,8 @@
 		"psr-4": {
 			"JDWX\\HTML5\\": "src/"
 		}
+	},
+	"require-dev": {
+		"phpunit/php-code-coverage": "master"
 	}
 }

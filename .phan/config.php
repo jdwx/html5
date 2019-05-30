@@ -2,7 +2,14 @@
 
 return [
 
-	'directory_list' => [ '.' ],
+	'directory_list' => [
+		'.',
+		__DIR__ . '/../../../phpunit/php-code-coverage'
+	],
+
+	'exclude_analysis_directory_list' => [
+		__DIR__ . '/../../../phpunit/php-code-coverage',
+	],
 
 	'processes' => 1,
 

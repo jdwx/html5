@@ -8,8 +8,16 @@ require_once 'vendor/autoload.php';
 require_once __DIR__ . '/Collector.php';
 require_once __DIR__ . '/Harness.php';
 require_once __DIR__ . '/Mockument.php';
-require_once __DIR__ . '/TestDocument.php';
-require_once __DIR__ . '/TestElement.php';
+
+
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+
+$cov = new CodeCoverage;
+
+$cov->filter()->addDirectoryToWhitelist( '../src' );
+
+$cov->start( 'JDWX_HTML5_Tests' );
+
 
 
 $rTests = [
@@ -21,8 +29,14 @@ $rTests = [
 $tst = new Collector();
 foreach ( $rTests as $stTest ) {
 	$stClass = "\\JDWX\\HTML5\\Tests\\{$stTest}";
-	// require_once __DIR__ . '/' . $stTest . '.php';
+	require_once __DIR__ . '/' . $stTest . '.php';
 	( new $stClass( $tst ) )->run();
 }
+
+$cov->stop();
+
+$wri = new \SebastianBergmann\CodeCoverage\Report\Html\Facade;
+$wri->process( $cov, '/var/www/html/code-coverage-report' );
+
 
 

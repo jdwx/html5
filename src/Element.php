@@ -47,14 +47,6 @@ class Element implements IElement {
 				if ( false === $rxValues[ 0 ] )
 					continue;
 
-				if ( null === $rxValues[ 0 ] ) {
-					trigger_error(
-						"Unexpected NULL in attribute {$strAttribute} of "
-						. "element {$this->strTagName}"
-					);
-					continue;
-				}
-
 				if ( true === $rxValues [ 0 ] ) {
 					$str .= ' ' . $strAttribute;
 					continue;

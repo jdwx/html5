@@ -7,15 +7,10 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-require_once __DIR__ . '/Element.php';
-require_once __DIR__ . '/ElementFactory.php';
-require_once __DIR__ . '/IDocument.php';
-
-
 class Document implements IDocument {
 
 	/** @var string */
-	protected $strDocType = "html";
+	protected $stDocType = "html";
 
 	/** @var Elements\HTML */
 	protected $elHTML;
@@ -27,44 +22,34 @@ class Document implements IDocument {
 	protected $elBody;
 
 
-	function __construct() {
-		$this->elHead = new Element( $this, 'head' );
-		$this->elBody = new Element( $this, 'body' );
-		$this->elHTML = ElementFactory::html( $this, $this->elHead,
+	function __construct( string $i_stCharset = 'utf-8' ) {
+		$this->elHead = new Elements\Head( $this );
+		$this->elBody = new Elements\Body( $this );
+		$this->elHTML = new Elements\HTML( $this, $this->elHead,
 											  $this->elBody );
+
+		$elMeta = new Elements\Meta( $this->elHead );
+		$elMeta->setCharset( $i_stCharset );
+
 	}
 
 
 	function __toString() : string {
-		$str = "<!DOCTYPE " . $this->strDocType . ">";
-		/*
-		<html><head>";
-		$str .= "<meta charset=\"utf-8\">";
-		if ( is_string( $this->nstTitle ) )
-			$str .= "<title>" . $this->nstTitle . "</title>";
-		foreach ( $this->rstCSSFiles as $strCSSFile )
-			$str .= "<link href=\"" . $this->escapeValue( $strCSSFile )
-				. "\" rel=\"stylesheet\" type=\"text/css\">";
-		$str .= "</head>";
-		$str .= $this->elBody;
-		$str .= "</html>"; */
-		return $str . $this->elHTML;
+		$st = "<!DOCTYPE " . $this->stDocType . ">";
+		return $st . $this->elHTML;
 	}
 
 
-	function addCSSFile( string $i_strHref ) : Document {
-		ElementFactory::link(
-			$this->elHead, $i_strHref, 'stylesheet', 'text/css'
+	function addCSSFile( string $i_stHref ) {
+		new Elements\Link(
+			$this->elHead, $i_stHref, 'stylesheet', 'text/css'
 		);
-		return $this;
 	}
 
 
-	function addIconFile( string $i_strHref,
-					      string $i_strType = "image/vnd.microsoft.icon" )
-																  : Document {
-		ElementFactory::link( $this->elHead, $i_strHref, 'icon', $i_strType );
-		return $this;
+	function addIconFile( string $i_stHref,
+					      string $i_stType = "image/vnd.microsoft.icon" ) {
+		new Elements\Link( $this->elHead, $i_stHref, 'icon', $i_stType );
 	}
 
 
@@ -73,19 +58,17 @@ class Document implements IDocument {
 	}
 
 
-	function appendToBody( ... $i_rxChildren ) : Document {
+	function appendToBody( ... $i_rxChildren ) {
 		$this->elBody->appendChild( ...$i_rxChildren );
-		return $this;
 	}
 
 
-	function appendToTitle( string $i_strTitle ) : Document {
+	function appendToTitle( string $i_stTitle ) {
 		$elTitle = $this->elHead->findFirstChildByTagName( 'title' );
 		if ( $elTitle instanceOf IElement )
-			$elTitle->appendChild( $i_strTitle );
+			$elTitle->appendChild( $i_stTitle );
 		else
-			$this->setTitle( $i_strTitle );
-		return $this;
+			$this->setTitle( $i_stTitle );
 	}
 
 
@@ -94,8 +77,8 @@ class Document implements IDocument {
 	}
 
 
-	function escapeValue( string $i_strValue ) : string {
-		return htmlspecialchars( $i_strValue, ENT_COMPAT | ENT_HTML5,
+	function escapeValue( string $i_stValue ) : string {
+		return htmlspecialchars( $i_stValue, ENT_COMPAT | ENT_HTML5,
                                  'UTF-8' );
 	}
 
@@ -110,10 +93,9 @@ class Document implements IDocument {
 	}
 
 
-	function setTitle( string $i_strTitle ) : Document {
+	function setTitle( string $i_stTitle ) {
 		$this->elHead->dropChildrenByTagName( 'title' );
-		ElementFactory::title( $this->elHead, $i_strTitle );
-		return $this;
+		new Elements\Title( $this->elHead, $i_stTitle );
 	}
 
 

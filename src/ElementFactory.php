@@ -36,9 +36,27 @@ class ElementFactory {
 	}
 
 
+	static function dd( IParent $i_par, ... $i_rxChildren ) : Elements\Dt {
+		require_once __DIR__ . '/Elements/Dd.php';
+		return new Elements\Dt( $i_par, ... $i_rxChildren );
+	}
+
+
 	static function div( IParent $i_par, ... $i_rxChildren ) : Elements\Div {
 		require_once __DIR__ . '/Elements/Div.php';
 		return new Elements\Div( $i_par, ... $i_rxChildren );
+	}
+
+
+	static function dl( IParent $i_par, ... $i_rxChildren ) : Elements\Dt {
+		require_once __DIR__ . '/Elements/Dl.php';
+		return new Elements\Dt( $i_par, ... $i_rxChildren );
+	}
+
+
+	static function dt( IParent $i_par, ... $i_rxChildren ) : Elements\Dt {
+		require_once __DIR__ . '/Elements/Dt.php';
+		return new Elements\Dt( $i_par, ... $i_rxChildren );
 	}
 
 

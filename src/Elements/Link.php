@@ -36,6 +36,11 @@ class Link extends \JDWX\HTML5\Element {
 	}
 
 
+	function setSizes( string $i_stSizes ) : void {
+		$this->setAttribute( 'sizes', $i_stSizes );
+	}
+
+
 	function setType( string $i_strType ) : void {
 		$this->setAttribute( 'type', $i_strType );
 	}

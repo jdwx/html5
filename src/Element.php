@@ -88,8 +88,18 @@ class Element implements IElement {
 
 
 	function appendChild( ... $i_rxChildren ) : void {
+		foreach ( $i_rxChildren as $xChild ) {
+			if ( is_array( $xChild ) )
+				$this->appendChildren( $xChild );
+			else
+				$this->rxChildren[] = $xChild;
+		}
+	}
+
+
+	function appendChildren( array $i_rxChildren ) : void {
 		foreach ( $i_rxChildren as $xChild )
-			$this->rxChildren[] = $xChild;
+			$this->appendChild( $xChild );
 	}
 
 

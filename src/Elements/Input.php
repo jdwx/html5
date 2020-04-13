@@ -16,12 +16,18 @@ class Input extends \JDWX\HTML5\Element {
 						  ?string $i_nstValue = null,
  						  ... $i_rxChildren ) {
 		parent::__construct( $i_par, 'input', ... $i_rxChildren );
+		$this->setAlwaysClose( false );
 		if ( is_string( $i_nstName ) )
 			$this->setName( $i_nstName );
 		if ( is_string( $i_nstType ) )
 			$this->setType( $i_nstType );
 		if ( is_string( $i_nstValue ) )
 			$this->setValue( $i_nstValue );
+	}
+
+
+	function setChecked( bool $i_bChecked ) : void {
+		$this->setAttribute( 'checked', $i_bChecked );
 	}
 
 

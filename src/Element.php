@@ -9,6 +9,7 @@ namespace JDWX\HTML5;
 
 class Element implements IElement {
 
+
 	/** @var string */
 	protected $strTagName;
 

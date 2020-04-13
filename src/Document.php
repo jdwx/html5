@@ -7,7 +7,8 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-class Document implements IDocument {
+class Document extends BaseDocument {
+
 
 	/** @var string */
 	protected $stDocType = "html";
@@ -23,10 +24,11 @@ class Document implements IDocument {
 
 
 	function __construct( string $i_stCharset = 'utf-8' ) {
+		parent::__construct( $i_stCharset );
 		$this->elHead = new Elements\Head( $this );
 		$this->elBody = new Elements\Body( $this );
 		$this->elHTML = new Elements\HTML( $this, $this->elHead,
-											  $this->elBody );
+										   $this->elBody );
 
 		$elMeta = new Elements\Meta( $this->elHead );
 		$elMeta->setCharset( $i_stCharset );
@@ -74,17 +76,6 @@ class Document implements IDocument {
 
 	function body() : Elements\Body {
 		return $this->elBody;
-	}
-
-
-	function escapeValue( string $i_stValue ) : string {
-		return htmlspecialchars( $i_stValue, ENT_COMPAT | ENT_HTML5,
-                                 'UTF-8' );
-	}
-
-
-	function getDocument() : IDocument {
-		return $this;
 	}
 
 

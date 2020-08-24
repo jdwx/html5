@@ -27,6 +27,11 @@ class Form extends \JDWX\HTML5\Element {
 	}
 
 
+	function setEncType( string $i_stEncType ) : void {
+		$this->setAttribute( 'enctype', $i_stEncType );
+	}
+
+
 	function setMethod( string $i_strMethod ) : void {
 		$this->setAttribute( 'method', $i_strMethod );
 	}

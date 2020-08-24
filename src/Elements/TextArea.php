@@ -20,6 +20,15 @@ class TextArea extends \JDWX\HTML5\Element {
 	}
 
 
+	function setName( string $i_stName ) : void {
+		$this->setAttribute( 'name', $i_stName );
+	}
+
+
+	function setPlaceHolder( string $i_stPlaceHolder ) : void {
+		$this->setAttribute( 'placeholder', $i_stPlaceHolder );
+	}
+
 	function setRows( int $i_iRows ) : void {
 		$this->setAttribute( "rows", strval( $i_iRows ) );
 	}

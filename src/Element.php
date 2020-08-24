@@ -69,7 +69,7 @@ class Element implements IElement {
 
 
 	/** @param string ...$i_rstValues */
-	function addAttribute( string $i_strAttribute, ... $i_rstValues ) {
+	function addAttribute( string $i_strAttribute, ... $i_rstValues ) : void {
 
 		if ( ! $this->hasAttribute( $i_strAttribute ) ) {
 			$this->setAttribute( $i_strAttribute, ... $i_rstValues );
@@ -79,6 +79,12 @@ class Element implements IElement {
 		foreach ( $i_rstValues as $strValue )
 			$this->rstAttributes[ $i_strAttribute ][] = $strValue;
 
+	}
+
+
+	/** @param string ...$i_rstClass */
+	function addClass( ... $i_rstClass ) : void {
+		$this->addAttribute( 'class', ... $i_rstClass );
 	}
 
 
@@ -218,6 +224,12 @@ class Element implements IElement {
 
 	function setAccessKey( string $i_strAccessKey ) : void {
 		$this->setAttribute( 'accesskey', $i_strAccessKey );
+	}
+
+
+	/** @param string ...$i_rstStyle */
+	function setAriaLabel( ... $i_rstLabel ) : void {
+		$this->setAttribute( 'aria-label', ... $i_rstLabel );
 	}
 
 

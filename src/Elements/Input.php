@@ -46,6 +46,10 @@ class Input extends \JDWX\HTML5\Element {
 	}
 
 
+	function setSize( int $i_iCols ) : void {
+		$this->setAttribute( 'size', strval( $i_iCols ) );
+	}
+
 	function setType( string $i_strType ) : void {
 		$this->setAttribute( 'type', $i_strType );
 	}

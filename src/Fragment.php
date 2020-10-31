@@ -11,10 +11,9 @@ class Fragment implements IDocument {
 
 
 	/** @var Element[] */
-	protected $rElements = [];
+	protected array $rElements = [];
 
-	/** @var DummyDocument */
-	protected $doc;
+	protected DummyDocument $doc;
 
 
 	public function __construct( string $i_stCharset = 'utf-8' ) {
@@ -25,7 +24,7 @@ class Fragment implements IDocument {
 	public function __toString() : string {
 		$st = "";
 		foreach ( $this->rElements as $xChild ) {
-			$st .= strval( $xChild );
+			$st .= $xChild;
 		}
 		return $st;
 	}
@@ -33,10 +32,11 @@ class Fragment implements IDocument {
 
 	public function appendChild( ... $i_rxChildren ) : void {
 		foreach ( $i_rxChildren as $xChild ) {
-			if ( is_array( $xChild ) )
-				$this->appendChild( ... $xChild );
-			else
-				$this->rElements[] = $xChild;
+			if ( is_array( $xChild ) ) {
+                $this->appendChild(... $xChild);
+            } else {
+                $this->rElements[] = $xChild;
+            }
 		}
 	}
 

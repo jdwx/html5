@@ -7,23 +7,21 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
+use tidy;
+
 class Document extends BaseDocument {
 
 
-	/** @var string */
-	protected $stDocType = "html";
+	protected string $stDocType = "html";
 
-	/** @var Elements\HTML */
-	protected $elHTML;
+	protected Elements\HTML $elHTML;
 
-	/** @var Elements\Head */
-	protected $elHead;
+	protected Elements\Head $elHead;
 
-	/** @var Elements\Body */
-	protected $elBody;
+	protected Elements\Body $elBody;
 
 
-	function __construct( string $i_stCharset = 'utf-8' ) {
+	public function __construct( string $i_stCharset = 'utf-8' ) {
 		parent::__construct( $i_stCharset );
 		$this->elHead = new Elements\Head( $this );
 		$this->elBody = new Elements\Body( $this );
@@ -36,62 +34,63 @@ class Document extends BaseDocument {
 	}
 
 
-	function __toString() : string {
+	public function __toString() : string {
 		$st = "<!DOCTYPE " . $this->stDocType . ">";
 		return $st . $this->elHTML;
 	}
 
 
-	function addCSSFile( string $i_stHref ) {
+	public function addCSSFile( string $i_stHref ) : void {
 		new Elements\Link(
 			$this->elHead, $i_stHref, 'stylesheet', 'text/css'
 		);
 	}
 
 
-	function addIconFile( string $i_stHref,
-					      string $i_stType = "image/vnd.microsoft.icon" ) {
+	public function addIconFile( string $i_stHref,
+					             string $i_stType = "image/vnd.microsoft.icon" ) : void {
 		new Elements\Link( $this->elHead, $i_stHref, 'icon', $i_stType );
 	}
 
 
-	function appendChild( ... $i_rxChildren ) : void {
+	public function appendChild( ... $i_rxChildren ) : void {
 		$this->appendToBody( ... $i_rxChildren );
 	}
 
 
-	function appendToBody( ... $i_rxChildren ) {
+	public function appendToBody( ... $i_rxChildren ) : void {
 		$this->elBody->appendChild( ...$i_rxChildren );
 	}
 
 
-	function appendToTitle( string $i_stTitle ) {
+	public function appendToTitle( string $i_stTitle ) : void {
 		$elTitle = $this->elHead->findFirstChildByTagName( 'title' );
-		if ( $elTitle instanceOf IElement )
-			$elTitle->appendChild( $i_stTitle );
-		else
-			$this->setTitle( $i_stTitle );
+		if ( $elTitle instanceOf IElement ) {
+            $elTitle->appendChild($i_stTitle);
+        } else {
+            $this->setTitle($i_stTitle);
+        }
 	}
 
 
-	function body() : Elements\Body {
+	public function body() : Elements\Body {
 		return $this->elBody;
 	}
 
 
-	function head() : Elements\Head {
+	public function head() : Elements\Head {
 		return $this->elHead;
 	}
 
 
-	function setTitle( string $i_stTitle ) {
+	public function setTitle( string $i_stTitle ) : void {
 		$this->elHead->dropChildrenByTagName( 'title' );
 		new Elements\Title( $this->elHead, $i_stTitle );
 	}
 
 
-	function tidy() : string {
-		$htm = strval( $this );
+	public function tidy() : string {
+		$htm = ( string ) $this;
 		$cfgTidy = [
 			'drop-empty-paras'  => false,
 			'indent'            => true,
@@ -103,7 +102,7 @@ class Document extends BaseDocument {
 			'input-xml'         => false,
 			'wrap'              => 100,
 		];
-		$tidy = new \tidy();
+		$tidy = new tidy();
 		$tidy->parseString( $htm, $cfgTidy, 'utf8' );
 		return tidy_get_output( $tidy );
 	}

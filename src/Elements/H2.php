@@ -7,10 +7,13 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-class H2 extends \JDWX\HTML5\Element {
+use JDWX\HTML5\Element;
+use JDWX\HTML5\IParent;
+
+class H2 extends Element {
 
 
-	function __construct( \JDWX\HTML5\IParent $i_par, ... $i_rxChildren ) {
+	public function __construct(IParent $i_par, ... $i_rxChildren ) {
 		parent::__construct( $i_par, 'h2', ... $i_rxChildren );
 	}
 

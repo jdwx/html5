@@ -7,30 +7,34 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-class TextArea extends \JDWX\HTML5\Element {
+use JDWX\HTML5\Element;
+use JDWX\HTML5\IParent;
 
 
-	function __construct( \JDWX\HTML5\IParent $i_par, ... $i_rxChildren ) {
+class TextArea extends Element {
+
+
+	public function __construct(IParent $i_par, ... $i_rxChildren ) {
 		parent::__construct( $i_par, 'textarea', ... $i_rxChildren );
 	}
 
 
-	function setCols( int $i_iCols ) : void {
-		$this->setAttribute( "cols", strval( $i_iCols ) );
+	public function setCols(int $i_iCols ) : void {
+		$this->setAttribute( "cols", ( string ) $i_iCols);
 	}
 
 
-	function setName( string $i_stName ) : void {
+	public function setName(string $i_stName ) : void {
 		$this->setAttribute( 'name', $i_stName );
 	}
 
 
-	function setPlaceHolder( string $i_stPlaceHolder ) : void {
+	public function setPlaceHolder(string $i_stPlaceHolder ) : void {
 		$this->setAttribute( 'placeholder', $i_stPlaceHolder );
 	}
 
-	function setRows( int $i_iRows ) : void {
-		$this->setAttribute( "rows", strval( $i_iRows ) );
+	public function setRows(int $i_iRows ) : void {
+		$this->setAttribute( "rows", ( string ) $i_iRows);
 	}
 
 

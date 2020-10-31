@@ -10,14 +10,12 @@ namespace JDWX\HTML5;
 abstract class BaseDocument implements IDocument {
 
 
-	/** @var string */
-	protected $stCharset;
+	protected string $stCharset;
 
-	/** @var string */
-	protected $stEncoding;
+	protected string $stEncoding;
 
 
-	function __construct( string $i_stCharset = 'utf-8' ) {
+	public function __construct( string $i_stCharset = 'utf-8' ) {
 		$this->stCharset = $i_stCharset;
 		$this->stEncoding = $this->stCharset;
 	}
@@ -25,11 +23,11 @@ abstract class BaseDocument implements IDocument {
 
 	public function escapeValue( string $i_stValue ) : string {
 		return htmlspecialchars( $i_stValue, ENT_COMPAT | ENT_HTML5,
-                                 $thos->stEncoding );
+                                 $this->stEncoding );
 	}
 
 
-	function getDocument() : IDocument {
+	public function getDocument() : IDocument {
 		return $this;
 	}
 

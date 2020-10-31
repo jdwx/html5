@@ -7,46 +7,44 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
+use InvalidArgumentException;
+
 class Element implements IElement {
 
 
-	/** @var string */
-	protected $strTagName;
+	protected string $strTagName;
 
-	/** @var array */
-	protected $rstAttributes = [];
+	protected array $rstAttributes = [];
 
-	/** @var array */
-	protected $rxChildren;
+	protected array $rxChildren;
 
-	/** @var bool */
-	protected $bAlwaysClose = true;
+	protected bool $bAlwaysClose = true;
 
-	/** @var IDocument */
-	protected $doc;
+	protected IDocument $doc;
 
 
-	function __construct( IParent $i_par, string $i_strTagName,
-                          ... $i_rxChildren ) {
+	public function __construct( IParent $i_par, string $i_strTagName, ... $i_rxChildren ) {
 		$this->doc = $i_par->getDocument();
 		$this->strTagName = $i_strTagName;
 		$this->rxChildren = $i_rxChildren;
-		if ( $i_par !== $this->doc )
-			$i_par->appendChild( $this );
+		if ( $i_par !== $this->doc ) {
+            $i_par->appendChild($this);
+        }
 	}
 
 
-	function __toString() : string {
+	public function __toString() : string {
 
 		$str = '<' . $this->strTagName;
 
 		ksort( $this->rstAttributes );
 		foreach ( $this->rstAttributes as $strAttribute => $rxValues ) {
 
-			if ( 1 == count( $rxValues ) && is_bool( $rxValues[ 0 ] ) ) {
+			if ( 1 === count( $rxValues ) && is_bool( $rxValues[ 0 ] ) ) {
 
-				if ( false === $rxValues[ 0 ] )
-					continue;
+				if ( false === $rxValues[ 0 ] ) {
+                    continue;
+                }
 
 				if ( true === $rxValues [ 0 ] ) {
 					$str .= ' ' . $strAttribute;
@@ -55,75 +53,85 @@ class Element implements IElement {
 
 			}
 			$str .= ' ' . $strAttribute . '="'
-				. $this->doc->escapeValue( join( ' ', $rxValues ) )
+				. $this->doc->escapeValue( implode( ' ', $rxValues ) )
 				. '"';
 		}
 		$str .= '>';
-		if ( empty( $this->rxChildren ) && ! $this->bAlwaysClose )
-			return $str;
-		foreach ( $this->rxChildren as $xChild )
-			$str .= $this->renderChild( $xChild );
+		if ( empty( $this->rxChildren ) && ! $this->bAlwaysClose ) {
+            return $str;
+        }
+		foreach ( $this->rxChildren as $xChild ) {
+            $str .= $this->renderChild($xChild);
+        }
 		$str .= '</' . $this->strTagName . '>';
 		return $str;
 	}
 
 
-	/** @param string ...$i_rstValues */
-	function addAttribute( string $i_strAttribute, ... $i_rstValues ) : void {
+    /**
+     * @param string $i_strAttribute
+     * @param string ...$i_rstValues
+     */
+	public function addAttribute( string $i_strAttribute, ... $i_rstValues ) : void {
 
 		if ( ! $this->hasAttribute( $i_strAttribute ) ) {
 			$this->setAttribute( $i_strAttribute, ... $i_rstValues );
 			return;
 		}
 
-		foreach ( $i_rstValues as $strValue )
-			$this->rstAttributes[ $i_strAttribute ][] = $strValue;
+		foreach ( $i_rstValues as $strValue ) {
+            $this->rstAttributes[$i_strAttribute][] = $strValue;
+        }
 
 	}
 
 
 	/** @param string ...$i_rstClass */
-	function addClass( ... $i_rstClass ) : void {
+	public function addClass( ... $i_rstClass ) : void {
 		$this->addAttribute( 'class', ... $i_rstClass );
 	}
 
 
 	/** @param string ...$i_rstStyle */
-	function addStyle( ... $i_rstStyle ) : void {
+	public function addStyle( ... $i_rstStyle ) : void {
 		$this->addAttribute( 'style', ... $i_rstStyle );
 	}
 
 
-	function appendChild( ... $i_rxChildren ) : void {
+	public function appendChild( ... $i_rxChildren ) : void {
 		foreach ( $i_rxChildren as $xChild ) {
-			if ( is_array( $xChild ) )
-				$this->appendChildren( $xChild );
-			else
-				$this->rxChildren[] = $xChild;
+			if ( is_array( $xChild ) ) {
+                $this->appendChildren($xChild);
+            }
+			else {
+                $this->rxChildren[] = $xChild;
+            }
 		}
 	}
 
 
-	function appendChildren( array $i_rxChildren ) : void {
-		foreach ( $i_rxChildren as $xChild )
-			$this->appendChild( $xChild );
+	public function appendChildren( array $i_rxChildren ) : void {
+		foreach ( $i_rxChildren as $xChild ) {
+            $this->appendChild($xChild);
+        }
 	}
 
 
-	function clearAttribute( string $i_strAttribute ) : void {
+	public function clearAttribute( string $i_strAttribute ) : void {
 		unset( $this->rstAttributes[ $i_strAttribute ] );
 	}
 
 
-	function dropChildByID( string $i_stID,
-							bool $i_bRecursive = false ) : void {
+	public function dropChildByID( string $i_stID, bool $i_bRecursive = false ) : void {
 		$rxNew = [];
 		foreach ( $this->rxChildren as $xChild ) {
-			if ( $xChild instanceOf Element ) {
-				if ( $xChild->getID() === $i_stID )
-					continue;
-				if ( $i_bRecursive )
-					$xChild->dropChildByID( $i_stID, true );
+			if ( $xChild instanceOf self ) {
+				if ( $xChild->getID() === $i_stID ) {
+                    continue;
+                }
+				if ( $i_bRecursive ) {
+                    $xChild->dropChildByID($i_stID, true);
+                }
 			}
 			$rxNew[] = $xChild;
 		}
@@ -131,15 +139,16 @@ class Element implements IElement {
 	}
 
 
-	function dropChildrenByTagName( string $i_strTagName,
-									bool $i_bRecursive = false ) : void {
+	public function dropChildrenByTagName( string $i_strTagName, bool $i_bRecursive = false ) : void {
 		$rxNew = [];
 		foreach ( $this->rxChildren as $xChild ) {
-			if ( $xChild instanceOf Element ) {
-				if ( $xChild->strTagName === $i_strTagName )
-					continue;
-				if ( $i_bRecursive )
-					$xChild->dropChildrenByTagName( $i_strTagName, true );
+			if ( $xChild instanceOf self ) {
+				if ( $xChild->strTagName === $i_strTagName ) {
+                    continue;
+                }
+				if ( $i_bRecursive ) {
+                    $xChild->dropChildrenByTagName($i_strTagName, true);
+                }
 			}
 			$rxNew[] = $xChild;
 		}
@@ -147,43 +156,46 @@ class Element implements IElement {
 	}
 
 
-	function findChildByID( string $i_stID ) : ?Element {
-		foreach ( $this->rxChildren as $xChild )
-			if ( $xChild instanceOf Element
-					&& $xChild->getID() === $i_stID )
-				return $xChild;
+	public function findChildByID( string $i_stID ) : ?Element {
+		foreach ( $this->rxChildren as $xChild ) {
+            if ($xChild instanceof self
+                && $xChild->getID() === $i_stID) {
+                return $xChild;
+            }
+        }
 		return null;
 	}
 
 
-	function findFirstChildByTagName( string $i_strTagName ) : ?Element {
-		foreach ( $this->rxChildren as $xChild )
-			if ( $xChild instanceOf Element
-					&& $xChild->strTagName === $i_strTagName )
-				return $xChild;
+	public function findFirstChildByTagName( string $i_strTagName ) : ?Element {
+		foreach ( $this->rxChildren as $xChild ) {
+            if ($xChild instanceof self
+                && $xChild->strTagName === $i_strTagName) {
+                return $xChild;
+            }
+        }
 		return null;
 	}
 
 
-	function getAttribute( string $i_stAttribute ) : ?string {
+	public function getAttribute( string $i_stAttribute ) : ?string {
 		return $this->hasAttribute( $i_stAttribute )
-			? join( ' ', $this->rstAttributes[ $i_stAttribute ] )
+			? implode( ' ', $this->rstAttributes[ $i_stAttribute ] )
 			: null;
 	}
 
 
-	function getDocument() : IDocument {
+	public function getDocument() : IDocument {
 		return $this->doc;
 	}
 
 
-	function getID() : ?string {
-		$nstID = $this->getAttribute( 'id' );
-		return $nstID;
+	public function getID() : ?string {
+        return $this->getAttribute( 'id' );
 	}
 
 
-	function hasAttribute( string $i_strAttribute ) : bool {
+	public function hasAttribute( string $i_strAttribute ) : bool {
 		return array_key_exists( $i_strAttribute, $this->rstAttributes );
 	}
 
@@ -196,69 +208,78 @@ class Element implements IElement {
 			);
 			return '';
 		}
-		if ( is_string( $i_xChild ) )
-			return $i_xChild;
-		if ( is_int( $i_xChild ) )
-			return strval( $i_xChild );
-		if ( is_float( $i_xChild ) )
-			return strval( $i_xChild );
-		if ( is_bool( $i_xChild ) )
-			return $i_xChild ? "true" : "false";
-		if ( is_object( $i_xChild ) )
-			return $i_xChild->__toString();
+		if ( is_string( $i_xChild ) ) {
+            return $i_xChild;
+        }
+		if ( is_int( $i_xChild ) ) {
+            return ( string )$i_xChild;
+        }
+		if ( is_float( $i_xChild ) ) {
+            return ( string )$i_xChild;
+        }
+		if ( is_bool( $i_xChild ) ) {
+            return $i_xChild ? "true" : "false";
+        }
+		if ( is_object( $i_xChild ) ) {
+            return $i_xChild->__toString();
+        }
 		if ( is_array( $i_xChild ) ) {
 			$str = '';
-			foreach ( $i_xChild as $xChild )
-				$str .= $this->renderChild( $xChild );
+			foreach ( $i_xChild as $xChild ) {
+                $str .= $this->renderChild($xChild);
+            }
 			return $str;
 		}
-		throw new \Exception( "I don't know what this child is: "
-							  . gettype( $i_xChild ) );
+		throw new InvalidArgumentException( "I don't know what this child is: " . gettype( $i_xChild ) );
 	}
 
 
-	function setAlwaysClose( bool $i_bAlwaysClose ) : void {
+	public function setAlwaysClose( bool $i_bAlwaysClose ) : void {
 		$this->bAlwaysClose = $i_bAlwaysClose;
 	}
 
 
-	function setAccessKey( string $i_strAccessKey ) : void {
+	public function setAccessKey( string $i_strAccessKey ) : void {
 		$this->setAttribute( 'accesskey', $i_strAccessKey );
 	}
 
 
-	/** @param string ...$i_rstStyle */
-	function setAriaLabel( ... $i_rstLabel ) : void {
+	/** @param string ...$i_rstLabel */
+	public function setAriaLabel( ... $i_rstLabel ) : void {
 		$this->setAttribute( 'aria-label', ... $i_rstLabel );
 	}
 
 
-	/** @param bool|string ...$i_rxValues */
-	function setAttribute( string $i_strAttribute, ... $i_rxValues ) : void {
+    /**
+     * @param string $i_strAttribute
+     * @param bool|string ...$i_rxValues
+     */
+	public function setAttribute( string $i_strAttribute, ... $i_rxValues ) : void {
 		$this->rstAttributes[ $i_strAttribute ] = [];
-		foreach ( $i_rxValues as $strValue )
-			$this->rstAttributes[ $i_strAttribute ][] = $strValue;
+		foreach ( $i_rxValues as $strValue ) {
+            $this->rstAttributes[$i_strAttribute][] = $strValue;
+        }
 	}
 
 
 	/** @param string ...$i_rstClasses */
-	function setClass( ... $i_rstClasses ) {
+	public function setClass( ... $i_rstClasses ) : void {
 		$this->setAttribute( 'class', ...$i_rstClasses );
 	}
 
 
-	function setContentEditable( bool $i_bContentEditable ) : void {
+	public function setContentEditable( bool $i_bContentEditable ) : void {
 		$this->setAttribute( 'contenteditable',
 							 $i_bContentEditable ? "true" : "false" );
 	}
 
 
-	function setDir( string $i_strDir ) : void {
+	public function setDir( string $i_strDir ) : void {
 		$this->setAttribute( 'dir', $i_strDir );
 	}
 
 
-	function setDraggable( $i_xDraggable ) : void {
+	public function setDraggable( $i_xDraggable ) : void {
 		if ( is_bool( $i_xDraggable ) ) {
 			$this->setAttribute( 'draggable',
 								 $i_xDraggable ? "true" : "false" );
@@ -268,42 +289,42 @@ class Element implements IElement {
 	}
 
 
-	function setHidden( bool $i_bHidden ) : void {
+	public function setHidden( bool $i_bHidden ) : void {
 		$this->setAttribute( 'hidden', $i_bHidden );
 	}
 
 
-	function setID( string $i_strID ) : void {
+	public function setID( string $i_strID ) : void {
 		$this->setAttribute( 'id', $i_strID );
 	}
 
 
-	function setLang( string $i_strLang ) : void {
+	public function setLang( string $i_strLang ) : void {
 		$this->setAttribute( 'lang', $i_strLang );
 	}
 
 
-	function setSpellCheck( bool $i_bSpellCheck ) : void {
+	public function setSpellCheck( bool $i_bSpellCheck ) : void {
 		$this->setAttribute( 'spellcheck', $i_bSpellCheck ? "true" : "false" );
 	}
 
 
-	function setStyle( ... $i_rstStyle ) : void {
+	public function setStyle( ... $i_rstStyle ) : void {
 		$this->setAttribute( 'style', ... $i_rstStyle );
 	}
 
 
-	function setTabIndex( int $i_iTabIndex ) : void {
-		$this->setAttribute( 'tabindex', strval( $i_iTabIndex ) );
+	public function setTabIndex( int $i_iTabIndex ) : void {
+		$this->setAttribute( 'tabindex', ( string ) $i_iTabIndex );
 	}
 
 
-	function setTitle( string $i_strTitle ) : void {
+	public function setTitle( string $i_strTitle ) : void {
 		$this->setAttribute( 'title', $i_strTitle );
 	}
 
 
-	function setTranslate( bool $i_bTranslate ) : void {
+	public function setTranslate( bool $i_bTranslate ) : void {
 		$this->setAttribute( 'translate', $i_bTranslate ? "yes" : "no" );
 	}
 

@@ -7,10 +7,14 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-class Nav extends \JDWX\HTML5\Element {
+use JDWX\HTML5\Element;
+use JDWX\HTML5\IParent;
 
 
-	function __construct( \JDWX\HTML5\IParent $i_par, ... $i_rxChildren ) {
+class Nav extends Element {
+
+
+	public function __construct(IParent $i_par, ... $i_rxChildren ) {
 		parent::__construct( $i_par, 'nav', ... $i_rxChildren );
 	}
 

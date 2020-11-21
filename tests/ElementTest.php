@@ -19,6 +19,20 @@ require_once __DIR__ . '/TestCase.php';
 final class ElementTest extends TestCase {
 
 
+    public function testAddClass() : void {
+        $el = $this->element( "test" );
+        $el->addClass( "foo" );
+        $this->checkElement( "<test class=\"foo\"></test>", $el );
+    }
+
+
+    public function testAppendChild() : void {
+        $el = $this->element( "foo" );
+        $el->appendChild( "bar", [ "baz", "qux" ] );
+        $this->checkElement( "<foo>barbazqux</foo>", $el );
+    }
+
+
     public function testAlwaysClose() : void {
 
         $el = $this->element( 'test' );
@@ -133,6 +147,7 @@ final class ElementTest extends TestCase {
 
         $el = $this->element( 'example' );
         $el->setAttribute( 'foo', 'bar', 'baz' );
+        $el->setAriaLabel( "Close" );
         $el->setClass( 'qux', 'quux' );
         $el->setTabIndex( 2 );
         $el->addStyle( "color: blue;" );
@@ -156,7 +171,7 @@ final class ElementTest extends TestCase {
         $el->appendChild( $el2, $el3 );
         $el->dropChildrenByTagName( 'el3' );
 
-        $stExpect = '<example accesskey="c" class="qux quux" contenteditable="true" dir="rtl" draggable="auto" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no"><el2></el2></example>';
+        $stExpect = '<example accesskey="c" aria-label="Close" class="qux quux" contenteditable="true" dir="rtl" draggable="auto" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no"><el2></el2></example>';
 
         $this->checkElement( $stExpect, $el );
 

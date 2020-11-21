@@ -15,12 +15,12 @@ use JDWX\HTML5\IDocument;
 class TestCase extends \PHPUnit\Framework\TestCase {
 
 
-    private Mockument $moc;
+    protected Mockument $doc;
 
 
     public function __construct( ) {
         parent::__construct();
-        $this->moc = new Mockument;
+        $this->doc = new Mockument;
     }
 
 
@@ -30,7 +30,7 @@ class TestCase extends \PHPUnit\Framework\TestCase {
 
 
     protected function checkDocument( IDocument $i_doc ) : void {
-        $this->checkBool( true, $this->moc === $i_doc );
+        $this->checkBool( true, $this->doc === $i_doc );
     }
 
 
@@ -56,7 +56,7 @@ class TestCase extends \PHPUnit\Framework\TestCase {
 
 
     protected function element( string $i_stTag ) : ElementHack {
-        return new ElementHack( $this->moc, $i_stTag );
+        return new ElementHack( $this->doc, $i_stTag );
     }
 
 

@@ -5,7 +5,10 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Tests;
 
 
-class ElementHack extends \JDWX\HTML5\Element {
+use JDWX\HTML5\Element;
+
+
+class ElementHack extends Element {
 
 
 	public function renderChild( $i_xChild ) : string {

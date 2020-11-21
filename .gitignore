@@ -1,2 +1,4 @@
 .*.swp
+.phpunit.cache
+coverage-report
 phan.txt

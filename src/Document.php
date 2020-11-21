@@ -21,7 +21,7 @@ class Document extends BaseDocument {
 	protected Elements\Body $elBody;
 
 
-	public function __construct( string $i_stCharset = 'utf-8' ) {
+	public function __construct( string $i_stCharset = 'UTF-8' ) {
 		parent::__construct( $i_stCharset );
 		$this->elHead = new Elements\Head( $this );
 		$this->elBody = new Elements\Body( $this );

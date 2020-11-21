@@ -28,7 +28,7 @@ class Element implements IElement {
 		$this->strTagName = $i_strTagName;
 		$this->rxChildren = $i_rxChildren;
 		if ( $i_par !== $this->doc ) {
-            $i_par->appendChild($this);
+            $i_par->appendChild( $this );
         }
 	}
 
@@ -122,6 +122,11 @@ class Element implements IElement {
 	}
 
 
+	public function countChildren() : int {
+	    return count( $this->rxChildren );
+    }
+
+
 	public function dropChildByID( string $i_stID, bool $i_bRecursive = false ) : void {
 		$rxNew = [];
 		foreach ( $this->rxChildren as $xChild ) {
@@ -178,6 +183,11 @@ class Element implements IElement {
 	}
 
 
+	public function getAlwaysClose() : bool {
+	    return $this->bAlwaysClose;
+    }
+
+
 	public function getAttribute( string $i_stAttribute ) : ?string {
 		return $this->hasAttribute( $i_stAttribute )
 			? implode( ' ', $this->rstAttributes[ $i_stAttribute ] )
@@ -198,6 +208,11 @@ class Element implements IElement {
 	public function hasAttribute( string $i_strAttribute ) : bool {
 		return array_key_exists( $i_strAttribute, $this->rstAttributes );
 	}
+
+
+	public function hasChildren() : bool {
+	    return $this->countChildren() > 0;
+    }
 
 
 	protected function renderChild( $i_xChild ) : string {

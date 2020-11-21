@@ -1,7 +1,4 @@
-<?php
-
-
-declare( strict_types = 1 );
+<?php declare( strict_types = 1 );
 
 
 namespace JDWX\HTML5\Elements;

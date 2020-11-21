@@ -1,7 +1,4 @@
-<?php
-
-
-declare( strict_types = 1 );
+<?php declare( strict_types = 1 );
 
 
 namespace JDWX\HTML5\Elements;
@@ -14,12 +11,9 @@ use JDWX\HTML5\IParent;
 class Span extends Element {
 
 
-	public function __construct(IParent $i_par, ... $i_rxChildren ) {
-		parent::__construct( $i_par, 'span' );
-		if ( ! empty( $i_rxChildren ) ) {
-            $this->appendChild(... $i_rxChildren);
-        }
-	}
+    public function __construct( IParent $i_par, ...$i_rxChildren ) {
+        parent::__construct( $i_par, 'span', ... $i_rxChildren );
+    }
 
 
 }

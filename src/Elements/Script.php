@@ -14,14 +14,14 @@ use JDWX\HTML5\IParent;
 class Script extends Element {
 
 
-	public function __construct(IParent $i_par, ... $i_rxChildren ) {
-		parent::__construct( $i_par, 'script', ... $i_rxChildren );
-	}
+    public function __construct( IParent $i_par, ...$i_rxChildren ) {
+        parent::__construct( $i_par, 'script', ... $i_rxChildren );
+    }
 
 
-	public function setSrc(string $i_stSrc ) : void {
-		$this->setAttribute( 'src', $i_stSrc );
-	}
+    public function setSrc( string $i_stSrc ) : void {
+        $this->setAttribute( 'src', $i_stSrc );
+    }
 
 
 }

@@ -16,7 +16,7 @@ class Hr extends Element {
 
     public function __construct( IParent $i_par,
                                  ...$i_rxChildren ) {
-        parent::__construct( $i_par, 'hr', $i_rxChildren );
+        parent::__construct( $i_par, 'hr', ... $i_rxChildren );
         $this->setAlwaysClose( false );
     }
 

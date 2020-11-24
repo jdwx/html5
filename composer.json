@@ -17,6 +17,7 @@
 		}
 	},
 	"require-dev": {
-		"phpunit/php-code-coverage": "master"
+        "phpunit/phpunit": "^9",
+        "phpunit/php-code-coverage": "^9.2"
 	}
 }

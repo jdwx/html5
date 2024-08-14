@@ -94,6 +94,12 @@ class ElementsTest extends MyTestCase {
     }
 
 
+    public function testLegend() : void {
+        $legend = new Elements\Legend( $this->doc, 'test' );
+        self::assertEquals( '<legend>test</legend>', strval( $legend ) );
+    }
+
+
     public function testLink() : void {
         $lnk = new Elements\Link( $this->doc, 'foo', 'stylesheet', 'text/css' );
         $lnk->setSizes( 'bar' );

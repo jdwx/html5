@@ -137,6 +137,26 @@ final class ElementTest extends MyTestCase {
     }
 
 
+    public function testSetChecked() : void {
+        $el = $this->element( 'foo' );
+        $el->setChecked( true );
+        self::assertEquals( '<foo checked></foo>', strval( $el ) );
+
+        $el->setChecked( false );
+        self::assertEquals( '<foo></foo>', strval( $el ) );
+    }
+
+
+    public function testSetRequired() : void {
+        $el = $this->element( 'foo' );
+        $el->setRequired( true );
+        self::assertEquals( '<foo required></foo>', strval( $el ) );
+
+        $el->setRequired( false );
+        self::assertEquals( '<foo></foo>', strval( $el ) );
+    }
+
+
     public function testToString() : void {
 
         $el = $this->element( 'example' );

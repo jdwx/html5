@@ -245,6 +245,11 @@ class Element implements IElement {
     }
 
 
+    public function setChecked( bool $i_bChecked ) : void {
+        $this->setAttribute( 'checked', $i_bChecked );
+    }
+
+
     /** @param string ...$i_rstClasses */
     public function setClass( ...$i_rstClasses ) : void {
         $this->setAttribute( 'class', ...$i_rstClasses );
@@ -299,6 +304,11 @@ class Element implements IElement {
 
     public function setName( string $i_stName ) : void {
         $this->setAttribute( 'name', $i_stName );
+    }
+
+
+    public function setRequired( bool $i_bRequired ) : void {
+        $this->setAttribute( 'required', $i_bRequired );
     }
 
 

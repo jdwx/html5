@@ -11,7 +11,7 @@ use JDWX\HTML5\Fragment;
  * Class FragmentTest
  *
  * @package JDWX\HTML5\Tests
- * @covers \JDWX\HTML5\BaseDocument
+ * @covers \JDWX\HTML5\AbstractDocument
  * @covers \JDWX\HTML5\DummyDocument
  * @covers \JDWX\HTML5\Fragment
  */

@@ -12,6 +12,7 @@ interface IParent {
 
     /**
      * @param list<string|Element>|Element|string ...$i_rxChildren
+     * @noinspection PhpDocSignatureInspection
      */
     public function appendChild( array|Element|string ...$i_rxChildren ) : void;
 

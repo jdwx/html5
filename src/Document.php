@@ -10,7 +10,7 @@ namespace JDWX\HTML5;
 use tidy;
 
 
-class Document extends BaseDocument {
+class Document extends AbstractDocument {
 
 
     protected string $stDocType = 'html';

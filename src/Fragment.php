@@ -26,7 +26,10 @@ class Fragment implements IDocument {
     }
 
 
-    /** @param list<string|Element>|string|Element ...$i_rxChildren */
+    /**
+     * @param list<string|Element>|string|Element ...$i_rxChildren
+     * @noinspection PhpDocSignatureInspection
+     */
     public function appendChild( array|Element|string ...$i_rxChildren ) : void {
         foreach ( $i_rxChildren as $xChild ) {
             if ( is_array( $xChild ) ) {

@@ -160,6 +160,7 @@ final class ElementTest extends MyTestCase {
     public function testToString() : void {
 
         $el = $this->element( 'example' );
+        $el->setAccessKey( 'c' );
         $el->setAttribute( 'foo', 'bar', 'baz' );
         $el->setAriaLabel( 'Close' );
         $el->setClass( 'qux', 'quux' );
@@ -172,7 +173,6 @@ final class ElementTest extends MyTestCase {
         $el->clearAttribute( 'wokka' );
         $el->setContentEditable( true );
         $el->setHidden( true );
-        $el->setAccessKey( 'c' );
         $el->setDir( 'rtl' );
         $el->setDraggable( false );
         $el->setDraggable( 'auto' );
@@ -185,7 +185,7 @@ final class ElementTest extends MyTestCase {
         $el->appendChild( $el2, $el3 );
         $el->dropChildrenByTagName( 'el3' );
 
-        $stExpect = '<example accesskey="c" aria-label="Close" class="qux quux" contenteditable="true" dir="rtl" draggable="auto" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no"><el2></el2></example>';
+        $stExpect = '<example accessKey="c" aria-label="Close" class="qux quux" contenteditable="true" dir="rtl" draggable="auto" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no"><el2></el2></example>';
 
         self::assertEquals( $stExpect, $el );
 

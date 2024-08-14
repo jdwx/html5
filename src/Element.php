@@ -29,12 +29,9 @@ class Element implements IElement {
      * @param list<string|Element>|Element|string ...$i_rxChildren
      */
     public function __construct( IParent $i_par, string $i_strTagName, ...$i_rxChildren ) {
-        $this->doc = $i_par->getDocument();
         $this->strTagName = $i_strTagName;
         $this->rxChildren = $i_rxChildren;
-        if ( $i_par !== $this->doc ) {
-            $i_par->appendChild( $this );
-        }
+        $this->reparent( $i_par );
     }
 
 
@@ -217,8 +214,16 @@ class Element implements IElement {
     }
 
 
+    public function reparent( IParent $i_par ) : void {
+        $this->doc = $i_par->getDocument();
+        if ( $i_par !== $this->doc ) {
+            $i_par->appendChild( $this );
+        }
+    }
+
+
     public function setAccessKey( string $i_strAccessKey ) : void {
-        $this->setAttribute( 'accesskey', $i_strAccessKey );
+        $this->setAttribute( 'accessKey', $i_strAccessKey );
     }
 
 

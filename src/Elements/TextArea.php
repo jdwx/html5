@@ -20,7 +20,7 @@ class TextArea extends Element {
 
 
 	public function setCols(int $i_iCols ) : void {
-		$this->setAttribute( "cols", ( string ) $i_iCols);
+		$this->setAttribute( 'cols', ( string ) $i_iCols);
 	}
 
 
@@ -34,7 +34,7 @@ class TextArea extends Element {
 	}
 
 	public function setRows(int $i_iRows ) : void {
-		$this->setAttribute( "rows", ( string ) $i_iRows);
+		$this->setAttribute( 'rows', ( string ) $i_iRows);
 	}
 
 

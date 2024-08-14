@@ -1,4 +1,6 @@
 .*.swp
-.phpunit.cache
-coverage-report
-phan.txt
+/.idea
+/.phpunit.cache
+/composer.lock
+/phan.txt
+/vendor

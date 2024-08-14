@@ -10,8 +10,7 @@ namespace JDWX\HTML5;
 class DummyDocument extends BaseDocument {
 
 
-    public function appendChild( ...$i_rxChildren ) : void {
-    }
+    public function appendChild( array|Element|string ...$i_rxChildren ) : void {}
 
 
 }

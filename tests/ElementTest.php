@@ -1,13 +1,10 @@
 <?php declare( strict_types = 1 );
 
 
-namespace JDWX\HTML5\Tests;
+use JDWX\HTML5\IDocument;
 
 
-use Exception;
-
-
-require_once __DIR__ . '/TestCase.php';
+require_once __DIR__ . '/MyTestCase.php';
 
 
 /**
@@ -16,20 +13,13 @@ require_once __DIR__ . '/TestCase.php';
  * @package JDWX\HTML5\Tests
  * @covers \JDWX\HTML5\Element
  */
-final class ElementTest extends TestCase {
+final class ElementTest extends MyTestCase {
 
 
     public function testAddClass() : void {
-        $el = $this->element( "test" );
-        $el->addClass( "foo" );
-        $this->checkElement( "<test class=\"foo\"></test>", $el );
-    }
-
-
-    public function testAppendChild() : void {
-        $el = $this->element( "foo" );
-        $el->appendChild( "bar", [ "baz", "qux" ] );
-        $this->checkElement( "<foo>barbazqux</foo>", $el );
+        $el = $this->element( 'test' );
+        $el->addClass( 'foo' );
+        self::assertEquals( "<test class=\"foo\"></test>", $el );
     }
 
 
@@ -37,21 +27,30 @@ final class ElementTest extends TestCase {
 
         $el = $this->element( 'test' );
 
-        $this->checkElement( "<test></test>", $el );
+        self::assertEquals( '<test></test>', $el );
 
         $el->setAlwaysClose( false );
-        $this->checkElement( "<test>", $el );
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
+        self::assertEquals( '<test>', $el );
 
-        $el->appendChild( "text" );
-        $this->checkElement( "<test>text</test>", $el );
+        $el->appendChild( 'text' );
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
+        self::assertEquals( '<test>text</test>', $el );
 
+    }
+
+
+    public function testAppendChild() : void {
+        $el = $this->element( 'foo' );
+        $el->appendChild( 'bar', [ 'baz', 'qux' ] );
+        self::assertEquals( '<foo>barbazqux</foo>', $el );
     }
 
 
     public function testFalseAttribute() : void {
         $el = $this->element( 'foo' );
         $el->setHidden( false );
-        $this->checkElement( '<foo></foo>', $el );
+        self::assertEquals( '<foo></foo>', $el );
     }
 
 
@@ -67,24 +66,25 @@ final class ElementTest extends TestCase {
         $el4 = $this->element( 'bar' );
         $el->appendChild( $el1, $el2, $el3, $el4 );
 
-        $this->checkTrue( $el3 === $el->findChildByID( 'el3' ) );
+        self::assertTrue( $el3 === $el->findChildById( 'el3' ) );
 
-        $this->checkTrue( $el3 === $el->findChildByID( 'el3' ) );
+        self::assertTrue( $el3 === $el->findChildById( 'el3' ) );
 
-        $this->checkNull( $el->findChildById( 'noel3' ) );
+        self::assertNull( $el->findChildById( 'noel3' ) );
 
-        $this->checkFalse( $el2 === $el->findFirstChildByTagName( 'nochild' ) );
+        self::assertFalse( $el2 === $el->findFirstChildByTagName( 'nochild' ) );
 
-        $this->checkTrue( $el1 === $el->findFirstChildByTagName( 'child' ) );
+        self::assertTrue( $el1 === $el->findFirstChildByTagName( 'child' ) );
 
         $el->dropChildByID( 'el1', true );
 
-        $this->checkFalse( $el1 === $el->findFirstChildByTagName( 'child' ) );
+        self::assertFalse( $el1 === $el->findFirstChildByTagName( 'child' ) );
 
-        $this->checkTrue( $el2 === $el->findFirstChildByTagName( 'child' ) );
+        self::assertTrue( $el2 === $el->findFirstChildByTagName( 'child' ) );
 
         $el->dropChildrenByTagName( 'child', true );
-        $this->checkNull( $el->findFirstChildByTagName( 'child' ) );
+
+        self::assertNull( $el->findFirstChildByTagName( 'child' ) );
 
 
     }
@@ -92,13 +92,13 @@ final class ElementTest extends TestCase {
 
     public function testGetDocument() : void {
         $el = $this->element( 'foo' );
-        $this->checkDocument( $el->getDocument() );
+        self::assertInstanceOf( IDocument::class, $el->getDocument() );
     }
 
 
     public function testGetID() : void {
         $el = $this->element( 'foo' );
-        $this->checkNull( $el->getID() );
+        self::assertNull( $el->getID() );
         $el->setID( 'bar' );
         self::assertEquals( 'bar', $el->getID() );
     }
@@ -107,13 +107,13 @@ final class ElementTest extends TestCase {
     public function testHasAttribute() : void {
 
         $el = $this->element( 'foo' );
-        $this->checkFalse( $el->hasAttribute( 'bar' ) );
+        self::assertFalse( $el->hasAttribute( 'bar' ) );
 
         $el->setAttribute( 'bar', 'baz' );
-        $this->checkTrue( $el->hasAttribute( 'bar' ) );
+        self::assertTrue( $el->hasAttribute( 'bar' ) );
 
         $el->clearAttribute( 'bar' );
-        $this->checkFalse( $el->hasAttribute( 'bar' ) );
+        self::assertFalse( $el->hasAttribute( 'bar' ) );
 
     }
 
@@ -122,24 +122,18 @@ final class ElementTest extends TestCase {
 
         $el = $this->element( 'foo' );
 
-        self::assertEquals( 'bar',    $el->renderChild( 'bar' ) );
-        self::assertEquals( '2',      $el->renderChild( 2 ) );
-        self::assertEquals( '2.3',    $el->renderChild( 2.3 ) );
-        self::assertEquals( 'true',   $el->renderChild( true ) );
-        self::assertEquals( 'false',  $el->renderChild( false ) );
-        self::assertEquals( 'barbaz', $el->renderChild([ 'bar', 'baz' ]) );
-        self::assertEquals( '',       @$el->renderChild( null ) );
-
-        try {
-            $el->renderChild( fopen( '/dev/null', 'rb' ) );
-            $this->checkTrue( false );
-        } catch ( Exception $i_ex ) {
-            $this->checkTrue( true );
-        }
+        self::assertEquals( 'bar', $el->myRenderChild( 'bar' ) );
+        self::assertEquals( '2', $el->myRenderChild( 2 ) );
+        self::assertEquals( '2.3', $el->myRenderChild( 2.3 ) );
+        self::assertEquals( 'true', $el->myRenderChild( true ) );
+        self::assertEquals( 'false', $el->myRenderChild( false ) );
+        self::assertEquals( 'barbaz', $el->myRenderChild( [ 'bar', 'baz' ] ) );
+        self::assertEquals( '', $el->myRenderChild( null ) );
 
         $el2 = $this->element( 'qux' );
-        self::assertEquals( (string) $el2, $el->renderChild( $el2 ) );
+        self::assertEquals( (string) $el2, $el->myRenderChild( $el2 ) );
 
+        self::assertSame( '', $el->myRenderChild( fopen( '/dev/null', 'rb' ) ) );
     }
 
 
@@ -147,13 +141,13 @@ final class ElementTest extends TestCase {
 
         $el = $this->element( 'example' );
         $el->setAttribute( 'foo', 'bar', 'baz' );
-        $el->setAriaLabel( "Close" );
+        $el->setAriaLabel( 'Close' );
         $el->setClass( 'qux', 'quux' );
         $el->setTabIndex( 2 );
-        $el->addStyle( "color: blue;" );
-        $el->setStyle( "color: red;" );
-        $el->addStyle( "background: none;" );
-        $el->setTitle( "Titled" );
+        $el->addStyle( 'color: blue;' );
+        $el->setStyle( 'color: red;' );
+        $el->addStyle( 'background: none;' );
+        $el->setTitle( 'Titled' );
         $el->setAttribute( 'wokka', 'bop' );
         $el->clearAttribute( 'wokka' );
         $el->setContentEditable( true );
@@ -173,10 +167,9 @@ final class ElementTest extends TestCase {
 
         $stExpect = '<example accesskey="c" aria-label="Close" class="qux quux" contenteditable="true" dir="rtl" draggable="auto" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no"><el2></el2></example>';
 
-        $this->checkElement( $stExpect, $el );
+        self::assertEquals( $stExpect, $el );
 
     }
-
 
 
 }

@@ -10,45 +10,42 @@ namespace JDWX\HTML5;
 class Fragment implements IDocument {
 
 
-	/** @var Element[] */
-	protected array $rElements = [];
+    /** @var Element[] */
+    protected array $rElements = [];
 
-	protected DummyDocument $doc;
-
-
-	public function __construct( string $i_stCharset = 'utf-8' ) {
-		$this->doc = new DummyDocument( $i_stCharset );
-	}
+    protected DummyDocument $doc;
 
 
-	public function __toString() : string {
-		$st = "";
-		foreach ( $this->rElements as $xChild ) {
-			$st .= $xChild;
-		}
-		return $st;
-	}
+    public function __construct( string $i_stCharset = 'utf-8' ) {
+        $this->doc = new DummyDocument( $i_stCharset );
+    }
 
 
-	public function appendChild( ... $i_rxChildren ) : void {
-		foreach ( $i_rxChildren as $xChild ) {
-			if ( is_array( $xChild ) ) {
-                $this->appendChild(... $xChild);
+    public function __toString() : string {
+        return implode( '', $this->rElements );
+    }
+
+
+    /** @param list<string|Element>|string|Element ...$i_rxChildren */
+    public function appendChild( array|Element|string ...$i_rxChildren ) : void {
+        foreach ( $i_rxChildren as $xChild ) {
+            if ( is_array( $xChild ) ) {
+                $this->appendChild( ... $xChild );
             } else {
                 $this->rElements[] = $xChild;
             }
-		}
-	}
+        }
+    }
 
 
-	public function escapeValue( string $i_st ) : string {
-		return $this->doc->escapeValue( $i_st );
-	}
+    public function escapeValue( string $i_stValue ) : string {
+        return $this->doc->escapeValue( $i_stValue );
+    }
 
 
-	public function getDocument() : IDocument {
-		return $this->doc;
-	}
+    public function getDocument() : IDocument {
+        return $this->doc;
+    }
 
 
 }

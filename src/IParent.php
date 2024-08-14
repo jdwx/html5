@@ -9,8 +9,15 @@ namespace JDWX\HTML5;
 
 interface IParent {
 
-	public function appendChild( ... $i_rxChildren ) : void;
-	public function getDocument() : IDocument;
+
+    /**
+     * @param list<string|Element>|Element|string ...$i_rxChildren
+     */
+    public function appendChild( array|Element|string ...$i_rxChildren ) : void;
+
+
+    public function getDocument() : IDocument;
+
 
 }
 

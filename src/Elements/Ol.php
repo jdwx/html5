@@ -4,10 +4,12 @@
 namespace JDWX\HTML5\Elements;
 
 
+use JDWX\HTML5\Element;
 use JDWX\HTML5\IParent;
 
 
-class Ol extends \JDWX\HTML5\Element {
+/** @noinspection PhpClassNamingConventionInspection */
+class Ol extends Element {
 
 
     public function __construct( IParent $i_par, ... $i_rxChildren ) {

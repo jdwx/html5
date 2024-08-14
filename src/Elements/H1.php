@@ -11,6 +11,7 @@ use JDWX\HTML5\Element;
 use JDWX\HTML5\IParent;
 
 
+/** @noinspection PhpClassNamingConventionInspection */
 class H1 extends Element {
 
 

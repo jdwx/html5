@@ -1,7 +1,7 @@
 <?php
 
 
-namespace JDWX\HTML5\Tests;
+declare( strict_types = 1 );
 
 
 use JDWX\HTML5\Fragment;
@@ -15,13 +15,14 @@ use JDWX\HTML5\Fragment;
  * @covers \JDWX\HTML5\DummyDocument
  * @covers \JDWX\HTML5\Fragment
  */
-class FragmentTest extends TestCase {
+class FragmentTest extends MyTestCase {
 
 
     public function testFragment() : void {
         $frg = new Fragment();
-        $frg->appendChild( "foo", $frg->escapeValue( "bar" ), [ "baz", "qux" ] );
-        $stExpect = "foobarbazqux";
+        $frg->appendChild( 'foo', $frg->escapeValue( 'bar' ), [ 'baz', 'qux' ] );
+        /** @noinspection SpellCheckingInspection */
+        $stExpect = 'foobarbazqux';
         self::assertEquals( $stExpect, ( string ) $frg );
     }
 
@@ -29,8 +30,8 @@ class FragmentTest extends TestCase {
     public function testFragmentDummyDocument() : void {
         $frg = new Fragment();
         $doc = $frg->getDocument();
-        $doc->appendChild( "throwaway" );
-        self::assertEquals( "&gt;", $doc->escapeValue( ">" ) );
+        $doc->appendChild( 'throwaway' );
+        self::assertEquals( '&gt;', $doc->escapeValue( '>' ) );
     }
 
 

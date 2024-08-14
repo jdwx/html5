@@ -13,15 +13,7 @@ class Style extends Element {
 
     public function __construct( IParent $i_par, ...$i_rxChildren ) {
         parent::__construct( $i_par, 'style', ... $i_rxChildren );
-        $this->setType( "text/css" );
-    }
-
-
-    public function setType( string $i_stType ) : void {
-        $this->setAttribute( 'type', $i_stType );
     }
 
 
 }
-
-

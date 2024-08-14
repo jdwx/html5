@@ -11,6 +11,7 @@ use JDWX\HTML5\Element;
 use JDWX\HTML5\IParent;
 
 
+/** @noinspection PhpClassNamingConventionInspection */
 class A extends Element {
 
 
@@ -26,15 +27,15 @@ class A extends Element {
 	}
 
 
-	/** @param string ...$i_rstrPing */
-	public function addPing( ... $i_rstrPing ) : void {
-		$this->addAttribute( 'ping', ... $i_rstrPing ); 
+	/** @param string ...$i_rstPing */
+	public function addPing( ... $i_rstPing ) : void {
+		$this->addAttribute( 'ping', ... $i_rstPing );
 	}
 
 
-	/** @param string ...$i_rstrRel */
-	public function addRel( ...  $i_rstrRel ) : void {
-		$this->addAttribute( 'rel', ... $i_rstrRel );
+	/** @param string ...$i_rstRel */
+	public function addRel( ...  $i_rstRel ) : void {
+		$this->addAttribute( 'rel', ... $i_rstRel );
 	}
 
 
@@ -58,25 +59,25 @@ class A extends Element {
 	}
 
 
-	public function setMedia( string $i_strMedia ) : void {
-		$this->setAttribute( 'media', $i_strMedia );
+	public function setMedia( string $i_stMedia ) : void {
+		$this->setAttribute( 'media', $i_stMedia );
 	}
 
 
-	/** @param string ...$i_rstrPing */
-	public function setPing( ... $i_rstrPing ) : void {
-		$this->setAttribute( 'ping', ... $i_rstrPing );
+	/** @param string ...$i_rstPing */
+	public function setPing( ... $i_rstPing ) : void {
+		$this->setAttribute( 'ping', ... $i_rstPing );
 	}
 
 
-	/** @param string ...$i_rstrRel */
-	public function setRel( ... $i_rstrRel ) : void {
-		$this->setAttribute( 'rel', ... $i_rstrRel );
+	/** @param string ...$i_rstRel */
+	public function setRel( ... $i_rstRel ) : void {
+		$this->setAttribute( 'rel', ... $i_rstRel );
 	}
 
 
-	public function setTarget( string $i_strTarget ) : void {
-		$this->setAttribute( 'target', $i_strTarget );
+	public function setTarget( string $i_stTarget ) : void {
+		$this->setAttribute( 'target', $i_stTarget );
 	}
 
 

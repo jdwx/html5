@@ -8,6 +8,7 @@ use JDWX\HTML5\Element;
 use JDWX\HTML5\IParent;
 
 
+/** @noinspection PhpClassNamingConventionInspection */
 class Hr extends Element {
 
 

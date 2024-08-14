@@ -8,6 +8,7 @@ use JDWX\HTML5\Element;
 use JDWX\HTML5\IParent;
 
 
+/** @noinspection PhpClassNamingConventionInspection */
 class Ul extends Element {
 
 
@@ -17,5 +18,3 @@ class Ul extends Element {
 
 
 }
-
-

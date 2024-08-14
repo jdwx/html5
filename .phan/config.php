@@ -3,12 +3,13 @@
 return [
 
 	'directory_list' => [
-		'.',
-		__DIR__ . '/../../../phpunit/php-code-coverage'
+		'src',
+		'tests',
+		'vendor',
 	],
 
 	'exclude_analysis_directory_list' => [
-		__DIR__ . '/../../../phpunit/php-code-coverage',
+		'vendor',
 	],
 
 	'processes' => 1,

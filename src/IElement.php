@@ -13,6 +13,9 @@ require_once __DIR__ . '/IParent.php';
 interface IElement extends IParent, \Stringable {
 
 
+    public function getId() : ?string;
+
+    
     /** Move this element to a new parent. */
     public function reparent( IParent $i_par ) : void;
 

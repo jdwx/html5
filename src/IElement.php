@@ -13,6 +13,9 @@ require_once __DIR__ . '/IParent.php';
 interface IElement extends IParent, \Stringable {
 
 
+    public function addClass( string ...$i_rstClass ) : void;
+
+
     public function getId() : ?string;
 
 

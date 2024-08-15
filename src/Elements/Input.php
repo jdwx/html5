@@ -48,7 +48,7 @@ class Input extends Element {
     }
 
 
-    public function setPlaceHolder( string $i_stPlaceHolder ) : void {
+    public function setPlaceHolder( ?string $i_stPlaceHolder ) : void {
         $this->setAttribute( 'placeholder', $i_stPlaceHolder );
     }
 

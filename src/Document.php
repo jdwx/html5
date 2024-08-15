@@ -57,10 +57,10 @@ class Document extends AbstractDocument {
 
 
     /**
-     * @param list<Element|string>|Element|string ...$i_rxChildren
+     * @param list<IElement|string>|IElement|string ...$i_rxChildren
      * @noinspection PhpDocSignatureInspection
      */
-    public function appendChild( array|Element|string ...$i_rxChildren ) : void {
+    public function appendChild( array|IElement|string ...$i_rxChildren ) : void {
         $this->appendToBody( ... $i_rxChildren );
     }
 
@@ -70,7 +70,13 @@ class Document extends AbstractDocument {
      * @noinspection PhpDocSignatureInspection
      */
     public function appendToBody( ...$i_rxChildren ) : void {
-        $this->elBody->appendChild( ...$i_rxChildren );
+        foreach ( $i_rxChildren as $xChild ) {
+            if ( $xChild instanceof IElement ) {
+                $xChild->reparent( $this->elBody );
+            } else {
+                $this->elBody->appendChild( $xChild );
+            }
+        }
     }
 
 

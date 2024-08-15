@@ -66,7 +66,7 @@ class Document extends AbstractDocument {
 
 
     /**
-     * @param list<Element|string>|Element|string ...$i_rxChildren
+     * @param list<Element|string>|IElement|string ...$i_rxChildren
      * @noinspection PhpDocSignatureInspection
      */
     public function appendToBody( ...$i_rxChildren ) : void {

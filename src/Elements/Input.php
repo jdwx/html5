@@ -38,8 +38,9 @@ class Input extends Element {
     }
 
 
-    public function setMaxLength( int $i_iMaxLength ) : void {
-        $this->setAttribute( 'maxlength', (string) $i_iMaxLength );
+    public function setMaxLength( ?int $i_nuMaxLength ) : void {
+        $nst = is_int( $i_nuMaxLength ) ? strval( $i_nuMaxLength ) : null;
+        $this->setAttribute( 'maxlength', $nst );
     }
 
 
@@ -53,8 +54,9 @@ class Input extends Element {
     }
 
 
-    public function setSize( int $i_iCols ) : void {
-        $this->setAttribute( 'size', (string) $i_iCols );
+    public function setSize( ?int $i_nuCols ) : void {
+        $nst = is_int( $i_nuCols ) ? strval( $i_nuCols ) : null;
+        $this->setAttribute( 'size', $nst );
     }
 
 

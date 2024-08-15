@@ -97,9 +97,13 @@ class Element implements IElement {
     }
 
 
-    public function appendChild( array|Element|string ...$i_rxChildren ) : void {
+    /**
+     * @param iterable<IElement|string>|IElement|string ...$i_rxChildren
+     * @noinspection PhpDocSignatureInspection
+     */
+    public function appendChild( iterable|IElement|string ...$i_rxChildren ) : void {
         foreach ( $i_rxChildren as $xChild ) {
-            if ( is_array( $xChild ) ) {
+            if ( is_iterable( $xChild ) ) {
                 $this->appendChildren( $xChild );
             } else {
                 $this->rxChildren[] = $xChild;
@@ -108,8 +112,8 @@ class Element implements IElement {
     }
 
 
-    /** @param list<string|Element> $i_rxChildren */
-    public function appendChildren( array $i_rxChildren ) : void {
+    /** @param iterable<string|Element> $i_rxChildren */
+    public function appendChildren( iterable $i_rxChildren ) : void {
         foreach ( $i_rxChildren as $xChild ) {
             $this->appendChild( $xChild );
         }

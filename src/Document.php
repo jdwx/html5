@@ -57,16 +57,16 @@ class Document extends AbstractDocument {
 
 
     /**
-     * @param list<IElement|string>|IElement|string ...$i_rxChildren
+     * @param iterable<IElement|string>|IElement|string ...$i_rxChildren
      * @noinspection PhpDocSignatureInspection
      */
-    public function appendChild( array|IElement|string ...$i_rxChildren ) : void {
+    public function appendChild( ...$i_rxChildren ) : void {
         $this->appendToBody( ... $i_rxChildren );
     }
 
 
     /**
-     * @param list<Element|string>|IElement|string ...$i_rxChildren
+     * @param iterable<Element|string>|IElement|string ...$i_rxChildren
      * @noinspection PhpDocSignatureInspection
      */
     public function appendToBody( ...$i_rxChildren ) : void {

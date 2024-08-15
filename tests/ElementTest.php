@@ -147,6 +147,15 @@ final class ElementTest extends MyTestCase {
     }
 
 
+    public function testSetClass() : void {
+        $el = $this->element( 'foo' );
+        $el->setClass( 'bar', 'baz' );
+        self::assertEquals( '<foo class="bar baz"></foo>', strval( $el ) );
+        $el->setClass( null );
+        self::assertEquals( '<foo></foo>', strval( $el ) );
+    }
+
+
     public function testSetRequired() : void {
         $el = $this->element( 'foo' );
         $el->setRequired( true );

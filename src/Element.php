@@ -240,9 +240,13 @@ class Element implements IElement {
 
     /**
      * @param string $i_strAttribute
-     * @param bool|string ...$i_rxValues
+     * @param bool|string|null ...$i_rxValues
      */
     public function setAttribute( string $i_strAttribute, ...$i_rxValues ) : void {
+        if ( 1 === count( $i_rxValues ) && is_null( $i_rxValues[ 0 ] ) ) {
+            unset( $this->rstAttributes[ $i_strAttribute ] );
+            return;
+        }
         $this->rstAttributes[ $i_strAttribute ] = [];
         foreach ( $i_rxValues as $strValue ) {
             $this->rstAttributes[ $i_strAttribute ][] = $strValue;
@@ -255,8 +259,8 @@ class Element implements IElement {
     }
 
 
-    /** @param string ...$i_rstClasses */
-    public function setClass( ...$i_rstClasses ) : void {
+    /** @param string|null ...$i_rstClasses */
+    public function setClass( ?string ...$i_rstClasses ) : void {
         $this->setAttribute( 'class', ...$i_rstClasses );
     }
 

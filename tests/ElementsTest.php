@@ -77,6 +77,9 @@ class ElementsTest extends MyTestCase {
         $inp->setPlaceHolder( 'baz' );
         self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text" value="bar">', $inp );
 
+        $inp->setValue( null );
+        self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text">', $inp );
+
         $inp = new Elements\Input( $this->doc );
         self::assertEquals( '<input>', $inp );
         $inp->setChecked( true );

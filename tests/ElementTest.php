@@ -96,11 +96,22 @@ final class ElementTest extends MyTestCase {
     }
 
 
-    public function testGetID() : void {
+    public function testGetId() : void {
         $el = $this->element( 'foo' );
         self::assertNull( $el->getId() );
         $el->setId( 'bar' );
         self::assertEquals( 'bar', $el->getId() );
+    }
+
+
+    public function testGetIdEx() : void {
+        $el = $this->element( 'foo' );
+        $el->setId( 'bar' );
+        self::assertEquals( 'bar', $el->getIdEx() );
+
+        $el = $this->element( 'foo' );
+        self::expectException( \RuntimeException::class );
+        $el->getIdEx();
     }
 
 

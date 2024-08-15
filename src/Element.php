@@ -204,6 +204,15 @@ class Element implements IElement {
     }
 
 
+    public function getIdEx() : string {
+        $nst = $this->getId();
+        if ( is_string( $nst ) ) {
+            return $nst;
+        }
+        throw new \RuntimeException( 'Element has no ID' );
+    }
+
+
     public function hasAttribute( string $i_strAttribute ) : bool {
         return array_key_exists( $i_strAttribute, $this->rstAttributes );
     }

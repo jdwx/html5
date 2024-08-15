@@ -17,6 +17,12 @@ interface IElement extends IParent, \Stringable {
     public function reparent( IParent $i_par ) : void;
 
 
+    public function setClass( ?string ...$i_rstClasses ) : void;
+
+
+    public function setId( string $i_stId ) : void;
+
+
 }
 
 

@@ -58,11 +58,11 @@ final class ElementTest extends MyTestCase {
 
         $el = $this->element( 'foo' );
         $el1 = $this->element( 'child' );
-        $el1->setID( 'el1' );
+        $el1->setId( 'el1' );
         $el2 = $this->element( 'child' );
-        $el2->setID( 'el2' );
+        $el2->setId( 'el2' );
         $el3 = $this->element( 'child' );
-        $el3->setID( 'el3' );
+        $el3->setId( 'el3' );
         $el4 = $this->element( 'bar' );
         $el->appendChild( $el1, $el2, $el3, $el4 );
 
@@ -98,9 +98,9 @@ final class ElementTest extends MyTestCase {
 
     public function testGetID() : void {
         $el = $this->element( 'foo' );
-        self::assertNull( $el->getID() );
-        $el->setID( 'bar' );
-        self::assertEquals( 'bar', $el->getID() );
+        self::assertNull( $el->getId() );
+        $el->setId( 'bar' );
+        self::assertEquals( 'bar', $el->getId() );
     }
 
 

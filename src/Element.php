@@ -130,7 +130,7 @@ class Element implements IElement {
         $rxNew = [];
         foreach ( $this->rxChildren as $xChild ) {
             if ( $xChild instanceof self ) {
-                if ( $xChild->getID() === $i_stID ) {
+                if ( $xChild->getId() === $i_stID ) {
                     continue;
                 }
                 if ( $i_bRecursive ) {
@@ -163,7 +163,7 @@ class Element implements IElement {
     public function findChildById( string $i_stID ) : ?Element {
         foreach ( $this->rxChildren as $xChild ) {
             if ( $xChild instanceof self
-                && $xChild->getID() === $i_stID ) {
+                && $xChild->getId() === $i_stID ) {
                 return $xChild;
             }
         }
@@ -199,7 +199,7 @@ class Element implements IElement {
     }
 
 
-    public function getID() : ?string {
+    public function getId() : ?string {
         return $this->getAttribute( 'id' );
     }
 
@@ -259,7 +259,6 @@ class Element implements IElement {
     }
 
 
-    /** @param string|null ...$i_rstClasses */
     public function setClass( ?string ...$i_rstClasses ) : void {
         $this->setAttribute( 'class', ...$i_rstClasses );
     }
@@ -301,8 +300,8 @@ class Element implements IElement {
     }
 
 
-    public function setID( string $i_stID ) : void {
-        $this->setAttribute( 'id', $i_stID );
+    public function setId( string $i_stId ) : void {
+        $this->setAttribute( 'id', $i_stId );
     }
 
 

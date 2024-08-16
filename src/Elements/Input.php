@@ -38,14 +38,31 @@ class Input extends Element {
     }
 
 
+    public function setMax( ?int $i_nuMax ) : void {
+        $nst = is_int( $i_nuMax ) ? strval( $i_nuMax ) : null;
+        $this->setAttribute( 'max', $nst );
+    }
+
+
     public function setMaxLength( ?int $i_nuMaxLength ) : void {
         $nst = is_int( $i_nuMaxLength ) ? strval( $i_nuMaxLength ) : null;
         $this->setAttribute( 'maxlength', $nst );
     }
 
 
+    public function setMin( ?int $i_nuMin ) : void {
+        $nst = is_int( $i_nuMin ) ? strval( $i_nuMin ) : null;
+        $this->setAttribute( 'min', $nst );
+    }
+
+
     public function setName( string $i_stName ) : void {
         $this->setAttribute( 'name', $i_stName );
+    }
+
+
+    public function setPattern( ?string $i_nstPattern ) : void {
+        $this->setAttribute( 'pattern', $i_nstPattern );
     }
 
 

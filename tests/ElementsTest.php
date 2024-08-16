@@ -87,6 +87,22 @@ class ElementsTest extends MyTestCase {
         $inp->setChecked( false );
         self::assertEquals( '<input>', $inp );
 
+        $inp = new Elements\Input( $this->doc );
+        $inp->setPattern( '[0-9]{5}' );
+        self::assertEquals( '<input pattern="[0-9]{5}">', $inp );
+        $inp->setPattern( null );
+        self::assertEquals( '<input>', $inp );
+
+        $inp = new Elements\Input( $this->doc );
+        $inp->setMax( 10 );
+        self::assertEquals( '<input max="10">', $inp );
+        $inp->setMin( 5 );
+        self::assertEquals( '<input max="10" min="5">', $inp );
+        $inp->setMax( null );
+        self::assertEquals( '<input min="5">', $inp );
+        $inp->setMin( null );
+        self::assertEquals( '<input>', $inp );
+        
     }
 
 

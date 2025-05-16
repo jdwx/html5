@@ -1,26 +1,27 @@
-<?php declare( strict_types = 1 );
+<?php
+
+
+declare( strict_types = 1 );
 
 
 namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\IParent;
+use Stringable;
 
 
 class Label extends Element {
 
 
-    public function __construct( IParent $i_par, ...$i_rxChildren ) {
-        parent::__construct( $i_par, 'label', ... $i_rxChildren );
+    public function __construct( Stringable|array|string $i_body = [] ) {
+        parent::__construct( 'label', $i_body );
     }
 
 
-    public function setFor( string $i_stFor ) : void {
-        $this->setAttribute( 'for', $i_stFor );
+    public function for( string $x ) : static {
+        return $this->setAttribute( 'for', $x );
     }
 
 
 }
-
-

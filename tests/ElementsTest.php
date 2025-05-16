@@ -2,8 +2,10 @@
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/MyTestCase.php';
 
 
+use JDWX\HTML5\ElementFactory;
 use JDWX\HTML5\Elements;
 use JDWX\HTML5\IElement;
 
@@ -61,7 +63,16 @@ class ElementsTest extends MyTestCase {
     }
 
 
+    public function testHtml() : void {
+        $html = new Elements\HTML();
+        $html->setLang( 'en' );
+        self::assertEquals( '<html lang="en"></html>', $html );
+    }
+
+
     /** @noinspection HtmlUnknownTarget */
+
+
     public function testImg() : void {
         $img = new Elements\Img( $this->doc, 'foo' );
         $img->setAlt( 'bar' );
@@ -75,7 +86,8 @@ class ElementsTest extends MyTestCase {
         $inp->setSize( 20 );
         $inp->setMaxLength( 30 );
         $inp->setPlaceHolder( 'baz' );
-        self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text" value="bar">', $inp );
+        self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text" value="bar">',
+            $inp );
 
         $inp->setValue( null );
         self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text">', $inp );
@@ -102,7 +114,7 @@ class ElementsTest extends MyTestCase {
         self::assertEquals( '<input min="5">', $inp );
         $inp->setMin( null );
         self::assertEquals( '<input>', $inp );
-        
+
     }
 
 
@@ -121,18 +133,18 @@ class ElementsTest extends MyTestCase {
 
     public function testLink() : void {
         $lnk = new Elements\Link( $this->doc, 'foo', 'stylesheet', 'text/css' );
-        $lnk->setSizes( 'bar' );
+        $lnk->sizes( 'bar' );
         /** @noinspection HtmlUnknownTarget */
         self::assertEquals( '<link href="foo" rel="stylesheet" sizes="bar" type="text/css">', $lnk );
     }
 
 
     public function testMeta() : void {
-        $mta = new Elements\Meta( $this->doc );
-        $mta->setCharset( 'UTF-8' );
+        $mta = ElementFactory::meta();
+        $mta->charset( 'UTF-8' );
         $mta->setContent( 'foo' );
         $mta->setName( 'bar' );
-        self::assertEquals( '<meta charset="UTF-8" content="foo" name="bar">', $mta );
+        self::assertEquals( '<meta charset="UTF-8" content="foo" name="bar">', strval( $mta ) );
     }
 
 

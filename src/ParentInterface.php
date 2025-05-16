@@ -7,7 +7,7 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-interface IParent {
+interface ParentInterface {
 
 
     /**
@@ -17,7 +17,7 @@ interface IParent {
     public function appendChild( array|Element|string ...$i_rxChildren ) : void;
 
 
-    public function getDocument() : IDocument;
+    public function getDocument() : DocumentInterface;
 
 
 }

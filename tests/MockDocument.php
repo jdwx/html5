@@ -4,10 +4,10 @@
 declare( strict_types = 1 );
 
 
-use JDWX\HTML5\IDocument;
+use JDWX\HTML5\DocumentInterface;
 
 
-class MockDocument implements IDocument {
+class MockDocument implements DocumentInterface {
 
 
     public function appendChild( array|\JDWX\HTML5\Element|string ...$i_rxChildren ) : void {}
@@ -18,7 +18,7 @@ class MockDocument implements IDocument {
     }
 
 
-    public function getDocument() : IDocument {
+    public function getDocument() : DocumentInterface {
         return $this;
     }
 

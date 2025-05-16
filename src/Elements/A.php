@@ -8,15 +8,15 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\IParent;
+use JDWX\HTML5\ParentInterface;
 
 
 /** @noinspection PhpClassNamingConventionInspection */
 class A extends Element {
 
 
-	public function __construct( IParent $i_par, ?string $i_nstHref = null, ?string $i_nstTitle = null,
-						         ... $i_rxChildren ) {
+	public function __construct( ParentInterface $i_par, ?string $i_nstHref = null, ?string $i_nstTitle = null,
+                                                 ... $i_rxChildren ) {
 		parent::__construct( $i_par, 'a', ... $i_rxChildren );
 		if ( is_string( $i_nstHref ) ) {
             $this->setHref($i_nstHref);
@@ -40,7 +40,7 @@ class A extends Element {
 
 
 	/** @param bool|string $i_xDownload */
-	public function setDownload( $i_xDownload ) : void {
+	public function setDownload( bool|string $i_xDownload ) : void {
 		if ( is_bool( $i_xDownload ) && ! $i_xDownload ) {
 			$this->clearAttribute( 'download' );
 			return;

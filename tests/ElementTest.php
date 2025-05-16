@@ -1,7 +1,7 @@
 <?php declare( strict_types = 1 );
 
 
-use JDWX\HTML5\IDocument;
+use JDWX\HTML5\DocumentInterface;
 
 
 require_once __DIR__ . '/MyTestCase.php';
@@ -17,8 +17,8 @@ final class ElementTest extends MyTestCase {
 
 
     public function testAddClass() : void {
-        $el = $this->element( 'test' );
-        $el->addClass( 'foo' );
+        $el = new \JDWX\HTML5\Element( 'test' );
+        $el->class( 'foo' );
         self::assertEquals( "<test class=\"foo\"></test>", $el );
     }
 
@@ -40,17 +40,19 @@ final class ElementTest extends MyTestCase {
     }
 
 
-    public function testAppendChild() : void {
+    public function testAppend() : void {
         $el = $this->element( 'foo' );
-        $el->appendChild( 'bar', [ 'baz', 'qux' ] );
-        self::assertEquals( '<foo>barbazqux</foo>', $el );
+        $el->append( 'Bar', [ 'Baz', 'Qux' ] );
+        self::assertEquals( '<foo>BarBazQux</foo>', strval( $el ) );
     }
 
 
     public function testFalseAttribute() : void {
         $el = $this->element( 'foo' );
-        $el->setHidden( false );
-        self::assertEquals( '<foo></foo>', $el );
+        $el->hidden();
+        self::assertEquals( '<foo hidden></foo>', strval( $el ) );
+        $el->hidden( false );
+        self::assertEquals( '<foo></foo>', strval( $el ) );
     }
 
 
@@ -58,33 +60,34 @@ final class ElementTest extends MyTestCase {
 
         $el = $this->element( 'foo' );
         $el1 = $this->element( 'child' );
-        $el1->setId( 'el1' );
+        $el1->id( 'el1' );
         $el2 = $this->element( 'child' );
-        $el2->setId( 'el2' );
+        $el2->id( 'el2' );
         $el3 = $this->element( 'child' );
-        $el3->setId( 'el3' );
+        $el3->id( 'el3' );
         $el4 = $this->element( 'bar' );
-        $el->appendChild( $el1, $el2, $el3, $el4 );
+        $el->append( $el1, $el2, $el3, $el4 );
 
-        self::assertTrue( $el3 === $el->findChildById( 'el3' ) );
+        self::assertTrue( $el3 === $el->getElementById( 'el3' ) );
 
-        self::assertTrue( $el3 === $el->findChildById( 'el3' ) );
+        self::assertTrue( $el3 === $el->getElementById( 'el3' ) );
 
-        self::assertNull( $el->findChildById( 'noel3' ) );
+        self::assertNull( $el->getElementById( 'noel3' ) );
 
-        self::assertFalse( $el2 === $el->findFirstChildByTagName( 'nochild' ) );
+        self::assertFalse( $el2 === $el->nthChildElementByTagName( 'nochild' ) );
 
-        self::assertTrue( $el1 === $el->findFirstChildByTagName( 'child' ) );
+        self::assertTrue( $el1 === $el->nthChildElementByTagName( 'child' ) );
 
-        $el->dropChildByID( 'el1', true );
+        $el->removeChildById( 'el1' );
 
-        self::assertFalse( $el1 === $el->findFirstChildByTagName( 'child' ) );
+        self::assertFalse( $el1 === $el->nthChildElementByTagName( 'child' ) );
 
-        self::assertTrue( $el2 === $el->findFirstChildByTagName( 'child' ) );
+        self::assertTrue( $el2 === $el->nthChildElementByTagName( 'child' ) );
 
-        $el->dropChildrenByTagName( 'child', true );
+        $el->removeChildById( 'el2' );
+        $el->removeChildById( 'el3' );
 
-        self::assertNull( $el->findFirstChildByTagName( 'child' ) );
+        self::assertNull( $el->nthChildElementByTagName( 'child' ) );
 
 
     }
@@ -92,25 +95,25 @@ final class ElementTest extends MyTestCase {
 
     public function testGetDocument() : void {
         $el = $this->element( 'foo' );
-        self::assertInstanceOf( IDocument::class, $el->getDocument() );
+        self::assertInstanceOf( DocumentInterface::class, $el->getDocument() );
     }
 
 
     public function testGetId() : void {
         $el = $this->element( 'foo' );
         self::assertNull( $el->getId() );
-        $el->setId( 'bar' );
+        $el->id( 'bar' );
         self::assertEquals( 'bar', $el->getId() );
     }
 
 
     public function testGetIdEx() : void {
         $el = $this->element( 'foo' );
-        $el->setId( 'bar' );
+        $el->id( 'bar' );
         self::assertEquals( 'bar', $el->getIdEx() );
 
         $el = $this->element( 'foo' );
-        self::expectException( \RuntimeException::class );
+        self::expectException( \InvalidArgumentException::class );
         $el->getIdEx();
     }
 
@@ -123,7 +126,7 @@ final class ElementTest extends MyTestCase {
         $el->setAttribute( 'bar', 'baz' );
         self::assertTrue( $el->hasAttribute( 'bar' ) );
 
-        $el->clearAttribute( 'bar' );
+        $el->removeAttribute( 'bar' );
         self::assertFalse( $el->hasAttribute( 'bar' ) );
 
     }
@@ -160,9 +163,9 @@ final class ElementTest extends MyTestCase {
 
     public function testSetClass() : void {
         $el = $this->element( 'foo' );
-        $el->setClass( 'bar', 'baz' );
+        $el->setClass( 'bar baz' );
         self::assertEquals( '<foo class="bar baz"></foo>', strval( $el ) );
-        $el->setClass( null );
+        $el->setClass( false );
         self::assertEquals( '<foo></foo>', strval( $el ) );
     }
 
@@ -205,7 +208,8 @@ final class ElementTest extends MyTestCase {
         $el->appendChild( $el2, $el3 );
         $el->dropChildrenByTagName( 'el3' );
 
-        $stExpect = '<example accessKey="c" aria-label="Close" class="qux quux" contenteditable="true" dir="rtl" draggable="auto" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no"><el2></el2></example>';
+        $stExpect =
+            '<example accessKey="c" aria-label="Close" class="qux quux" contenteditable="true" dir="rtl" draggable="auto" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no"><el2></el2></example>';
 
         self::assertEquals( $stExpect, $el );
 

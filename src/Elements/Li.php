@@ -8,16 +8,17 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\IParent;
 
 
 /** @noinspection PhpClassNamingConventionInspection */
+
+
 class Li extends Element {
 
 
-	public function __construct(IParent $i_par, ... $i_rxChildren ) {
-		parent::__construct( $i_par, 'li', ... $i_rxChildren );
-	}
+    public function __construct( array|string|\Stringable $i_children ) {
+        parent::__construct( 'li', $i_children );
+    }
 
 
 }

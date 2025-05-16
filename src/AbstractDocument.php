@@ -7,7 +7,7 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-abstract class AbstractDocument implements IDocument {
+abstract class AbstractDocument implements DocumentInterface {
 
 
     protected string $stCharset;
@@ -27,7 +27,7 @@ abstract class AbstractDocument implements IDocument {
     }
 
 
-    public function getDocument() : IDocument {
+    public function getDocument() : DocumentInterface {
         return $this;
     }
 

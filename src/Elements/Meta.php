@@ -8,31 +8,30 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\IParent;
 
 
 class Meta extends Element {
 
 
-	public function __construct(IParent $i_par, ... $i_rxChildren ) {
-		parent::__construct( $i_par, 'meta', ... $i_rxChildren );
-		$this->setAlwaysClose( false );
-	}
+    public function __construct( array $i_rChildren ) {
+        parent::__construct( 'meta', $i_rChildren );
+        $this->setAlwaysClose( false );
+    }
 
 
-	public function setCharset(string $i_stCharset ) : void {
-		$this->setAttribute( 'charset', $i_stCharset );
-	}
+    public function charset( string $i_stCharset ) : static {
+        return $this->setAttribute( 'charset', $i_stCharset );
+    }
 
 
-	public function setContent(string $i_stContent ) : void {
-		$this->setAttribute( 'content', $i_stContent );
-	}
+    public function setContent( string $i_stContent ) : static {
+        return $this->setAttribute( 'content', $i_stContent );
+    }
 
 
-	public function setName(string $i_stName ) : void {
-		$this->setAttribute( 'name', $i_stName );
-	}
+    public function setName( string $i_stName ) : static {
+        return $this->setAttribute( 'name', $i_stName );
+    }
 
 
 }

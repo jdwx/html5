@@ -8,19 +8,19 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\IParent;
+use Stringable;
 
 
 class HTML extends Element {
 
 
-    public const DEFAULT_LANG = 'en';
+    public const string DEFAULT_LANG = 'en';
 
 
-	public function __construct( IParent $i_par, ... $i_rxChildren ) {
-		parent::__construct( $i_par, 'html', ... $i_rxChildren );
-        $this->setLang( self::DEFAULT_LANG );
-	}
+    public function __construct( array|string|Stringable $i_children = [] ) {
+        parent::__construct( 'html', $i_children );
+        $this->lang( self::DEFAULT_LANG );
+    }
 
 
 }

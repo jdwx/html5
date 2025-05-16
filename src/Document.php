@@ -7,6 +7,7 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
+use JDWX\HTML5\Elements\Title;
 use tidy;
 
 
@@ -24,14 +25,11 @@ class Document extends AbstractDocument {
 
     public function __construct( string $i_stCharset = 'UTF-8' ) {
         parent::__construct( $i_stCharset );
-        $this->elHead = new Elements\Head( $this );
-        $this->elBody = new Elements\Body( $this );
-        $this->elHTML = new Elements\HTML( $this, $this->elHead,
-            $this->elBody );
+        $this->elHead = ElementFactory::head();
+        $this->elBody = ElementFactory::body();
+        $this->elHTML = ElementFactory::html( [ $this->elHead, $this->elBody ] );
 
-        $elMeta = new Elements\Meta( $this->elHead );
-        $elMeta->setCharset( $i_stCharset );
-
+        ElementFactory::meta()->charset( $i_stCharset )->withParent( $this->elHead );
     }
 
 
@@ -41,18 +39,17 @@ class Document extends AbstractDocument {
     }
 
 
-    /** @suppress PhanNoopNew */
     public function addCSSFile( string $i_stHref ) : void {
-        new Elements\Link(
-            $this->elHead, $i_stHref, 'stylesheet', 'text/css'
-        );
+        ElementFactory::link()->rel( 'stylesheet' )->type( 'text/css' )
+            ->href( $i_stHref )->withParent( $this->elHead )
+        ;
     }
 
 
     /** @suppress PhanNoopNew */
     public function addIconFile( string $i_stHref,
                                  string $i_stType = 'image/vnd.microsoft.icon' ) : void {
-        new Elements\Link( $this->elHead, $i_stHref, 'icon', $i_stType );
+        ElementFactory::link()->href( $i_stHref )->rel( 'icon' )->type( $i_stType )->withParent( $this->elHead );
     }
 
 
@@ -71,8 +68,8 @@ class Document extends AbstractDocument {
      */
     public function appendToBody( ...$i_rxChildren ) : void {
         foreach ( $i_rxChildren as $xChild ) {
-            if ( $xChild instanceof IElement ) {
-                $xChild->reparent( $this->elBody );
+            if ( $xChild instanceof Element ) {
+                $xChild->withParent( $this->elBody );
             } else {
                 $this->elBody->appendChild( $xChild );
             }
@@ -81,8 +78,8 @@ class Document extends AbstractDocument {
 
 
     public function appendToTitle( string $i_stTitle ) : void {
-        $elTitle = $this->elHead->findFirstChildByTagName( 'title' );
-        if ( $elTitle instanceof IElement ) {
+        $elTitle = $this->elHead->nthChildElementByTagName( 'title' );
+        if ( $elTitle instanceof Element ) {
             $elTitle->appendChild( $i_stTitle );
         } else {
             $this->setTitle( $i_stTitle );
@@ -102,8 +99,13 @@ class Document extends AbstractDocument {
 
     /** @suppress PhanNoopNew */
     public function setTitle( string $i_stTitle ) : void {
-        $this->elHead->dropChildrenByTagName( 'title' );
-        new Elements\Title( $this->elHead, $i_stTitle );
+        $title = $this->elHead->nthChildElementByTagName( 'title' );
+        if ( $title instanceof Title ) {
+            $title->removeAllChildren();
+            $title->appendChild( $i_stTitle );
+        } else {
+            ElementFactory::title( $i_stTitle )->withParent( $this->elHead );
+        }
     }
 
 

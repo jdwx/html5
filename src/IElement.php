@@ -10,7 +10,7 @@ namespace JDWX\HTML5;
 require_once __DIR__ . '/IParent.php';
 
 
-interface IElement extends IParent, \Stringable {
+interface IElement extends ParentInterface, \Stringable {
 
 
     public function addClass( string ...$i_rstClass ) : void;
@@ -23,7 +23,7 @@ interface IElement extends IParent, \Stringable {
 
 
     /** Move this element to a new parent. */
-    public function reparent( IParent $i_par ) : void;
+    public function reparent( ParentInterface $i_par ) : void;
 
 
     public function setClass( ?string ...$i_rstClasses ) : void;

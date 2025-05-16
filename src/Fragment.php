@@ -7,7 +7,7 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-class Fragment implements IDocument {
+class Fragment implements DocumentInterface {
 
 
     /** @var Element[] */
@@ -46,7 +46,7 @@ class Fragment implements IDocument {
     }
 
 
-    public function getDocument() : IDocument {
+    public function getDocument() : DocumentInterface {
         return $this->doc;
     }
 

@@ -5,14 +5,14 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\IParent;
+use Stringable;
 
 
 class Span extends Element {
 
 
-    public function __construct( IParent $i_par, ...$i_rxChildren ) {
-        parent::__construct( $i_par, 'span', ... $i_rxChildren );
+    public function __construct( array|string|Stringable $i_children ) {
+        parent::__construct( 'span', $i_children );
     }
 
 

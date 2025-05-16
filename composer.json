@@ -7,24 +7,19 @@
   ],
   "homepage": "https://github.com/jdwx/html5",
   "license": "MIT",
-  "authors": [
-    {
-      "name": "Jeff Wheelhouse",
-      "homepage": "https://github.com/jdwx",
-      "role": "Developer"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "JDWX\\HTML5\\": "src/"
     }
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require-dev": {
-    "phpunit/phpunit": "^9",
-    "phpunit/php-code-coverage": "^9.2"
+    "phpunit/phpunit": "^10"
   },
   "require": {
     "ext-tidy": "*",
+    "jdwx/web": "dev-main",
     "php": "^8.3"
   }
 }

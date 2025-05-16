@@ -14,7 +14,7 @@ namespace JDWX\HTML5;
 class DummyDocument extends AbstractDocument {
 
 
-    public function appendChild( array|Element|string ...$i_rxChildren ) : void {
+    public function append( array|Element|string ...$i_rxChildren ) : void {
         // Do nothing.
     }
 

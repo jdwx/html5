@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpClassNamingConventionInspection */
 
 
 declare( strict_types = 1 );
@@ -7,17 +7,14 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\Element;
-use JDWX\HTML5\ParentInterface;
+use JDWX\HTML5\UnclosedElement;
 
 
-class Br extends Element {
+class Br extends UnclosedElement {
 
 
-	public function __construct( ParentInterface $i_par ) {
-		parent::__construct( $i_par, 'br' );
-		$this->setAlwaysClose( false );
-	}
+    protected const string TAG_NAME = 'br';
+
 
 }
 

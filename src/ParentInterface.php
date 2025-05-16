@@ -14,7 +14,7 @@ interface ParentInterface {
      * @param list<string|Element>|Element|string ...$i_rxChildren
      * @noinspection PhpDocSignatureInspection
      */
-    public function appendChild( array|Element|string ...$i_rxChildren ) : void;
+    public function append( array|Element|string ...$i_rxChildren ) : void;
 
 
     public function getDocument() : DocumentInterface;

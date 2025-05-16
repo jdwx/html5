@@ -8,6 +8,7 @@ namespace JDWX\HTML5;
 
 
 use JDWX\HTML5\Elements\Title;
+use Stringable;
 use tidy;
 
 
@@ -16,7 +17,7 @@ class Document extends AbstractDocument {
 
     protected string $stDocType = 'html';
 
-    protected Elements\HTML $elHTML;
+    protected Elements\Html $elHTML;
 
     protected Elements\Head $elHead;
 
@@ -41,8 +42,7 @@ class Document extends AbstractDocument {
 
     public function addCSSFile( string $i_stHref ) : void {
         ElementFactory::link()->rel( 'stylesheet' )->type( 'text/css' )
-            ->href( $i_stHref )->withParent( $this->elHead )
-        ;
+            ->href( $i_stHref )->withParent( $this->elHead );
     }
 
 
@@ -54,10 +54,10 @@ class Document extends AbstractDocument {
 
 
     /**
-     * @param iterable<IElement|string>|IElement|string ...$i_rxChildren
+     * @param iterable<string|Stringable>|Stringable|string ...$i_rxChildren
      * @noinspection PhpDocSignatureInspection
      */
-    public function appendChild( ...$i_rxChildren ) : void {
+    public function append( ...$i_rxChildren ) : void {
         $this->appendToBody( ... $i_rxChildren );
     }
 

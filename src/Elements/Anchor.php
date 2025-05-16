@@ -8,24 +8,41 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use Stringable;
 
 
 class Anchor extends Element {
 
 
-    public function __construct( Stringable|array|string $i_body = [] ) {
-        parent::__construct( 'a', $i_body );
-    }
+    protected const string TAG_NAME = 'a';
 
 
-    public function download( string $x ) : static {
+    public function download( bool|string $x ) : static {
         return $this->setAttribute( 'download', $x );
     }
 
 
     public function href( string $x ) : static {
         return $this->setAttribute( 'href', $x );
+    }
+
+
+    public function hrefLang( string $x ) : static {
+        return $this->setAttribute( 'hreflang', $x );
+    }
+
+
+    public function media( string $x ) : static {
+        return $this->setAttribute( 'media', $x );
+    }
+
+
+    public function ping( string $x ) : static {
+        return $this->addAttribute( 'ping', $x );
+    }
+
+
+    public function rel( string $x ) : static {
+        return $this->addAttribute( 'rel', $x );
     }
 
 

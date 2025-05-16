@@ -5,15 +5,12 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use Stringable;
 
 
 class Span extends Element {
 
 
-    public function __construct( array|string|Stringable $i_children ) {
-        parent::__construct( 'span', $i_children );
-    }
+    protected const string TAG_NAME = 'span';
 
 
 }

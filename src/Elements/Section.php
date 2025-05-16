@@ -8,15 +8,12 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\ParentInterface;
 
 
 class Section extends Element {
 
 
-	public function __construct( ParentInterface $i_par, ... $i_rxChildren ) {
-		parent::__construct( $i_par, 'section', ... $i_rxChildren );
-	}
+    protected const string TAG_NAME = 'section';
 
 
 }

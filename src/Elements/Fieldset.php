@@ -8,14 +8,22 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\ParentInterface;
+use JDWX\HTML5\Traits\FormChildTrait;
+use Stringable;
 
 
 class Fieldset extends Element {
 
 
-    public function __construct( ParentInterface $i_par, ...$i_rxChildren ) {
-        parent::__construct( $i_par, 'fieldset', ... $i_rxChildren );
+    use FormChildTrait;
+
+
+    protected const string TAG_NAME = 'fieldset';
+
+
+    /** @param array<string|Stringable>|string|Stringable $i_children */
+    public function legend( array|string|Stringable $i_children ) : Legend {
+        return new Legend( $i_children );
     }
 
 

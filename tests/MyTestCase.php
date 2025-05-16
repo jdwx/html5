@@ -4,7 +4,6 @@
 declare( strict_types = 1 );
 
 
-require __DIR__ . '/ElementHack.php';
 require __DIR__ . '/MockDocument.php';
 
 

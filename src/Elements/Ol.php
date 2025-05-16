@@ -4,20 +4,20 @@
 namespace JDWX\HTML5\Elements;
 
 
-use Stringable;
+use JDWX\HTML5\Element;
+use JDWX\HTML5\Traits\LiTrait;
 
 
 /** @noinspection PhpClassNamingConventionInspection */
 
 
-class Ol extends ListElement {
+class Ol extends Element {
 
 
-    public function __construct( array|string|Stringable $i_children ) {
-        parent::__construct( 'ol', $i_children );
-    }
+    protected const string TAG_NAME = 'ol';
 
 
+    use LiTrait;
 }
 
 

@@ -14,23 +14,24 @@ use Stringable;
 class Table extends Element {
 
 
-    public function __construct( Stringable|array|string $i_body = [] ) {
-        parent::__construct( 'table', $i_body );
+    protected const string TAG_NAME = 'table';
+
+
+    /** @param array<string|Stringable>|string|Stringable $i_children */
+    public function tbody( array|string|Stringable $i_children ) : TableBody {
+        return ( new TableBody( $i_children ) )->withParent( $this );
     }
 
 
-    public function tbody( ...$x ) : TBodyFootHead {
-        return ( new TBodyFootHead( 'tbody', ... $x ) )->withParent( $this );
+    /** @param array<string|Stringable>|string|Stringable $i_children */
+    public function tfoot( array|string|Stringable $i_children ) : TableFoot {
+        return ( new TableFoot( $i_children ) )->withParent( $this );
     }
 
 
-    public function tfoot( ...$x ) : TBodyFootHead {
-        return ( new TBodyFootHead( 'tfoot', ... $x ) )->withParent( $this );
-    }
-
-
-    public function thead( ...$x ) : TBodyFootHead {
-        return ( new TBodyFootHead( 'thead', ... $x ) )->withParent( $this );
+    /** @param array<string|Stringable>|string|Stringable $i_children */
+    public function thead( array|string|Stringable $i_children ) : TableHead {
+        return ( new TableHead( $i_children ) )->withParent( $this );
     }
 
 

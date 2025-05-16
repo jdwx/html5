@@ -20,7 +20,7 @@ class FragmentTest extends MyTestCase {
 
     public function testFragment() : void {
         $frg = new Fragment();
-        $frg->appendChild( 'foo', $frg->escapeValue( 'bar' ), [ 'baz', 'qux' ] );
+        $frg->append( 'foo', $frg->escapeValue( 'bar' ), [ 'baz', 'qux' ] );
         /** @noinspection SpellCheckingInspection */
         $stExpect = 'foobarbazqux';
         self::assertEquals( $stExpect, ( string ) $frg );
@@ -30,7 +30,7 @@ class FragmentTest extends MyTestCase {
     public function testFragmentDummyDocument() : void {
         $frg = new Fragment();
         $doc = $frg->getDocument();
-        $doc->appendChild( 'throwaway' );
+        $doc->append( 'throwaway' );
         self::assertEquals( '&gt;', $doc->escapeValue( '>' ) );
     }
 

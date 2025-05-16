@@ -13,9 +13,7 @@ use JDWX\HTML5\Element;
 class Body extends Element {
 
 
-    public function __construct( array $i_rChildren ) {
-        parent::__construct( 'body', $i_rChildren );
-    }
+    protected const string TAG_NAME = 'body';
 
 
 }

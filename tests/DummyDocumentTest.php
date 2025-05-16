@@ -13,7 +13,7 @@ class DummyDocumentTest extends TestCase {
 
     public function testAppendChild() : void {
         $doc = new DummyDocument();
-        $doc->appendChild( 'foo', 'bar' );
+        $doc->append( 'foo', 'bar' );
         self::expectNotToPerformAssertions();
     }
 

@@ -8,19 +8,16 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\ParentInterface;
 
 
 class Script extends Element {
 
 
-    public function __construct( ParentInterface $i_par, ...$i_rxChildren ) {
-        parent::__construct( $i_par, 'script', ... $i_rxChildren );
-    }
+    protected const string TAG_NAME = 'script';
 
 
-    public function setSrc( string $i_stSrc ) : void {
-        $this->setAttribute( 'src', $i_stSrc );
+    public function src( string|false|null $i_src ) : static {
+        return $this->setAttribute( 'src', $i_src ?? false );
     }
 
 

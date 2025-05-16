@@ -8,34 +8,38 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\ParentInterface;
+use JDWX\HTML5\Traits\FormChildTrait;
+use JDWX\HTML5\Traits\PlaceholderTrait;
 
 
 class TextArea extends Element {
 
 
-	public function __construct( ParentInterface $i_par, ... $i_rxChildren ) {
-		parent::__construct( $i_par, 'textarea', ... $i_rxChildren );
-	}
+    use FormChildTrait;
+    use PlaceholderTrait;
 
 
-	public function setCols(int $i_iCols ) : void {
-		$this->setAttribute( 'cols', ( string ) $i_iCols);
-	}
+    protected const string TAG_NAME = 'textarea';
 
 
-	public function setName(string $i_stName ) : void {
-		$this->setAttribute( 'name', $i_stName );
-	}
+    public function cols( int|false|null $i_cols ) : static {
+        return $this->setCols( is_int( $i_cols ) ? strval( $i_cols ) : ( $i_cols ?? false ) );
+    }
 
 
-	public function setPlaceHolder(string $i_stPlaceHolder ) : void {
-		$this->setAttribute( 'placeholder', $i_stPlaceHolder );
-	}
+    public function rows( int|false|null $i_rows ) : static {
+        return $this->setRows( is_int( $i_rows ) ? strval( $i_rows ) : ( $i_rows ?? false ) );
+    }
 
-	public function setRows(int $i_iRows ) : void {
-		$this->setAttribute( 'rows', ( string ) $i_iRows);
-	}
+
+    public function setCols( bool|string ...$x ) : static {
+        return $this->setAttribute( 'cols', ...$x );
+    }
+
+
+    public function setRows( bool|string ...$x ) : static {
+        return $this->setAttribute( 'rows', ...$x );
+    }
 
 
 }

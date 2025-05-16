@@ -1,4 +1,7 @@
-<?php declare( strict_types = 1 );
+<?php /** @noinspection HtmlUnknownTarget */
+
+
+declare( strict_types = 1 );
 
 
 require_once __DIR__ . '/MyTestCase.php';
@@ -34,7 +37,7 @@ class DocumentTest extends MyTestCase {
 
         $a = ElementFactory::a( 'link' )->href( 'href' )->title( 'title' );
         $p = new Elements\Paragraph( 'text' );
-        $doc->appendChild( 'This is a test.', $a, $p );
+        $doc->append( 'This is a test.', $a, $p );
         $doc->addIconFile( 'favicon.ico' );
 
         $stHead =

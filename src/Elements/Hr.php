@@ -4,19 +4,16 @@
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\Element;
-use JDWX\HTML5\ParentInterface;
+use JDWX\HTML5\UnclosedElement;
 
 
 /** @noinspection PhpClassNamingConventionInspection */
-class Hr extends Element {
 
 
-    public function __construct( ParentInterface $i_par,
-                                                 ...$i_rxChildren ) {
-        parent::__construct( $i_par, 'hr', ... $i_rxChildren );
-        $this->setAlwaysClose( false );
-    }
+class Hr extends UnclosedElement {
+
+
+    protected const string TAG_NAME = 'hr';
 
 
 }

@@ -2,6 +2,9 @@
 
 return [
 
+	'minimum_target_php_version' => '8.3',
+	'target_php_version' => '8.4',
+
 	'directory_list' => [
 		'src',
 		'tests',

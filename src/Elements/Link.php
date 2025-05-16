@@ -7,17 +7,13 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\Element;
-use Stringable;
+use JDWX\HTML5\UnclosedElement;
 
 
-class Link extends Element {
+class Link extends UnclosedElement {
 
 
-    public function __construct( array|string|Stringable $i_rChildren ) {
-        parent::__construct( 'link', $i_rChildren );
-        $this->setAlwaysClose( false );
-    }
+    protected const string TAG_NAME = 'link';
 
 
     public function href( string $i_strHref ) : static {

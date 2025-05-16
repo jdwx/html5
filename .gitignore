@@ -1,5 +1,6 @@
 .*.swp
 /.idea
+/.phpunit.cache
 /.phpunit.result.cache
 /composer.lock
 /phan.txt

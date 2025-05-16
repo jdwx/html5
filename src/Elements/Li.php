@@ -16,9 +16,7 @@ use JDWX\HTML5\Element;
 class Li extends Element {
 
 
-    public function __construct( array|string|\Stringable $i_children ) {
-        parent::__construct( 'li', $i_children );
-    }
+    protected const string TAG_NAME = 'li';
 
 
 }

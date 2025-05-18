@@ -16,8 +16,28 @@ class Form extends Element {
     protected const string TAG_NAME = 'form';
 
 
-    public function action( ?string $x ) : static {
-        return $this->setAction( $x ?? false );
+    public function action( string|false|null $value ) : static {
+        return $this->setAction( $value ?? false );
+    }
+
+
+    public function addAction( bool|string ...$values ) : static {
+        return $this->addAttribute( 'action', ...$values );
+    }
+
+
+    public function addEncType( bool|string ...$values ) : static {
+        return $this->addAttribute( 'enctype', ...$values );
+    }
+
+
+    public function addMethod( bool|string ...$values ) : static {
+        return $this->addAttribute( 'method', ...$values );
+    }
+
+
+    public function encType( string|false|null $value ) : static {
+        return $this->setEncType( $value ?? false );
     }
 
 
@@ -26,23 +46,48 @@ class Form extends Element {
     }
 
 
+    public function getEncType() : bool|string|null {
+        return $this->getAttribute( 'enctype' );
+    }
+
+
     public function getMethod() : bool|string|null {
         return $this->getAttribute( 'method' );
     }
 
 
-    public function method( string $x ) : static {
-        return $this->setAttribute( 'method', $x );
+    public function hasAction( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'action', $value );
     }
 
 
-    public function setAction( bool|string $i_bstAction ) : static {
-        return $this->setAttribute( 'action', $i_bstAction );
+    public function hasEncType( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'enctype', $value );
     }
 
 
-    public function setEncType( bool|string $i_bstEncType ) : static {
-        return $this->setAttribute( 'enctype', $i_bstEncType );
+    public function hasMethod( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'method', $value );
+    }
+
+
+    public function method( string|false|null $value ) : static {
+        return $this->setMethod( $value ?? false );
+    }
+
+
+    public function setAction( bool|string ...$values ) : static {
+        return $this->setAttribute( 'action', ...$values );
+    }
+
+
+    public function setEncType( bool|string ...$values ) : static {
+        return $this->setAttribute( 'enctype', ...$values );
+    }
+
+
+    public function setMethod( bool|string ...$values ) : static {
+        return $this->setAttribute( 'method', ...$values );
     }
 
 

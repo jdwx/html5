@@ -16,13 +16,13 @@ class Label extends Element {
     protected const string TAG_NAME = 'label';
 
 
-    public function addFor( string ...$x ) : void {
-        $this->addAttribute( 'for', ...$x );
+    public function addFor( bool|string ...$values ) : static {
+        return $this->addAttribute( 'for', ...$values );
     }
 
 
-    public function for( string|false|null $x ) : void {
-        $this->setFor( $x ?? false );
+    public function for( string|false|null $value ) : static {
+        return $this->setFor( $value ?? false );
     }
 
 
@@ -31,13 +31,13 @@ class Label extends Element {
     }
 
 
-    public function hasFor() : bool {
-        return $this->hasAttribute( 'for' );
+    public function hasFor( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'for', $value );
     }
 
 
-    public function setFor( bool|string $x ) : static {
-        return $this->setAttribute( 'for', $x );
+    public function setFor( bool|string ...$values ) : static {
+        return $this->setAttribute( 'for', ...$values );
     }
 
 

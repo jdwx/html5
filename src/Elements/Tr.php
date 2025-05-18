@@ -47,11 +47,7 @@ class Tr extends Element {
     /** @param array<string|Stringable>|string|Stringable|null $i_rx */
     public function ths( array|string|Stringable|null ...$i_rx ) : static {
         foreach ( $i_rx as $x ) {
-            if ( is_array( $x ) ) {
-                $this->th( $x );
-            } else {
-                $this->th( $x );
-            }
+            $this->th( $x );
         }
         return $this;
     }

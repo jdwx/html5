@@ -1,0 +1,18 @@
+{
+  "Li": {
+    "children": [
+      "li"
+    ]
+  },
+  "TableSection": {
+    "children": [
+      "tr"
+    ]
+  },
+  "TdTh": {
+    "attributes": {
+      "colSpan": "int",
+      "rowSpan": "int"
+    }
+  }
+}

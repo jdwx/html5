@@ -1,0 +1,51 @@
+{
+  "AccessKey": "string",
+  "ContentEditable": {
+    "type": "bool|string",
+    "mapBool": true
+  },
+  "Aria-label": "string",
+  "ColSpan": "int",
+  "Dir": "string",
+  "Draggable": {
+    "type": "bool",
+    "default": "true",
+    "mapBool": true
+  },
+  "Disabled": {
+    "type": "bool",
+    "default": "true"
+  },
+  "Form": "string",
+  "Hidden": {
+    "type": "bool",
+    "default": "true"
+  },
+  "Lang": "string",
+  "SpellCheck": {
+    "type": "bool",
+    "default": "true",
+    "mapBool": true
+  },
+  "Name": "string",
+  "Style": {
+    "type": "string",
+    "useAdd": true
+  },
+  "TabIndex": "int",
+  "Title": "string",
+  "Translate": {
+    "default": "true",
+    "type": "bool",
+    "mapBool": {
+      "false": "no"
+    }
+  },
+  "Placeholder": {
+    "type": "string"
+  },
+  "RowSpan": "int",
+  "Value": {
+    "type": "string"
+  }
+}

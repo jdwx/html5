@@ -13,9 +13,7 @@ use JDWX\HTML5\Element;
 class Div extends Element {
 
 
-    # <div> is the default tag for Element.
+    protected const string TAG_NAME = 'div';
 
 
 }
-
-

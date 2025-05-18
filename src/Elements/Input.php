@@ -7,9 +7,9 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
+use JDWX\HTML5\Attributes\PlaceholderTrait;
+use JDWX\HTML5\Attributes\ValueTrait;
 use JDWX\HTML5\Traits\FormChildTrait;
-use JDWX\HTML5\Traits\PlaceholderTrait;
-use JDWX\HTML5\Traits\ValueTrait;
 use JDWX\HTML5\UnclosedElement;
 
 
@@ -24,8 +24,43 @@ class Input extends UnclosedElement {
     protected const string TAG_NAME = 'input';
 
 
-    public function checked( bool|null $x ) : static {
-        return $this->setAttribute( 'checked', $x ?? false );
+    public function addChecked( bool|string ...$values ) : static {
+        return $this->addAttribute( 'checked', ...$values );
+    }
+
+
+    public function addMax( bool|string ...$values ) : static {
+        return $this->addAttribute( 'max', ...$values );
+    }
+
+
+    public function addMaxLength( bool|string ...$values ) : static {
+        return $this->addAttribute( 'maxlength', ...$values );
+    }
+
+
+    public function addMin( bool|string ...$values ) : static {
+        return $this->addAttribute( 'min', ...$values );
+    }
+
+
+    public function addPattern( bool|string ...$values ) : static {
+        return $this->addAttribute( 'pattern', ...$values );
+    }
+
+
+    public function addSize( bool|string ...$values ) : static {
+        return $this->addAttribute( 'size', ...$values );
+    }
+
+
+    public function addType( bool|string ...$values ) : static {
+        return $this->addAttribute( 'type', ...$values );
+    }
+
+
+    public function checked( ?bool $value ) : static {
+        return $this->setChecked( $value ?? false );
     }
 
 
@@ -59,93 +94,108 @@ class Input extends UnclosedElement {
     }
 
 
-    public function hasChecked( bool|string|null $i_value = null ) : bool {
-        return $this->hasAttribute( 'checked', $i_value );
+    public function getType() : bool|string|null {
+        return $this->getAttribute( 'type' );
     }
 
 
-    public function hasMax( bool|string|null $i_value = null ) : bool {
-        return $this->hasAttribute( 'max', $i_value );
+    public function hasChecked( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'checked', $value );
     }
 
 
-    public function hasMaxLength( bool|string|null $i_value = null ) : bool {
-        return $this->hasAttribute( 'maxlength', $i_value );
+    public function hasMax( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'max', $value );
     }
 
 
-    public function hasMin( bool|string|null $i_value = null ) : bool {
-        return $this->hasAttribute( 'min', $i_value );
+    public function hasMaxLength( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'maxlength', $value );
     }
 
 
-    public function hasPattern( bool|string|null $i_value = null ) : bool {
-        return $this->hasAttribute( 'pattern', $i_value );
+    public function hasMin( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'min', $value );
     }
 
 
-    public function hasSize( bool|string|null $i_value = null ) : bool {
-        return $this->hasAttribute( 'size', $i_value );
+    public function hasPattern( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'pattern', $value );
     }
 
 
-    public function max( int|float|false|null $x ) : static {
-        return $this->setAttribute( 'max', is_int( $x ) || is_float( $x ) ? strval( $x ) : false );
+    public function hasSize( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'size', $value );
     }
 
 
-    public function maxLength( int|false|null $x ) : static {
-        return $this->setAttribute( 'maxlength', is_int( $x ) ? strval( $x ) : false );
+    public function hasType( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'type', $value );
     }
 
 
-    public function min( int|float|false|null $x ) : static {
-        return $this->setAttribute( 'min', is_int( $x ) || is_float( $x ) ? strval( $x ) : false );
+    public function max( float|int|false|null $value ) : static {
+        return $this->setMax( is_int( $value ) || is_float( $value ) ? strval( $value ) : false );
     }
 
 
-    public function pattern( string|false|null $x ) : static {
-        return $this->setAttribute( 'pattern', $x ?? false );
+    public function maxLength( int|false|null $value ) : static {
+        return $this->setMaxLength( is_int( $value ) ? strval( $value ) : false );
     }
 
 
-    public function setChecked( bool|string $x ) : static {
-        return $this->setAttribute( 'checked', $x );
+    public function min( float|int|false|null $value ) : static {
+        return $this->setMin( is_int( $value ) || is_float( $value ) ? strval( $value ) : false );
     }
 
 
-    public function setMax( bool|string $x ) : static {
-        return $this->setAttribute( 'max', $x );
+    public function pattern( string|false|null $value ) : static {
+        return $this->setPattern( $value ?? false );
     }
 
 
-    public function setMaxLength( bool|string $x ) : static {
-        return $this->setAttribute( 'maxlength', $x );
+    public function setChecked( bool|string ...$values ) : static {
+        return $this->setAttribute( 'checked', ...$values );
     }
 
 
-    public function setMin( bool|string $x ) : static {
-        return $this->setAttribute( 'min', $x );
+    public function setMax( bool|string ...$values ) : static {
+        return $this->setAttribute( 'max', ...$values );
     }
 
 
-    public function setPattern( bool|string $x ) : static {
-        return $this->setAttribute( 'pattern', $x );
+    public function setMaxLength( bool|string ...$values ) : static {
+        return $this->setAttribute( 'maxlength', ...$values );
     }
 
 
-    public function setSize( bool|string $i_bstSize ) : static {
-        return $this->setAttribute( 'size', $i_bstSize );
+    public function setMin( bool|string ...$values ) : static {
+        return $this->setAttribute( 'min', ...$values );
     }
 
 
-    public function size( int|false|null $x ) : static {
-        return $this->setAttribute( 'size', is_int( $x ) ? strval( $x ) : false );
+    public function setPattern( bool|string ...$values ) : static {
+        return $this->setAttribute( 'pattern', ...$values );
     }
 
 
-    public function type( string $x ) : static {
-        return $this->setAttribute( 'type', $x );
+    public function setSize( bool|string ...$values ) : static {
+        return $this->setAttribute( 'size', ...$values );
+    }
+
+
+    public function setType( bool|string ...$values ) : static {
+        return $this->setAttribute( 'type', ...$values );
+    }
+
+
+    public function size( int|false|null $value ) : static {
+        return $this->setSize( is_int( $value ) ? strval( $value ) : false );
+    }
+
+
+    public function type( string|false|null $value ) : static {
+        return $this->setType( $value ?? false );
     }
 
 

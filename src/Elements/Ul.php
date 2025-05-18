@@ -4,8 +4,8 @@
 namespace JDWX\HTML5\Elements;
 
 
+use JDWX\HTML5\Children\ListTrait;
 use JDWX\HTML5\Element;
-use JDWX\HTML5\Traits\LiTrait;
 
 
 /** @noinspection PhpClassNamingConventionInspection */
@@ -17,5 +17,5 @@ class Ul extends Element {
     protected const string TAG_NAME = 'ul';
 
 
-    use LiTrait;
+    use ListTrait;
 }

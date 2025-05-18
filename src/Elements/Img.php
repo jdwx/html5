@@ -1,4 +1,7 @@
-<?php declare( strict_types = 1 );
+<?php
+
+
+declare( strict_types = 1 );
 
 
 namespace JDWX\HTML5\Elements;
@@ -13,16 +16,54 @@ class Img extends UnclosedElement {
     protected const string TAG_NAME = 'img';
 
 
-    public function alt( string $i_strAlt ) : static {
-        return $this->setAttribute( 'alt', $i_strAlt );
+    public function addAlt( bool|string ...$values ) : static {
+        return $this->addAttribute( 'alt', ...$values );
     }
 
 
-    public function src( string $i_strSrc ) : static {
-        return $this->setAttribute( 'src', $i_strSrc );
+    public function addSrc( bool|string ...$values ) : static {
+        return $this->addAttribute( 'src', ...$values );
+    }
+
+
+    public function alt( string|false|null $value ) : static {
+        return $this->setAlt( $value ?? false );
+    }
+
+
+    public function getAlt() : bool|string|null {
+        return $this->getAttribute( 'alt' );
+    }
+
+
+    public function getSrc() : bool|string|null {
+        return $this->getAttribute( 'src' );
+    }
+
+
+    public function hasAlt( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'alt', $value );
+    }
+
+
+    public function hasSrc( bool|string|null $value = null ) : bool {
+        return $this->hasAttribute( 'src', $value );
+    }
+
+
+    public function setAlt( bool|string ...$values ) : static {
+        return $this->setAttribute( 'alt', ...$values );
+    }
+
+
+    public function setSrc( bool|string ...$values ) : static {
+        return $this->setAttribute( 'src', ...$values );
+    }
+
+
+    public function src( string|false|null $value ) : static {
+        return $this->setSrc( $value ?? false );
     }
 
 
 }
-
-

@@ -17,5 +17,3 @@ class Article extends Element {
 
 
 }
-
-

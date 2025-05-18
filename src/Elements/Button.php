@@ -17,5 +17,3 @@ class Button extends Element {
 
 
 }
-
-

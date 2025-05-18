@@ -1,0 +1,103 @@
+{
+  "a": {
+    "className": "Anchor",
+    "attributes": {
+      "download": "bool|string",
+      "href": "string",
+      "HrefLang": "string",
+      "media": "string",
+      "ping": {
+        "type": "string",
+        "useAdd": true
+      },
+      "rel": {
+        "type": "string",
+        "useAdd": true
+      },
+      "target": "string"
+    }
+  },
+  "article": true,
+  "aside": true,
+  "body": true,
+  "br": {
+    "alwaysClose": false
+  },
+  "button": true,
+  "dd": true,
+  "div": true,
+  "dl": {
+    "children": [
+      "dd",
+      "dt"
+    ]
+  },
+  "dt": true,
+  "fieldset": {
+    "children": [
+      "legend"
+    ],
+    "traits": [
+      "FormChildTrait"
+    ]
+  },
+  "footer": true,
+  "form": {
+    "attributes": {
+      "action": "string",
+      "method": "string",
+      "encType": "string"
+    }
+  },
+  "h1": true,
+  "h2": true,
+  "h3": true,
+  "h4": true,
+  "h5": true,
+  "h6": true,
+  "head": true,
+  "header": true,
+  "hr": {
+    "alwaysClose": false
+  },
+  "img": {
+    "alwaysClose": false,
+    "attributes": {
+      "alt": "string",
+      "src": "string"
+    }
+  },
+  "input": {
+    "alwaysClose": false,
+    "attributes": {
+      "checked": "bool",
+      "max": "float|int",
+      "maxLength": "int",
+      "min": "float|int",
+      "pattern": "string",
+      "size": "int",
+      "type": "string"
+    },
+    "traits": [
+      "FormChildTrait",
+      "PlaceholderTrait",
+      "ValueTrait"
+    ]
+  },
+  "label": {
+    "attributes": {
+      "for": "string"
+    }
+  },
+  "legend": true,
+  "li": true,
+  "td": true,
+  "th": true,
+  "tr": {
+    "alwaysClose": true,
+    "children": [
+      "td",
+      "th"
+    ]
+  }
+}

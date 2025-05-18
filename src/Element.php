@@ -59,6 +59,11 @@ class Element extends \JDWX\Web\Panels\Element {
     }
 
 
+    public function addClass( bool|string ...$values ) : static {
+        return $this->addAttribute( 'class', ...$values );
+    }
+
+
     public function appendChildElement( Element $x ) : Element {
         $this->appendChild( $x );
         return $x;
@@ -86,17 +91,22 @@ class Element extends \JDWX\Web\Panels\Element {
     }
 
 
-    public function draggable( ?bool $i_bDraggable = true ) : static {
-        return $this->setDraggable(
-            is_bool( $i_bDraggable )
-                ? ( $i_bDraggable ? 'true' : 'false' )
-                : false
-        );
+    public function getElementById( string $i_stId ) : Element|null {
+        return $this->nthChildElementById( $i_stId, 0 );
     }
 
 
-    public function getElementById( string $i_stId ) : Element|null {
-        return $this->nthChildElementById( $i_stId, 0 );
+    public function getId() : string|true|null {
+        return $this->getAttribute( 'id' );
+    }
+
+
+    public function getIdEx() : string {
+        $value = $this->getId();
+        if ( is_string( $value ) ) {
+            return $value;
+        }
+        throw new \InvalidArgumentException( 'ID not set' );
     }
 
 
@@ -105,18 +115,13 @@ class Element extends \JDWX\Web\Panels\Element {
     }
 
 
-    public function hidden( bool $i_bHidden = true ) : static {
-        return $this->setHidden( $i_bHidden );
+    public function hasClass( string|true|null $value = null ) : bool {
+        return $this->hasAttribute( 'class', $value );
     }
 
 
     public function id( string $x ) : static {
         return $this->setId( $x );
-    }
-
-
-    public function lang( string $x ) : static {
-        return $this->setAttribute( 'lang', $x );
     }
 
 
@@ -185,23 +190,15 @@ class Element extends \JDWX\Web\Panels\Element {
     }
 
 
-    public function spellCheck( ?bool $i_bSpellCheck = true ) : static {
-        return $this->setSpellCheck( is_bool( $i_bSpellCheck ) ? ( $i_bSpellCheck ? 'true' : 'false' ) : false );
+    /** @suppress PhanTypeMismatchReturn */
+    public function setClass( bool|string ...$values ) : static {
+        return $this->setAttribute( 'class', ...$values );
     }
 
 
-    public function tabIndex( ?int $i_nIndex ) : static {
-        return $this->setTabIndex( is_int( $i_nIndex ) ? strval( $i_nIndex ) : false );
-    }
-
-
-    public function title( string $x ) : static {
-        return $this->setTitle( $x );
-    }
-
-
-    public function translate( ?bool $i_bTranslate = true ) : static {
-        return $this->setTranslate( is_bool( $i_bTranslate ) ? ( $i_bTranslate ? 'yes' : 'no' ) : false );
+    /** @suppress PhanTypeMismatchReturn */
+    public function setId( bool|string ...$values ) : static {
+        return $this->setAttribute( 'id', ...$values );
     }
 
 

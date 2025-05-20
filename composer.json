@@ -15,7 +15,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require-dev": {
-    "ext/readline": "*",
+    "ext-readline": "*",
     "phpunit/phpunit": "^10"
   },
   "require": {

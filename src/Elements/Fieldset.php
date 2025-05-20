@@ -7,12 +7,12 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\Element;
+use JDWX\HTML5\HtmlElement;
 use JDWX\HTML5\Traits\FormChildTrait;
 use Stringable;
 
 
-class Fieldset extends Element {
+class Fieldset extends HtmlElement {
 
 
     use FormChildTrait;

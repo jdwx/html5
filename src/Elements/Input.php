@@ -10,10 +10,10 @@ namespace JDWX\HTML5\Elements;
 use JDWX\HTML5\Attributes\PlaceholderTrait;
 use JDWX\HTML5\Attributes\ValueTrait;
 use JDWX\HTML5\Traits\FormChildTrait;
-use JDWX\HTML5\UnclosedElement;
+use JDWX\HTML5\UnclosedHtmlElement;
 
 
-class Input extends UnclosedElement {
+class Input extends UnclosedHtmlElement {
 
 
     use FormChildTrait;

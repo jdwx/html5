@@ -7,11 +7,11 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\Element;
+use JDWX\HTML5\HtmlElement;
 use Stringable;
 
 
-class Table extends Element {
+class Table extends HtmlElement {
 
 
     protected const string TAG_NAME = 'table';

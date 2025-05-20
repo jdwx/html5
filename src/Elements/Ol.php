@@ -5,13 +5,13 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Children\ListTrait;
-use JDWX\HTML5\Element;
+use JDWX\HTML5\HtmlElement;
 
 
 /** @noinspection PhpClassNamingConventionInspection */
 
 
-class Ol extends Element {
+class Ol extends HtmlElement {
 
 
     protected const string TAG_NAME = 'ol';

@@ -23,7 +23,7 @@ trait ContentEditableTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function contentEditable( bool|string|null $value ) : static {
+    public function contentEditable( bool|string|null $value = true ) : static {
         return $this->setContentEditable( is_bool( $value ) ? ( $value ? 'true' : 'false' ) : ( $value ?? false ) );
     }
 

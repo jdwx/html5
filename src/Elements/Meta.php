@@ -7,10 +7,10 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\UnclosedElement;
+use JDWX\HTML5\UnclosedHtmlElement;
 
 
-class Meta extends UnclosedElement {
+class Meta extends UnclosedHtmlElement {
 
 
     protected const string TAG_NAME = 'meta';

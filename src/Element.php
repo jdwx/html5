@@ -7,198 +7,186 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-use JDWX\HTML5\Traits\AriaTrait;
-use JDWX\HTML5\Traits\GlobalAttributesTrait;
+use JDWX\HTML5\Traits\AttributeTrait;
+use JDWX\HTML5\Traits\TagTrait;
+use JDWX\Web\Stream\StringableStreamInterface;
+use JDWX\Web\Stream\StringableStreamTrait;
 use Stringable;
 
 
-class Element extends \JDWX\Web\Panels\Element {
+class Element implements StringableStreamInterface {
 
 
-    use AriaTrait;
-    use GlobalAttributesTrait;
+    use AttributeTrait;
+    use StringableStreamTrait;
+    use TagTrait;
 
 
-    protected const string TAG_NAME = 'div';
+    /** @var list<string|Stringable> */
+    private array $rChildren;
 
 
-    /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function __construct( array|string|Stringable $i_children = [] ) {
-        parent::__construct( static::TAG_NAME, $i_children );
+    /** @param list<string|Stringable>|string|Stringable $i_children */
+    public function __construct( string $i_stElement = 'div', array|string|Stringable $i_children = [] ) {
+        $this->setTagName( $i_stElement );
+        $this->rChildren = is_array( $i_children ) ? $i_children : [ $i_children ];
     }
 
 
-    /** @param array<string|Stringable>|string|Stringable $i_children */
-    public static function synthetic( string $i_stTagName, array|string|Stringable $i_children = [] ) : static {
-        /** @phpstan-ignore-next-line */
-        $x = new static( $i_children );
-        $x->setTagName( $i_stTagName );
-        return $x;
+    public static function filterByHasAttribute( string           $i_stAttribute,
+                                                 true|string|null $i_value = null ) : callable {
+        return fn( $i_el ) => $i_el instanceof Element && $i_el->hasAttribute( $i_stAttribute, $i_value );
     }
 
 
-    protected static function filterHasClass( string $i_stClass ) : callable {
-        return self::filterByHasAttribute( 'class', $i_stClass );
+    public static function filterByNotHasAttribute( string           $i_stAttribute,
+                                                    true|string|null $i_value = null ) : callable {
+        return fn( $i_el ) => ! $i_el instanceof Element || ! $i_el->hasAttribute( $i_stAttribute, $i_value );
     }
 
 
-    protected static function filterNotHasClass( string $i_stClass ) : callable {
-        return self::filterByNotHasAttribute( 'class', $i_stClass );
+    public static function filterByNotTagName( string $i_stTagName ) : callable {
+        return fn( $i_el ) => ! $i_el instanceof Element || $i_el->getTagName() !== $i_stTagName;
     }
 
 
-    /** Adds one or more classes to (direct) child elements of the current element. */
-    public function addChildClasses( ?string ...$x ) : static {
-        foreach ( $this->childElements() as $child ) {
-            $st = array_shift( $x );
-            if ( is_string( $st ) ) {
-                $child->class( $st );
+    public static function filterByTagName( string $i_stTagName ) : callable {
+        return fn( $i_el ) => $i_el instanceof Element && $i_el->getTagName() === $i_stTagName;
+    }
+
+
+    /**
+     * @param iterable<string|Stringable|iterable<string|Stringable|null>|null>|string|Stringable|null ...$i_children
+     * @noinspection PhpDocSignatureInspection
+     */
+    public function append( iterable|string|Stringable|null ...$i_children ) : static {
+        foreach ( $i_children as $child ) {
+            if ( is_array( $child ) ) {
+                $this->append( ... $child );
+            } else {
+                $this->appendChild( $child );
             }
         }
         return $this;
     }
 
 
-    public function addClass( bool|string ...$values ) : static {
-        return $this->addAttribute( 'class', ...$values );
-    }
-
-
-    public function appendChildElement( Element $x ) : Element {
-        $this->appendChild( $x );
-        return $x;
+    public function appendChild( string|Stringable|null $i_stBody ) : static {
+        if ( ! is_null( $i_stBody ) ) {
+            $this->rChildren[] = $i_stBody;
+        }
+        return $this;
     }
 
 
     /** @return iterable<Element> */
     public function childElements( ?callable $i_fnFilter = null ) : iterable {
-        /** @phpstan-ignore-next-line */
-        yield from parent::childElements();
-    }
-
-
-    public function class( string ...$x ) : static {
-        return $this->addClass( ... $x );
-    }
-
-
-    public function contentEditable( bool|string|null $i_bContentEditable = true ) : static {
-        return $this->setContentEditable(
-            is_bool( $i_bContentEditable )
-                ? ( $i_bContentEditable ? 'true' : 'false' )
-                : ( $i_bContentEditable ?? false )
-        );
-    }
-
-
-    public function getElementById( string $i_stId ) : Element|null {
-        return $this->nthChildElementById( $i_stId, 0 );
-    }
-
-
-    public function getId() : string|true|null {
-        return $this->getAttribute( 'id' );
-    }
-
-
-    public function getIdEx() : string {
-        $value = $this->getId();
-        if ( is_string( $value ) ) {
-            return $value;
+        foreach ( $this->rChildren as $child ) {
+            if ( $child instanceof Element ) {
+                if ( ! $i_fnFilter || $i_fnFilter( $child ) ) {
+                    yield $child;
+                }
+            }
         }
-        throw new \InvalidArgumentException( 'ID not set' );
     }
 
 
-    public function hasChildren() : bool {
-        return 0 < $this->countChildren();
+    /** @return iterable<string|Stringable> */
+    public function children( ?callable $i_fnFilter = null ) : iterable {
+        foreach ( $this->rChildren as $child ) {
+            if ( ! $i_fnFilter || $i_fnFilter( $child ) ) {
+                yield $child;
+            }
+        }
     }
 
 
-    public function hasClass( string|true|null $value = null ) : bool {
-        return $this->hasAttribute( 'class', $value );
+    public function countChildElements() : int {
+        return iterator_count( $this->childElements() );
     }
 
 
-    public function id( string $x ) : static {
-        return $this->setId( $x );
+    public function countChildren() : int {
+        return count( $this->rChildren );
     }
 
 
-    public function nthChildElement( int $i_n, ?callable $i_fnFilter = null ) : Element|null {
-        $nel = \JDWX\Web\Panels\Element::nthChildElement( $i_n );
-        assert( $nel instanceof Element || null === $nel );
-        return $nel;
+    /** @return iterable<string|Stringable> */
+    public function inner() : iterable {
+        return $this->children();
     }
 
 
-    public function nthChildElementByClass( string $i_stClass, int $i_n = 0 ) : Element|null {
-        foreach ( $this->childElements( self::filterHasClass( $i_stClass ) ) as $child ) {
-            /** @phpstan-ignore-next-line */
-            assert( $child instanceof Element );
-            if ( $child->hasAttribute( 'class', $i_stClass ) ) {
+    public function nthChild( int $i_n ) : string|Stringable|null {
+        return $this->rChildren[ $i_n ] ?? null;
+    }
+
+
+    public function nthChildElement( int $i_n ) : Element|null {
+        foreach ( $this->rChildren as $child ) {
+            if ( $child instanceof Element ) {
                 if ( 0 === $i_n ) {
                     return $child;
                 }
-                --$i_n;
+                $i_n--;
             }
         }
         return null;
     }
 
 
-    public function nthChildElementById( string $i_stId, int $i_n ) : Element|null {
-        foreach ( $this->childElements() as $child ) {
-            /** @phpstan-ignore-next-line */
-            assert( $child instanceof Element );
-            if ( $child->getAttribute( 'id' ) === $i_stId ) {
-                if ( 0 === $i_n ) {
-                    return $child;
-                }
-                --$i_n;
-            }
+    public function prependChild( string|Stringable|null $i_stBody ) : static {
+        if ( ! is_null( $i_stBody ) ) {
+            array_unshift( $this->rChildren, $i_stBody );
         }
-        return null;
+        return $this;
     }
 
 
-    public function nthChildElementByTagName( string $i_stTag, int $i_n = 0 ) : Element|null {
-        foreach ( $this->childElements() as $child ) {
-            /** @phpstan-ignore-next-line */
-            assert( $child instanceof Element );
-            if ( $child->getTagName() === $i_stTag ) {
-                if ( 0 === $i_n ) {
-                    return $child;
-                }
-                --$i_n;
-            }
-        }
-        return null;
+    public function removeAllChildren() : static {
+        $this->rChildren = [];
+        return $this;
     }
 
 
-    public function removeChildById( string $i_stId ) : static {
-        foreach ( $this->childElements() as $child ) {
-            /** @phpstan-ignore-next-line */
-            assert( $child instanceof Element );
-            if ( $child->getAttribute( 'id' ) === $i_stId ) {
-                $this->removeChild( $child );
-                break;
+    public function removeChild( string|Stringable $i_child ) : static {
+        foreach ( $this->rChildren as $i => $child ) {
+            if ( $child === $i_child ) {
+                unset( $this->rChildren[ $i ] );
+                return $this;
             }
         }
         return $this;
     }
 
 
-    /** @suppress PhanTypeMismatchReturn */
-    public function setClass( bool|string ...$values ) : static {
-        return $this->setAttribute( 'class', ...$values );
+    public function removeChildren( callable $i_fnCallback ) : static {
+        $this->rChildren = array_values( array_filter( $this->rChildren,
+            fn( string|Stringable $i_child ) => ! $i_fnCallback( $i_child )
+        ) );
+        return $this;
     }
 
 
-    /** @suppress PhanTypeMismatchReturn */
-    public function setId( bool|string ...$values ) : static {
-        return $this->setAttribute( 'id', ...$values );
+    public function removeNthChild( int $i_n = 0 ) : static {
+        if ( isset( $this->rChildren[ $i_n ] ) ) {
+            unset( $this->rChildren[ $i_n ] );
+        }
+        return $this;
+    }
+
+
+    public function removeNthChildElement( int $i_n = 0 ) : static {
+        foreach ( $this->rChildren as $i => $child ) {
+            if ( $child instanceof Element ) {
+                if ( 0 === $i_n ) {
+                    unset( $this->rChildren[ $i ] );
+                    return $this;
+                }
+                $i_n--;
+            }
+        }
+        return $this;
     }
 
 

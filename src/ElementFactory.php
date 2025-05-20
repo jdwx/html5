@@ -119,7 +119,7 @@ class ElementFactory {
 
 
     public static function make( string            $i_strType,
-                                 string|Stringable ...$i_rxChildren ) : Anchor|Tr|Td|Table|TableBody|Element {
+                                 string|Stringable ...$i_rxChildren ) : Anchor|Tr|Td|Table|TableBody|HtmlElement {
 
         return match ( $i_strType ) {
             'a' => self::a( $i_rxChildren ),
@@ -130,7 +130,7 @@ class ElementFactory {
             'th' => self::th( $i_rxChildren ),
             'thead' => self::thead( $i_rxChildren ),
             'tr' => self::tr( $i_rxChildren ),
-            default => Element::synthetic( $i_strType, $i_rxChildren ),
+            default => HtmlElement::synthetic( $i_strType, $i_rxChildren ),
         };
 
     }

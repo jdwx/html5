@@ -4,27 +4,19 @@
 declare( strict_types = 1 );
 
 
-require __DIR__ . '/MockDocument.php';
-
-
-use JDWX\HTML5\Element;
+use JDWX\HTML5\HtmlElement;
 use PHPUnit\Framework\TestCase;
 
 
 class MyTestCase extends TestCase {
 
 
-    protected MockDocument $doc;
-
-
-    protected function element( string $i_stTag ) : Element {
-        return new Element( $i_stTag );
+    protected function element( string $i_stTag ) : HtmlElement {
+        return new HtmlElement( $i_stTag );
     }
 
 
-    protected function setUp() : void {
-        $this->doc = new MockDocument();
-    }
+    protected function setUp() : void {}
 
 
 }

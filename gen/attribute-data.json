@@ -1,6 +1,7 @@
 {
   "AccessKey": "string",
   "ContentEditable": {
+    "default": "true",
     "type": "bool|string",
     "mapBool": true
   },

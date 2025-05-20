@@ -1,263 +1,329 @@
-<?php declare( strict_types = 1 );
+<?php
+
+
+declare( strict_types = 1 );
 
 
 use JDWX\HTML5\Element;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 
 
-require_once __DIR__ . '/MyTestCase.php';
-
-
-/**
- * Class ElementTest
- *
- * @package JDWX\HTML5\Tests
- * @covers \JDWX\HTML5\Element
- */
-final class ElementTest extends MyTestCase {
-
-
-    public function testAddClass() : void {
-        $el = new Element( 'test' );
-        $el->class( 'foo' );
-        self::assertEquals( "<div class=\"foo\">test</div>", strval( $el ) );
-    }
+#[CoversClass( Element::class )]
+final class ElementTest extends TestCase {
 
 
     public function testAlwaysClose() : void {
-
         $el = new Element();
-        self::assertEquals( '<div></div>', strval( $el ) );
-
+        self::assertTrue( $el->getAlwaysClose() );
         $el->setAlwaysClose( false );
-        /** @noinspection PhpConditionAlreadyCheckedInspection */
-        self::assertEquals( '<div>', $el );
-
-        $el->appendChild( 'Foo' );
-        /** @noinspection PhpConditionAlreadyCheckedInspection */
-        self::assertEquals( '<div>Foo</div>', $el );
-
+        self::assertFalse( $el->getAlwaysClose() );
+        $el->setAlwaysClose( true );
+        self::assertTrue( $el->getAlwaysClose() );
     }
 
 
     public function testAppend() : void {
-        $el = new Element();
-        $el->append( 'Bar', [ 'Baz', 'Qux' ] );
-        self::assertEquals( '<div>BarBazQux</div>', strval( $el ) );
+        $child = new Element( i_children: 'Quux' );
+        $el = new Element( i_children: 'Foo' );
+        $el->append( 'Bar', [ 'Baz', $child, [ 'Qux', null ] ] );
+        self::assertSame( '<div>FooBarBaz<div>Quux</div>Qux</div>', strval( $el ) );
     }
 
 
-    public function testFalseAttribute() : void {
-        $el = new Element();
-        $el->hidden();
-        self::assertEquals( '<div hidden></div>', strval( $el ) );
-        $el->hidden( false );
-        self::assertEquals( '<div></div>', strval( $el ) );
+    public function testAppendChild() : void {
+        $el = new Element( i_children: 'foo' );
+        $el->appendChild( 'bar' );
+        self::assertSame( '<div>foobar</div>', strval( $el ) );
+
+        $el = new Element( i_children: 'foo' );
+        $el->appendChild( null )
+            ->appendChild( new Element( i_children: 'bar' ) );
+        self::assertSame( '<div>foo<div>bar</div></div>', strval( $el ) );
     }
 
 
-    /*
-    public function testGetDocument() : void {
-        $el = $this->element( 'foo' );
-        self::assertInstanceOf( DocumentInterface::class, $el->getDocument() );
+    public function testChildElements() : void {
+        $elChild = new Element( i_children: 'foo' );
+        $elParent = new Element( i_children: [ $elChild, 'bar' ] );
+        self::assertSame( [ $elChild ], iterator_to_array( $elParent->childElements(), false ) );
     }
-    */
 
 
-    public function testGetElementById() : void {
+    public function testChildElementsWithFilter() : void {
+        $elChild1 = ( new Element( i_children: 'foo' ) )->setAttribute( 'pick' );
+        $elChild2 = new Element( i_children: 'bar' );
+        $elChild3 = ( new Element( i_children: 'baz' ) )->setAttribute( 'pick' );
+        $elChild4 = new Element( i_children: 'qux' );
+        $elParent =
+            new Element( i_children: [ 'Quux', $elChild1, 'Corge', $elChild2, 'Grault', $elChild3, 'Garply', $elChild4 ] );
+        $fn = function ( Element $child ) : bool {
+            return $child->hasAttribute( 'pick' );
+        };
+        self::assertSame( [ $elChild1, $elChild3 ], iterator_to_array( $elParent->childElements( $fn ), false ) );
+    }
 
-        $el = new Element();
-        $el1 = Element::synthetic( 'child' );
-        $el1->id( 'el1' );
+
+    public function testChildren() : void {
+        $el = new Element( i_children: [ 'foo', 'bar', 'baz' ] );
+        self::assertSame( [ 'foo', 'bar', 'baz' ], iterator_to_array( $el->children(), false ) );
+    }
+
+
+    public function testCountChildElements() : void {
+        $el1 = new Element();
         $el2 = new Element();
-        $el2->id( 'el2' );
-        $el3 = Element::synthetic( 'child' );
-        $el3->id( 'el3' );
-        $el4 = Element::synthetic( 'child' );
-        $el4->id( 'el4' );
-        $el->append( $el1, $el2, $el3, $el4 );
+        $el3 = 'Foo';
+        $el4 = new class() implements Stringable {
 
-        self::assertTrue( $el1 === $el->getElementById( 'el1' ) );
-        self::assertTrue( $el2 === $el->getElementById( 'el2' ) );
-        self::assertTrue( $el3 === $el->getElementById( 'el3' ) );
-        self::assertTrue( $el4 === $el->getElementById( 'el4' ) );
-        self::assertNull( $el->getElementById( 'el5' ) );
+
+            public function __toString() : string {
+                return 'Bar';
+            }
+
+
+        };
+        $parent = new Element( 'foo', [ $el1, $el2, $el3, $el4 ] );
+        self::assertSame( 2, $parent->countChildElements() );;
     }
 
 
-    public function testGetId() : void {
-        $el = $this->element( 'foo' );
-        self::assertNull( $el->getId() );
-        $el->id( 'bar' );
-        self::assertEquals( 'bar', $el->getId() );
+    public function testCountChildren() : void {
+        $el1 = new Element();
+        $el2 = new Element();
+        $el3 = 'Foo';
+        $el4 = new class() implements Stringable {
+
+
+            public function __toString() : string {
+                return 'Bar';
+            }
+
+
+        };
+        $parent = new Element( 'foo', [ $el1, $el2, $el3, $el4 ] );
+        self::assertSame( 4, $parent->countChildren() );
     }
 
 
-    public function testGetIdEx() : void {
-        $el = $this->element( 'foo' );
-        $el->id( 'bar' );
-        self::assertEquals( 'bar', $el->getIdEx() );
-
-        $el = $this->element( 'foo' );
-        self::expectException( InvalidArgumentException::class );
-        $el->getIdEx();
+    public function testFilterByHasAttribute() : void {
+        $elChild1 = ( new Element( i_children: 'foo' ) )->setAttribute( 'pick' );
+        $elChild2 = new Element( i_children: 'bar' );
+        $elChild3 = ( new Element( i_children: 'baz' ) )->setAttribute( 'pick', 'yes' );
+        $elChild4 = new Element( i_children: 'qux' );
+        $elParent = new Element(
+            i_children: [ 'Quux', $elChild1, 'Corge', $elChild2, 'Grault', $elChild3, 'Garply', $elChild4 ]
+        );
+        $x = $elParent->children( Element::filterByHasAttribute( 'pick' ) );
+        self::assertSame( [ $elChild1, $elChild3 ], iterator_to_array( $x, false ) );
+        $x = $elParent->children( Element::filterByHasAttribute( 'pick', 'yes' ) );
+        self::assertSame( [ $elChild3 ], iterator_to_array( $x, false ) );
     }
 
 
-    public function testHasAttribute() : void {
+    public function testFilterByHasTagName() : void {
+        $el1 = new Element( 'foo' );
+        $el2 = ( new Element( 'bar' ) )->setAttribute( 'class', 'foo' );
+        $el3 = new Element( 'foo', 'baz' );
+        $el4 = 'foo';
+        $el5 = new class() implements Stringable {
 
-        $el = $this->element( 'foo' );
-        self::assertFalse( $el->hasAttribute( 'bar' ) );
 
-        $el->setAttribute( 'bar', 'baz' );
-        self::assertTrue( $el->hasAttribute( 'bar' ) );
+            public function __toString() : string {
+                return 'foo';
+            }
 
-        $el->removeAttribute( 'bar' );
-        self::assertFalse( $el->hasAttribute( 'bar' ) );
+
+        };
+        $parent = new Element( 'foo', [ $el1, $el2, $el3, $el4, $el5 ] );
+        $x = $parent->children( Element::filterByTagName( 'foo' ) );
+        self::assertSame( [ $el1, $el3 ], iterator_to_array( $x, false ) );
 
     }
 
 
-    public function testNthChildElementByClass() : void {
+    public function testFilterByNotHasAttribute() : void {
+        $elChild1 = ( new Element() )->setAttribute( 'pick' );
+        $elChild2 = new Element();
+        $elChild3 = ( new Element() )->setAttribute( 'pick', 'yes' );
+        $elChild4 = new Element();
+        $elParent = new Element(
+            i_children: [ 'Quux', $elChild1, $elChild2, $elChild3, $elChild4 ]
+        );
+        $x = $elParent->children( Element::filterByNotHasAttribute( 'pick' ) );
+        self::assertSame( [ 'Quux', $elChild2, $elChild4 ], iterator_to_array( $x, false ) );
+
+        $x = $elParent->children( Element::filterByNotHasAttribute( 'pick', 'yes' ) );
+        self::assertSame( [ 'Quux', $elChild1, $elChild2, $elChild4 ], iterator_to_array( $x, false ) );
+
+        $x = $elParent->childElements( Element::filterByNotHasAttribute( 'pick' ) );
+        self::assertSame( [ $elChild2, $elChild4 ], iterator_to_array( $x, false ) );
+    }
+
+
+    public function testFilterByNotTagName() : void {
+        $el1 = new Element( 'foo' );
+        $el2 = ( new Element( 'bar' ) )->setAttribute( 'class', 'foo' );
+        $el3 = new Element( 'foo', 'baz' );
+        $el4 = 'foo';
+        $el5 = new class() implements Stringable {
+
+
+            public function __toString() : string {
+                return 'foo';
+            }
+
+
+        };
+        $parent = new Element( 'foo', [ $el1, $el2, $el3, $el4, $el5 ] );
+        $x = $parent->children( Element::filterByNotTagName( 'foo' ) );
+        self::assertSame( [ $el2, $el4, $el5 ], iterator_to_array( $x, false ) );
+
+    }
+
+
+    public function testNthChild() : void {
+        $el = new Element( i_children: [ 'foo', 'bar', 'baz' ] );
+        self::assertSame( 'foo', strval( $el->nthChild( 0 ) ) );
+        self::assertSame( 'bar', strval( $el->nthChild( 1 ) ) );
+        self::assertSame( 'baz', strval( $el->nthChild( 2 ) ) );
+        self::assertNull( $el->nthChild( 3 ) );
+    }
+
+
+    public function testNthChildElement() : void {
+        $elChild1 = new Element( i_children: 'foo' );
+        $elChild2 = new Element( i_children: 'bar' );
+        $el = new Element( i_children: [ 'baz', $elChild1, 'qux', $elChild2, 'corge' ] );
+        self::assertSame( $elChild1, $el->nthChildElement( 0 ) );
+        self::assertSame( $elChild2, $el->nthChildElement( 1 ) );
+        self::assertNull( $el->nthChildElement( 2 ) );
+    }
+
+
+    public function testPrependChild() : void {
+        $el = new Element( i_children: 'bar' );
+        $el->prependChild( 'foo' );
+        self::assertSame( '<div>foobar</div>', strval( $el ) );
+
+        $el = new Element( i_children: 'bar' );
+        $el->prependChild( null )
+            ->prependChild( new Element( i_children: 'foo' ) );
+        self::assertSame( '<div><div>foo</div>bar</div>', strval( $el ) );
+    }
+
+
+    public function testRemoveAllChildren() : void {
+        $el = new Element( i_children: [ 'foo', 'bar', 'baz' ] );
+        $el->removeAllChildren();
+        self::assertSame( '<div></div>', strval( $el ) );
+    }
+
+
+    public function testRemoveChildForElement() : void {
+        $child = new ELement( i_children: 'Foo' );
+        $parent = new Element( i_children: [ 'Bar', $child, 'Baz' ] );
+        $parent->removeChild( $child );
+        self::assertSame( '<div>BarBaz</div>', strval( $parent ) );
+    }
+
+
+    public function testRemoveChildForNotPresent() : void {
+        $child = new Element( i_children: 'Foo' );
+        $parent = new Element( i_children: [ 'Bar', 'Baz' ] );
+        $parent->removeChild( $child );
+        self::assertSame( '<div>BarBaz</div>', strval( $parent ) );
+    }
+
+
+    public function testRemoveChildForString() : void {
+        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
+        $el->removeChild( 'Bar' );
+        self::assertSame( '<div>FooBaz</div>', strval( $el ) );
+    }
+
+
+    public function testRemoveChildren() : void {
+        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
+        $fn = function ( string|Stringable $child ) : bool {
+            return 'Bar' === strval( $child );
+        };
+        $el->removeChildren( $fn );
+        self::assertSame( '<div>FooBaz</div>', strval( $el ) );
+    }
+
+
+    public function testRemoveNthChild() : void {
+        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
+        $el->removeNthChild();
+        self::assertSame( '<div>BarBaz</div>', strval( $el ) );
+
+        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
+        $el->removeNthChild( 1 );
+        self::assertSame( '<div>FooBaz</div>', strval( $el ) );
+
+        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
+        $el->removeNthChild( 2 );
+        self::assertSame( '<div>FooBar</div>', strval( $el ) );
+
+        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
+        $el->removeNthChild( 3 );
+        self::assertSame( '<div>FooBarBaz</div>', strval( $el ) );
+    }
+
+
+    public function testRemoveNthChildElement() : void {
+        $elChild1 = new Element( i_children: 'Foo' );
+        $elChild2 = new Element( i_children: 'Bar' );
+        $el = new Element( i_children: [ 'Baz', $elChild1, 'Qux', $elChild2, 'Corge' ] );
+        $el->removeNthChildElement();
+        self::assertSame( '<div>BazQux<div>Bar</div>Corge</div>', strval( $el ) );
+
+        $el = new Element( i_children: [ 'Baz', $elChild1, 'Qux', $elChild2, 'Corge' ] );
+        $el->removeNthChildElement( 1 );
+        self::assertSame( '<div>Baz<div>Foo</div>QuxCorge</div>', strval( $el ) );
+
+        $el = new Element( i_children: [ 'Baz', $elChild1, 'Qux', $elChild2, 'Corge' ] );
+        $el->removeNthChildElement( 2 );
+        self::assertSame( '<div>Baz<div>Foo</div>Qux<div>Bar</div>Corge</div>', strval( $el ) );
+    }
+
+
+    public function testToStringForIterable() : void {
+        $el = new Element( i_children: [ 'foo', 'bar' ] );
+        self::assertSame( '<div>foobar</div>', strval( $el ) );
+    }
+
+
+    public function testToStringForNoClose() : void {
+        $el = new Element( i_children: 'foo' );
+        $el->setAlwaysClose( false );
+        self::assertSame( '<div>foo</div>', strval( $el ) );
 
         $el = new Element();
-        $el1 = Element::synthetic( 'child' );
-        $el1->id( 'el1' );
-        $el1->class( 'foo' );
-        $el2 = new Element();
-        $el2->id( 'el2' );
-        $el2->class( 'bar' );
-        $el3 = Element::synthetic( 'child' );
-        $el3->id( 'el3' );
-        $el3->class( 'foo' )->class( 'bar' );
-        $el4 = Element::synthetic( 'child' );
-        $el4->id( 'el4' );
-        $el->append( $el1, $el2, $el3, $el4 );
-
-        self::assertSame( $el1, $el->nthChildElementByClass( 'foo' ) );
-        self::assertSame( $el3, $el->nthChildElementByClass( 'foo', 1 ) );
-        self::assertNull( $el->nthChildElementByClass( 'foo', 2 ) );
-
-        self::assertSame( $el2, $el->nthChildElementByClass( 'bar' ) );
-        self::assertSame( $el3, $el->nthChildElementByClass( 'bar', 1 ) );
-        self::assertNull( $el->nthChildElementByClass( 'bar', 2 ) );
-
+        $el->setAlwaysClose( false );
+        self::assertSame( '<div>', strval( $el ) );
     }
 
 
-    public function testNthChildElementByTagName() : void {
-
-        $el = new Element();
-        $el1 = Element::synthetic( 'child' );
-        $el1->id( 'el1' );
-        $el2 = new Element();
-        $el2->id( 'el2' );
-        $el3 = Element::synthetic( 'child' );
-        $el3->id( 'el3' );
-        $el4 = Element::synthetic( 'child' );
-        $el4->id( 'el4' );
-        $el->append( $el1, $el2, $el3, $el4 );
-
-        self::assertSame( $el1, $el->nthChildElementByTagName( 'child' ) );
-        self::assertSame( $el3, $el->nthChildElementByTagName( 'child', 1 ) );
-        self::assertSame( $el4, $el->nthChildElementByTagName( 'child', 2 ) );
-        self::assertNull( $el->nthChildElementByTagName( 'child', 3 ) );
-
-        self::assertSame( $el2, $el->nthChildElementByTagName( 'div' ) );
-        self::assertNull( $el->nthChildElementByTagName( 'div', 1 ) );
-
-        self::assertNull( $el->nthChildElementByTagName( 'Foo' ) );
-
+    public function testToStringForString() : void {
+        $el = new Element( i_children: 'foo' );
+        self::assertSame( '<div>foo</div>', strval( $el ) );
     }
 
 
-    /*
-    public function testRenderChild() : void {
-
-        $el = $this->element( 'foo' );
-
-        self::assertEquals( 'bar', $el->myRenderChild( 'bar' ) );
-        self::assertEquals( '2', $el->myRenderChild( 2 ) );
-        self::assertEquals( '2.3', $el->myRenderChild( 2.3 ) );
-        self::assertEquals( 'true', $el->myRenderChild( true ) );
-        self::assertEquals( 'false', $el->myRenderChild( false ) );
-        self::assertEquals( 'barbaz', $el->myRenderChild( [ 'bar', 'baz' ] ) );
-        self::assertEquals( '', $el->myRenderChild( null ) );
-
-        $el2 = $this->element( 'qux' );
-        self::assertEquals( (string) $el2, $el->myRenderChild( $el2 ) );
-
-        self::assertSame( '', $el->myRenderChild( fopen( '/dev/null', 'rb' ) ) );
-    }
+    public function testToStringForStringable() : void {
+        $el = new Element( i_children: new class() {
 
 
-    public function testSetChecked() : void {
-        $el = $this->element( 'foo' );
-        $el->setChecked( true );
-        self::assertEquals( '<foo checked></foo>', strval( $el ) );
-
-        $el->setChecked( false );
-        self::assertEquals( '<foo></foo>', strval( $el ) );
-    }
-    */
+            public function __toString() : string {
+                return 'foo';
+            }
 
 
-    public function testSetClass() : void {
-        $el = new Element( 'foo' );
-        $el->setClass( 'bar baz' );
-        self::assertEquals( '<div class="bar baz">foo</div>', strval( $el ) );
-        $el->setClass( false );
-        self::assertEquals( '<div>foo</div>', strval( $el ) );
-    }
-
-
-    /*
-    public function testSetRequired() : void {
-        $el = $this->element( 'foo' );
-        $el->setRequired( true );
-        self::assertEquals( '<foo required></foo>', strval( $el ) );
-
-        $el->setRequired( false );
-        self::assertEquals( '<foo></foo>', strval( $el ) );
-    }
-    */
-
-
-    public function testToString() : void {
-
-        $el = $this->element( 'example' );
-        $el->setAccessKey( 'c' );
-        $el->setAttribute( 'foo', 'bar', 'baz' );
-        $el->ariaLabel( 'Close' );
-        $el->class( 'qux', 'quux' );
-        $el->tabIndex( 2 );
-        $el->addStyle( 'color: blue;' );
-        $el->setStyle( 'color: red;' );
-        $el->addStyle( 'background: none;' );
-        $el->setTitle( 'Titled' );
-        $el->setAttribute( 'wokka', 'bop' );
-        $el->removeAttribute( 'wokka' );
-        $el->contentEditable();
-        $el->hidden();
-        $el->setDir( 'rtl' );
-        $el->draggable( false );
-        $el->draggable();
-        $el->translate( false );
-        $el->spellCheck( false );
-        $el->setLang( 'en-US' );
-
-        $el2 = Element::synthetic( 'el2' );
-        $el3 = ( new Element() )->id( 'el3' );
-        $el->append( $el2, $el3 );
-        $el->removeChildById( 'el3' );
-
-        /** @noinspection HtmlUnknownAttribute */
-        $stExpect =
-            '<div accesskey="c" aria-label="Close" class="qux quux" contenteditable="true" dir="rtl" draggable="true" foo="bar baz" hidden lang="en-US" spellcheck="false" style="color: red; background: none;" tabindex="2" title="Titled" translate="no">example<el2></el2></div>';
-
-        self::assertEquals( $stExpect, strval( $el ) );
-
+        } );
+        self::assertSame( '<div>foo</div>', strval( $el ) );
     }
 
 
 }
-

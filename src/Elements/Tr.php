@@ -6,7 +6,6 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\HtmlElement;
-use JDWX\HTML5\SortWrapper;
 use Stringable;
 
 
@@ -27,9 +26,6 @@ class Tr extends HtmlElement {
         foreach ( $i_rx as $x ) {
             if ( is_array( $x ) ) {
                 $this->td( $x );
-            } elseif ( $x instanceof SortWrapper ) {
-                $td = $this->td( $x->stContent );
-                $td->addAttribute( 'sort-value', $x->stSortValue );
             } else {
                 $this->td( strval( $x ) );
             }

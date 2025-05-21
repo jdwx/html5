@@ -64,7 +64,9 @@
     "alwaysClose": false,
     "attributes": {
       "alt": "string",
-      "src": "string"
+      "src": "string",
+      "width": "int",
+      "height": "int"
     }
   },
   "input": {

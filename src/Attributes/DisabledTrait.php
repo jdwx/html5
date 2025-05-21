@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait DisabledTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addDisabled( bool|string ...$values ) : static {
+    public function addDisabled( string|true ...$values ) : static {
         return $this->addAttribute( 'disabled', ...$values );
     }
 

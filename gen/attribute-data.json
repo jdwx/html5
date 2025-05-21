@@ -6,6 +6,10 @@
     "mapBool": true
   },
   "Aria-label": "string",
+  "Class": {
+    "type": "string",
+    "useAdd": true
+  },
   "ColSpan": "int",
   "Dir": "string",
   "Draggable": {
@@ -21,6 +25,10 @@
   "Hidden": {
     "type": "bool",
     "default": "true"
+  },
+  "Id": {
+    "type": "string",
+    "withEx": true
   },
   "Lang": "string",
   "SpellCheck": {
@@ -39,7 +47,7 @@
     "default": "true",
     "type": "bool",
     "mapBool": {
-      "false": "no"
+      "false": "'no'"
     }
   },
   "Placeholder": {

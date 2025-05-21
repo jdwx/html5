@@ -7,29 +7,37 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
+use JDWX\HTML5\Attributes\ClassTrait;
+use JDWX\HTML5\Attributes\IdTrait;
+use JDWX\HTML5\Traits\AriaTrait;
 use JDWX\HTML5\Traits\AttributeTrait;
+use JDWX\HTML5\Traits\ElementListTrait;
+use JDWX\HTML5\Traits\GlobalAttributesTrait;
 use JDWX\HTML5\Traits\TagTrait;
-use JDWX\Web\Stream\StringableStreamInterface;
 use JDWX\Web\Stream\StringableStreamTrait;
 use Stringable;
 
 
-class Element implements StringableStreamInterface {
+class Element {
 
 
+    use AriaTrait;
     use AttributeTrait;
+    use ClassTrait;
+    use ElementListTrait;
+    use GlobalAttributesTrait;
+    use IdTrait;
     use StringableStreamTrait;
     use TagTrait;
 
 
-    /** @var list<string|Stringable> */
-    private array $rChildren;
+    protected const string TAG_NAME = 'div';
 
 
-    /** @param list<string|Stringable>|string|Stringable $i_children */
-    public function __construct( string $i_stElement = 'div', array|string|Stringable $i_children = [] ) {
-        $this->setTagName( $i_stElement );
-        $this->rChildren = is_array( $i_children ) ? $i_children : [ $i_children ];
+    /** @param array<string|Stringable>|string|Stringable $i_children */
+    public function __construct( array|string|Stringable $i_children = [] ) {
+        $this->setTagName( static::TAG_NAME );
+        $this->append( $i_children );
     }
 
 
@@ -55,59 +63,55 @@ class Element implements StringableStreamInterface {
     }
 
 
-    /**
-     * @param iterable<string|Stringable|iterable<string|Stringable|null>|null>|string|Stringable|null ...$i_children
-     * @noinspection PhpDocSignatureInspection
-     */
-    public function append( iterable|string|Stringable|null ...$i_children ) : static {
-        foreach ( $i_children as $child ) {
-            if ( is_array( $child ) ) {
-                $this->append( ... $child );
-            } else {
-                $this->appendChild( $child );
+    /** @param array<string|Stringable>|string|Stringable $i_children */
+    public static function synthetic( string $i_stTagName, array|string|Stringable $i_children = [] ) : static {
+        /** @phpstan-ignore-next-line */
+        $x = new static( $i_children );
+        $x->setTagName( $i_stTagName );
+        return $x;
+    }
+
+
+    protected static function filterHasClass( string $i_stClass ) : callable {
+        return self::filterByHasAttribute( 'class', $i_stClass );
+    }
+
+
+    protected static function filterNotHasClass( string $i_stClass ) : callable {
+        return self::filterByNotHasAttribute( 'class', $i_stClass );
+    }
+
+
+    /** Adds one or more classes to (direct) child elements of the current element. */
+    public function addChildClasses( ?string ...$x ) : static {
+        foreach ( $this->childElements() as $child ) {
+            $st = array_shift( $x );
+            if ( is_string( $st ) ) {
+                $child->class( $st );
             }
         }
         return $this;
     }
 
 
-    public function appendChild( string|Stringable|null $i_stBody ) : static {
-        if ( ! is_null( $i_stBody ) ) {
-            $this->rChildren[] = $i_stBody;
-        }
-        return $this;
+    public function addClass( bool|string ...$values ) : static {
+        return $this->addAttribute( 'class', ...$values );
     }
 
 
-    /** @return iterable<Element> */
-    public function childElements( ?callable $i_fnFilter = null ) : iterable {
-        foreach ( $this->rChildren as $child ) {
-            if ( $child instanceof Element ) {
-                if ( ! $i_fnFilter || $i_fnFilter( $child ) ) {
-                    yield $child;
-                }
-            }
-        }
+    public function appendChildElement( Element $x ) : Element {
+        $this->appendChild( $x );
+        return $x;
     }
 
 
-    /** @return iterable<string|Stringable> */
-    public function children( ?callable $i_fnFilter = null ) : iterable {
-        foreach ( $this->rChildren as $child ) {
-            if ( ! $i_fnFilter || $i_fnFilter( $child ) ) {
-                yield $child;
-            }
-        }
+    public function getElementById( string $i_stId ) : Element|null {
+        return $this->nthChildElementById( $i_stId, 0 );
     }
 
 
-    public function countChildElements() : int {
-        return iterator_count( $this->childElements() );
-    }
-
-
-    public function countChildren() : int {
-        return count( $this->rChildren );
+    public function hasChildren() : bool {
+        return 0 < $this->countChildren();
     }
 
 
@@ -117,73 +121,54 @@ class Element implements StringableStreamInterface {
     }
 
 
-    public function nthChild( int $i_n ) : string|Stringable|null {
-        return $this->rChildren[ $i_n ] ?? null;
-    }
-
-
-    public function nthChildElement( int $i_n ) : Element|null {
-        foreach ( $this->rChildren as $child ) {
-            if ( $child instanceof Element ) {
+    public function nthChildElementByClass( string $i_stClass, int $i_n = 0 ) : Element|null {
+        foreach ( $this->childElements( self::filterHasClass( $i_stClass ) ) as $child ) {
+            assert( $child instanceof Element );
+            if ( $child->hasAttribute( 'class', $i_stClass ) ) {
                 if ( 0 === $i_n ) {
                     return $child;
                 }
-                $i_n--;
+                --$i_n;
             }
         }
         return null;
     }
 
 
-    public function prependChild( string|Stringable|null $i_stBody ) : static {
-        if ( ! is_null( $i_stBody ) ) {
-            array_unshift( $this->rChildren, $i_stBody );
-        }
-        return $this;
-    }
-
-
-    public function removeAllChildren() : static {
-        $this->rChildren = [];
-        return $this;
-    }
-
-
-    public function removeChild( string|Stringable $i_child ) : static {
-        foreach ( $this->rChildren as $i => $child ) {
-            if ( $child === $i_child ) {
-                unset( $this->rChildren[ $i ] );
-                return $this;
+    public function nthChildElementById( string $i_stId, int $i_n ) : Element|null {
+        foreach ( $this->childElements() as $child ) {
+            assert( $child instanceof Element );
+            if ( $child->getAttribute( 'id' ) === $i_stId ) {
+                if ( 0 === $i_n ) {
+                    return $child;
+                }
+                --$i_n;
             }
         }
-        return $this;
+        return null;
     }
 
 
-    public function removeChildren( callable $i_fnCallback ) : static {
-        $this->rChildren = array_values( array_filter( $this->rChildren,
-            fn( string|Stringable $i_child ) => ! $i_fnCallback( $i_child )
-        ) );
-        return $this;
-    }
-
-
-    public function removeNthChild( int $i_n = 0 ) : static {
-        if ( isset( $this->rChildren[ $i_n ] ) ) {
-            unset( $this->rChildren[ $i_n ] );
-        }
-        return $this;
-    }
-
-
-    public function removeNthChildElement( int $i_n = 0 ) : static {
-        foreach ( $this->rChildren as $i => $child ) {
-            if ( $child instanceof Element ) {
+    public function nthChildElementByTagName( string $i_stTag, int $i_n = 0 ) : Element|null {
+        foreach ( $this->childElements() as $child ) {
+            assert( $child instanceof Element );
+            if ( $child->getTagName() === $i_stTag ) {
                 if ( 0 === $i_n ) {
-                    unset( $this->rChildren[ $i ] );
-                    return $this;
+                    return $child;
                 }
-                $i_n--;
+                --$i_n;
+            }
+        }
+        return null;
+    }
+
+
+    public function removeChildById( string $i_stId ) : static {
+        foreach ( $this->childElements() as $child ) {
+            assert( $child instanceof Element );
+            if ( $child->getAttribute( 'id' ) === $i_stId ) {
+                $this->removeChild( $child );
+                break;
             }
         }
         return $this;

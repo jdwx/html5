@@ -75,7 +75,7 @@ class AbstractInfo {
     /**
      * @suppress PhanUndeclaredStaticProperty
      */
-    private static function load() : void {
+    protected static function load() : void {
         /** @phpstan-ignore staticProperty.notFound */
         if ( ! isset( static::$rData ) ) {
             /** @phpstan-ignore staticProperty.notFound */

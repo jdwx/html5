@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait StyleTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addStyle( bool|string ...$values ) : static {
+    public function addStyle( string|true ...$values ) : static {
         return $this->addAttribute( 'style', ...$values );
     }
 
@@ -39,8 +39,8 @@ trait StyleTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function style( string|false|null $value ) : static {
-        return $this->addStyle( $value ?? false );
+    public function style( false|string|null ...$values ) : static {
+        return $this->addAttributeFromBare( 'style', ...$values );
     }
 
 

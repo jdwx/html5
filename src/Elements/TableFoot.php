@@ -8,10 +8,10 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Children\TableSectionTrait;
-use JDWX\HTML5\HtmlElement;
+use JDWX\HTML5\Element;
 
 
-class TableFoot extends HtmlElement {
+class TableFoot extends Element {
 
 
     protected const string TAG_NAME = 'tfoot';

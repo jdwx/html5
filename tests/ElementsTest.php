@@ -8,9 +8,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/MyTestCase.php';
 
 
+use JDWX\HTML5\Element;
 use JDWX\HTML5\ElementFactory;
 use JDWX\HTML5\Elements;
-use JDWX\HTML5\HtmlElement;
 
 
 class ElementsTest extends MyTestCase {
@@ -85,7 +85,7 @@ class ElementsTest extends MyTestCase {
     /** @noinspection PhpConditionAlreadyCheckedInspection */
     public function testInput() : void {
         $inp = ( new Elements\Input() )->name( 'foo' )->type( 'text' )->value( 'bar' )
-            ->size( 20 )->maxLength( 30 )->setPlaceHolder( 'baz' );
+            ->size( 20 )->maxLength( 30 )->setPlaceholder( 'baz' );
         self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text" value="bar">',
             $inp );
 
@@ -201,17 +201,17 @@ class ElementsTest extends MyTestCase {
     }
 
 
-    private function checkSimpleContainsFoo( HtmlElement $i_element, string $i_name, string $i_foo = 'foo' ) : void {
+    private function checkSimpleContainsFoo( Element $i_element, string $i_name, string $i_foo = 'foo' ) : void {
         self::assertEquals( "<{$i_name}>{$i_foo}</{$i_name}>", strval( $i_element ) );
     }
 
 
-    private function checkSimpleElement( HtmlElement $i_element, string $i_name ) : void {
+    private function checkSimpleElement( Element $i_element, string $i_name ) : void {
         self::assertEquals( "<{$i_name}></{$i_name}>", strval( $i_element ) );
     }
 
 
-    private function checkSimpleUnclosed( HtmlElement $i_element, string $i_name ) : void {
+    private function checkSimpleUnclosed( Element $i_element, string $i_name ) : void {
         self::assertEquals( "<{$i_name}>", strval( $i_element ) );
     }
 

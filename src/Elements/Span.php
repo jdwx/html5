@@ -4,10 +4,10 @@
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\HtmlElement;
+use JDWX\HTML5\Element;
 
 
-class Span extends HtmlElement {
+class Span extends Element {
 
 
     protected const string TAG_NAME = 'span';

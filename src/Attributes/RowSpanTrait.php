@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait RowSpanTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addRowSpan( bool|string ...$values ) : static {
+    public function addRowSpan( string|true ...$values ) : static {
         return $this->addAttribute( 'rowspan', ...$values );
     }
 
@@ -33,7 +33,7 @@ trait RowSpanTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function rowSpan( int|false|null $value ) : static {
+    public function rowSpan( false|int|null $value ) : static {
         return $this->setRowSpan( is_int( $value ) ? strval( $value ) : false );
     }
 

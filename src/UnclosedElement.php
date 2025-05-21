@@ -10,7 +10,7 @@ namespace JDWX\HTML5;
 use Stringable;
 
 
-class UnclosedHtmlElement extends HtmlElement {
+class UnclosedElement extends Element {
 
 
     public function __construct( Stringable|array|string $i_children = [] ) {

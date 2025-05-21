@@ -26,6 +26,20 @@ final class AttributeTest extends TestCase {
         $obj = $this->newObject();
         $obj->addAttribute( 'foo', 'bar', 'baz', 'qux' );
         self::assertEquals( 'bar baz qux', $obj->getAttribute( 'foo' ) );
+    }
+
+
+    public function testAddAttributeWithTrue() : void {
+        $obj = $this->newObject();
+        $obj->addAttribute( 'foo', true );
+        self::assertTrue( $obj->getAttribute( 'foo' ) );
+        $obj->addAttribute( 'foo', 'bar' );
+        self::assertEquals( 'bar', $obj->getAttribute( 'foo' ) );
+
+        $obj = $this->newObject();
+        $obj->addAttribute( 'foo', 'bar' );
+        $obj->addAttribute( 'foo', true );
+        self::assertEquals( 'bar', $obj->getAttribute( 'foo' ) );
 
     }
 

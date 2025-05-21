@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait TabIndexTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addTabIndex( bool|string ...$values ) : static {
+    public function addTabIndex( string|true ...$values ) : static {
         return $this->addAttribute( 'tabindex', ...$values );
     }
 
@@ -39,7 +39,7 @@ trait TabIndexTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function tabIndex( int|false|null $value ) : static {
+    public function tabIndex( false|int|null $value ) : static {
         return $this->setTabIndex( is_int( $value ) ? strval( $value ) : false );
     }
 

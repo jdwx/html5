@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait LangTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addLang( bool|string ...$values ) : static {
+    public function addLang( string|true ...$values ) : static {
         return $this->addAttribute( 'lang', ...$values );
     }
 
@@ -33,7 +33,7 @@ trait LangTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function lang( string|false|null $value ) : static {
+    public function lang( false|string|null $value ) : static {
         return $this->setLang( $value ?? false );
     }
 

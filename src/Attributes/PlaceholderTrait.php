@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait PlaceholderTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addPlaceholder( bool|string ...$values ) : static {
+    public function addPlaceholder( string|true ...$values ) : static {
         return $this->addAttribute( 'placeholder', ...$values );
     }
 
@@ -33,7 +33,7 @@ trait PlaceholderTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function placeholder( string|false|null $value ) : static {
+    public function placeholder( false|string|null $value ) : static {
         return $this->setPlaceholder( $value ?? false );
     }
 

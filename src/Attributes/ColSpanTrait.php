@@ -7,23 +7,23 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait ColSpanTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addColSpan( bool|string ...$values ) : static {
+    public function addColSpan( string|true ...$values ) : static {
         return $this->addAttribute( 'colspan', ...$values );
     }
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function colSpan( int|false|null $value ) : static {
+    public function colSpan( false|int|null $value ) : static {
         return $this->setColSpan( is_int( $value ) ? strval( $value ) : false );
     }
 

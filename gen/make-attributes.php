@@ -17,8 +17,18 @@ require_once __DIR__ . '/AttributeInfo.php';
 
     array_shift( $argv ); # Don't want command.
 
-    $stTrait = array_shift( $argv );
-    $trait = new AttributeInfo( $stTrait, false );
+    if ( empty( $argv ) ) {
+        $argv = AttributeInfo::listKeys();
+    }
+
+    foreach ( $argv as $stTrait ) {
+        MakeAttribute( $stTrait );
+    }
+} )( $argv );
+
+
+function MakeAttribute( string $i_stAttribute ) : void {
+    $trait = new AttributeInfo( $i_stAttribute, false );
 
     $st = <<<ZEND
     <?php
@@ -30,13 +40,13 @@ require_once __DIR__ . '/AttributeInfo.php';
     namespace JDWX\HTML5\Attributes;
     
     
-    use JDWX\HTML5\Traits\AbstractElementTrait;
+    use JDWX\HTML5\Traits\AbstractAttributeTrait;
     
     
     trait {$trait->trait()} {
     
     
-        use AbstractElementTrait;
+        use AbstractAttributeTrait;
     
     
     
@@ -57,4 +67,4 @@ require_once __DIR__ . '/AttributeInfo.php';
     Generator::updateFile( $stFilename, $st, $trait->name() );
 
 
-} )( $argv );
+}

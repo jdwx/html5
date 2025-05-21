@@ -5,13 +5,13 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Children\ListTrait;
-use JDWX\HTML5\HtmlElement;
+use JDWX\HTML5\Element;
 
 
 /** @noinspection PhpClassNamingConventionInspection */
 
 
-class Ul extends HtmlElement {
+class Ul extends Element {
 
 
     protected const string TAG_NAME = 'ul';

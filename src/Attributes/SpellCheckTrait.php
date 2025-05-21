@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait SpellCheckTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addSpellCheck( bool|string ...$values ) : static {
+    public function addSpellCheck( string|true ...$values ) : static {
         return $this->addAttribute( 'spellcheck', ...$values );
     }
 

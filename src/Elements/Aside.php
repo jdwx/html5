@@ -7,10 +7,10 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Elements;
 
 
-use JDWX\HTML5\HtmlElement;
+use JDWX\HTML5\Element;
 
 
-class Aside extends HtmlElement {
+class Aside extends Element {
 
 
     protected const string TAG_NAME = 'aside';

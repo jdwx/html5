@@ -7,23 +7,23 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait AccessKeyTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function accessKey( string|false|null $value ) : static {
+    public function accessKey( false|string|null $value ) : static {
         return $this->setAccessKey( $value ?? false );
     }
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addAccessKey( bool|string ...$values ) : static {
+    public function addAccessKey( string|true ...$values ) : static {
         return $this->addAttribute( 'accesskey', ...$values );
     }
 

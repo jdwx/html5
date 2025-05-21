@@ -7,23 +7,23 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait DirTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addDir( bool|string ...$values ) : static {
+    public function addDir( string|true ...$values ) : static {
         return $this->addAttribute( 'dir', ...$values );
     }
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function dir( string|false|null $value ) : static {
+    public function dir( false|string|null $value ) : static {
         return $this->setDir( $value ?? false );
     }
 

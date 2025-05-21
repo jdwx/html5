@@ -8,11 +8,11 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Attributes\PlaceholderTrait;
-use JDWX\HTML5\HtmlElement;
+use JDWX\HTML5\Element;
 use JDWX\HTML5\Traits\FormChildTrait;
 
 
-class TextArea extends HtmlElement {
+class TextArea extends Element {
 
 
     use FormChildTrait;

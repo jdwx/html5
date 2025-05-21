@@ -7,23 +7,23 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait FormTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addForm( bool|string ...$values ) : static {
+    public function addForm( string|true ...$values ) : static {
         return $this->addAttribute( 'form', ...$values );
     }
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function form( string|false|null $value ) : static {
+    public function form( false|string|null $value ) : static {
         return $this->setForm( $value ?? false );
     }
 

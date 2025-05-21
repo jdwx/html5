@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait NameTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addName( bool|string ...$values ) : static {
+    public function addName( string|true ...$values ) : static {
         return $this->addAttribute( 'name', ...$values );
     }
 
@@ -33,7 +33,7 @@ trait NameTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function name( string|false|null $value ) : static {
+    public function name( false|string|null $value ) : static {
         return $this->setName( $value ?? false );
     }
 

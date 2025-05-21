@@ -15,12 +15,11 @@ trait AttributeTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addAttribute( string $i_stName, string ...$i_rstValues ) : static {
-        if ( empty( $this->rAttributes[ $i_stName ] ) || true === $this->rAttributes[ $i_stName ] ) {
-            $this->rAttributes[ $i_stName ] = join( ' ', $i_rstValues );
-            return $this;
+    public function addAttribute( string $i_stName, string|true ...$i_values ) : static {
+
+        foreach ( $i_values as $value ) {
+            $this->addOneAttribute( $i_stName, $value );
         }
-        $this->rAttributes[ $i_stName ] .= ' ' . join( ' ', $i_rstValues );
         return $this;
     }
 
@@ -58,6 +57,15 @@ trait AttributeTrait {
             return $xValue;
         }
         throw new \InvalidArgumentException( 'Attribute "' . $i_stName . '" not set' );
+    }
+
+
+    public function getAttributeStringEx( string $i_stName ) : string {
+        $xValue = $this->getAttributeEx( $i_stName );
+        if ( is_string( $xValue ) ) {
+            return $xValue;
+        }
+        throw new \InvalidArgumentException( 'Attribute "' . $i_stName . '" has no value' );
     }
 
 
@@ -116,6 +124,34 @@ trait AttributeTrait {
 
         $this->rAttributes[ $i_stName ] = join( ' ', $i_values );
         return $this;
+    }
+
+
+    /** @suppress PhanTypeMismatchReturn */
+    protected function addAttributeFromBare( string $i_stName, bool|string|null ...$i_values ) : static {
+        foreach ( $i_values as $value ) {
+            if ( $value === false || $value === null ) {
+                $this->removeAttribute( $i_stName );
+                continue;
+            }
+            $this->addOneAttribute( $i_stName, $value );
+        }
+        return $this;
+    }
+
+
+    protected function addOneAttribute( string $i_stName, string|true $i_value ) : void {
+        if ( true === $i_value ) {
+            if ( ! isset( $this->rAttributes[ $i_stName ] ) ) {
+                $this->rAttributes[ $i_stName ] = true;
+            }
+            return;
+        }
+        if ( ! isset( $this->rAttributes[ $i_stName ] ) || true === $this->rAttributes[ $i_stName ] ) {
+            $this->rAttributes[ $i_stName ] = $i_value;
+            return;
+        }
+        $this->rAttributes[ $i_stName ] .= ' ' . $i_value;
     }
 
 

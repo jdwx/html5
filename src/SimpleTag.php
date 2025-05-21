@@ -9,6 +9,7 @@ namespace JDWX\HTML5;
 
 use JDWX\HTML5\Traits\AttributeTrait;
 use JDWX\HTML5\Traits\TagTrait;
+use JDWX\Web\Stream\StringableStreamTrait;
 use Stringable;
 
 
@@ -16,6 +17,7 @@ class SimpleTag {
 
 
     use AttributeTrait;
+    use StringableStreamTrait;
     use TagTrait;
 
 

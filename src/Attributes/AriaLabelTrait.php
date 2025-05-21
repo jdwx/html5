@@ -7,23 +7,23 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait AriaLabelTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addAriaLabel( bool|string ...$values ) : static {
+    public function addAriaLabel( string|true ...$values ) : static {
         return $this->addAttribute( 'aria-label', ...$values );
     }
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function ariaLabel( string|false|null $value ) : static {
+    public function ariaLabel( false|string|null $value ) : static {
         return $this->setAriaLabel( $value ?? false );
     }
 

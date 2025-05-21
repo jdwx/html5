@@ -7,17 +7,17 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Attributes;
 
 
-use JDWX\HTML5\Traits\AbstractElementTrait;
+use JDWX\HTML5\Traits\AbstractAttributeTrait;
 
 
 trait TitleTrait {
 
 
-    use AbstractElementTrait;
+    use AbstractAttributeTrait;
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function addTitle( bool|string ...$values ) : static {
+    public function addTitle( string|true ...$values ) : static {
         return $this->addAttribute( 'title', ...$values );
     }
 
@@ -39,7 +39,7 @@ trait TitleTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function title( string|false|null $value ) : static {
+    public function title( false|string|null $value ) : static {
         return $this->setTitle( $value ?? false );
     }
 

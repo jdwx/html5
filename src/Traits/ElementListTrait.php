@@ -25,7 +25,7 @@ trait ElementListTrait {
      */
     public function append( iterable|string|Stringable|null ...$i_children ) : static {
         foreach ( $i_children as $child ) {
-            if ( is_array( $child ) ) {
+            if ( is_iterable( $child ) ) {
                 $this->append( ... $child );
             } else {
                 $this->appendChild( $child );

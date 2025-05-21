@@ -79,7 +79,9 @@
       "type": "string"
     },
     "traits": [
-      "FormChildTrait",
+      "FormChildTrait"
+    ],
+    "attrTraits": [
       "PlaceholderTrait",
       "ValueTrait"
     ]
@@ -100,21 +102,29 @@
   },
   "tbody": {
     "className": "TableBody",
-    "traits": [
+    "childTraits": [
       "TableSectionTrait"
     ]
   },
-  "td": true,
+  "td": {
+    "traits": [
+      "TdThTrait"
+    ]
+  },
   "tfoot": {
     "className": "TableFoot",
-    "traits": [
+    "childTraits": [
       "TableSectionTrait"
     ]
   },
-  "th": true,
+  "th": {
+    "traits": [
+      "TdThTrait"
+    ]
+  },
   "thead": {
     "className": "TableHead",
-    "traits": [
+    "childTraits": [
       "TableSectionTrait"
     ]
   },

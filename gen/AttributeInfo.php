@@ -24,13 +24,6 @@ class AttributeInfo extends TraitInfo {
     }
 
 
-    /** @return list<string> */
-    public static function listKeys() : array {
-        self::load();
-        return array_keys( static::$rData );
-    }
-
-
     public function attrName() : string {
         return lcfirst( $this->stTagName );
     }

@@ -73,9 +73,20 @@ class AbstractInfo {
 
 
     /**
+     * @return list<string>
      * @suppress PhanUndeclaredStaticProperty
      */
-    protected static function load() : void {
+    public static function listKeys() : array {
+        self::load();
+        /** @phpstan-ignore-next-line */
+        return array_keys( static::$rData );
+    }
+
+
+    /**
+     * @suppress PhanUndeclaredStaticProperty
+     */
+    private static function load() : void {
         /** @phpstan-ignore staticProperty.notFound */
         if ( ! isset( static::$rData ) ) {
             /** @phpstan-ignore staticProperty.notFound */

@@ -18,19 +18,19 @@ class Table extends Element {
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function tbody( array|string|Stringable $i_children ) : TableBody {
+    public function tbody( array|string|Stringable $i_children = [] ) : TableBody {
         return ( new TableBody( $i_children ) )->withParent( $this );
     }
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function tfoot( array|string|Stringable $i_children ) : TableFoot {
+    public function tfoot( array|string|Stringable $i_children = [] ) : TableFoot {
         return ( new TableFoot( $i_children ) )->withParent( $this );
     }
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function thead( array|string|Stringable $i_children ) : TableHead {
+    public function thead( array|string|Stringable $i_children = [] ) : TableHead {
         return ( new TableHead( $i_children ) )->withParent( $this );
     }
 

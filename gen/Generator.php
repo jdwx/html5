@@ -77,7 +77,7 @@ class Generator {
         $stFunction = lcfirst( $tag->name() );
         return '    ' . trim( <<<ZEND
             /** @param array<string|Stringable>|string|Stringable \$i_children */
-            public function {$stFunction}( array|string|Stringable \$i_children ) : {$tag->className()} {
+            public function {$stFunction}( array|string|Stringable \$i_children = [] ) : {$tag->className()} {
                 {$stTrait}return ( new {$tag->className()}( \$i_children ) )->withParent( \$this );
             }
         ZEND
@@ -239,6 +239,14 @@ class Generator {
                 return "\${$i_stVarName} ?? false";
             }
             return "strval( \${$i_stVarName} )";
+        }
+        if ( 'float|int' === $stBaseType ) {
+            if ( $bFalsy ) {
+                return "is_int( \${$i_stVarName} ) || is_float( \${$i_stVarName} ) ? strval( \${$i_stVarName} ) : false";
+            }
+            if ( $bNullable ) {
+                return "is_null( \${$i_stVarName} ) ? false : strval( \${$i_stVarName} )";
+            }
         }
         var_dump( $i_stVarType );
         exit( 1 );

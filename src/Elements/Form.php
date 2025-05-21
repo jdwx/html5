@@ -16,62 +16,62 @@ class Form extends Element {
     protected const string TAG_NAME = 'form';
 
 
-    public function action( string|false|null $value ) : static {
+    public function action( false|string|null $value ) : static {
         return $this->setAction( $value ?? false );
     }
 
 
-    public function addAction( bool|string ...$values ) : static {
+    public function addAction( string|true ...$values ) : static {
         return $this->addAttribute( 'action', ...$values );
     }
 
 
-    public function addEncType( bool|string ...$values ) : static {
+    public function addEncType( string|true ...$values ) : static {
         return $this->addAttribute( 'enctype', ...$values );
     }
 
 
-    public function addMethod( bool|string ...$values ) : static {
+    public function addMethod( string|true ...$values ) : static {
         return $this->addAttribute( 'method', ...$values );
     }
 
 
-    public function encType( string|false|null $value ) : static {
+    public function encType( false|string|null $value ) : static {
         return $this->setEncType( $value ?? false );
     }
 
 
-    public function getAction() : bool|string|null {
+    public function getAction() : string|true|null {
         return $this->getAttribute( 'action' );
     }
 
 
-    public function getEncType() : bool|string|null {
+    public function getEncType() : string|true|null {
         return $this->getAttribute( 'enctype' );
     }
 
 
-    public function getMethod() : bool|string|null {
+    public function getMethod() : string|true|null {
         return $this->getAttribute( 'method' );
     }
 
 
-    public function hasAction( bool|string|null $value = null ) : bool {
+    public function hasAction( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'action', $value );
     }
 
 
-    public function hasEncType( bool|string|null $value = null ) : bool {
+    public function hasEncType( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'enctype', $value );
     }
 
 
-    public function hasMethod( bool|string|null $value = null ) : bool {
+    public function hasMethod( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'method', $value );
     }
 
 
-    public function method( string|false|null $value ) : static {
+    public function method( false|string|null $value ) : static {
         return $this->setMethod( $value ?? false );
     }
 

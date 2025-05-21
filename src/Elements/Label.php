@@ -16,22 +16,22 @@ class Label extends Element {
     protected const string TAG_NAME = 'label';
 
 
-    public function addFor( bool|string ...$values ) : static {
+    public function addFor( string|true ...$values ) : static {
         return $this->addAttribute( 'for', ...$values );
     }
 
 
-    public function for( string|false|null $value ) : static {
+    public function for( false|string|null $value ) : static {
         return $this->setFor( $value ?? false );
     }
 
 
-    public function getFor() : bool|string|null {
+    public function getFor() : string|true|null {
         return $this->getAttribute( 'for' );
     }
 
 
-    public function hasFor( bool|string|null $value = null ) : bool {
+    public function hasFor( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'for', $value );
     }
 

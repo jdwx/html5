@@ -18,13 +18,13 @@ class Dl extends Element {
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function dd( array|string|Stringable $i_children ) : Dd {
+    public function dd( array|string|Stringable $i_children = [] ) : Dd {
         return ( new Dd( $i_children ) )->withParent( $this );
     }
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function dt( array|string|Stringable $i_children ) : Dt {
+    public function dt( array|string|Stringable $i_children = [] ) : Dt {
         return ( new Dt( $i_children ) )->withParent( $this );
     }
 

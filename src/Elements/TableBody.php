@@ -14,8 +14,10 @@ use JDWX\HTML5\Element;
 class TableBody extends Element {
 
 
+    use TableSectionTrait;
+
+
     protected const string TAG_NAME = 'tbody';
 
 
-    use TableSectionTrait;
 }

@@ -24,37 +24,37 @@ class Input extends UnclosedElement {
     protected const string TAG_NAME = 'input';
 
 
-    public function addChecked( bool|string ...$values ) : static {
+    public function addChecked( string|true ...$values ) : static {
         return $this->addAttribute( 'checked', ...$values );
     }
 
 
-    public function addMax( bool|string ...$values ) : static {
+    public function addMax( string|true ...$values ) : static {
         return $this->addAttribute( 'max', ...$values );
     }
 
 
-    public function addMaxLength( bool|string ...$values ) : static {
+    public function addMaxLength( string|true ...$values ) : static {
         return $this->addAttribute( 'maxlength', ...$values );
     }
 
 
-    public function addMin( bool|string ...$values ) : static {
+    public function addMin( string|true ...$values ) : static {
         return $this->addAttribute( 'min', ...$values );
     }
 
 
-    public function addPattern( bool|string ...$values ) : static {
+    public function addPattern( string|true ...$values ) : static {
         return $this->addAttribute( 'pattern', ...$values );
     }
 
 
-    public function addSize( bool|string ...$values ) : static {
+    public function addSize( string|true ...$values ) : static {
         return $this->addAttribute( 'size', ...$values );
     }
 
 
-    public function addType( bool|string ...$values ) : static {
+    public function addType( string|true ...$values ) : static {
         return $this->addAttribute( 'type', ...$values );
     }
 
@@ -64,92 +64,92 @@ class Input extends UnclosedElement {
     }
 
 
-    public function getChecked() : bool|string|null {
+    public function getChecked() : string|true|null {
         return $this->getAttribute( 'checked' );
     }
 
 
-    public function getMax() : bool|string|null {
+    public function getMax() : string|true|null {
         return $this->getAttribute( 'max' );
     }
 
 
-    public function getMaxLength() : bool|string|null {
+    public function getMaxLength() : string|true|null {
         return $this->getAttribute( 'maxlength' );
     }
 
 
-    public function getMin() : bool|string|null {
+    public function getMin() : string|true|null {
         return $this->getAttribute( 'min' );
     }
 
 
-    public function getPattern() : bool|string|null {
+    public function getPattern() : string|true|null {
         return $this->getAttribute( 'pattern' );
     }
 
 
-    public function getSize() : bool|string|null {
+    public function getSize() : string|true|null {
         return $this->getAttribute( 'size' );
     }
 
 
-    public function getType() : bool|string|null {
+    public function getType() : string|true|null {
         return $this->getAttribute( 'type' );
     }
 
 
-    public function hasChecked( bool|string|null $value = null ) : bool {
+    public function hasChecked( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'checked', $value );
     }
 
 
-    public function hasMax( bool|string|null $value = null ) : bool {
+    public function hasMax( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'max', $value );
     }
 
 
-    public function hasMaxLength( bool|string|null $value = null ) : bool {
+    public function hasMaxLength( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'maxlength', $value );
     }
 
 
-    public function hasMin( bool|string|null $value = null ) : bool {
+    public function hasMin( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'min', $value );
     }
 
 
-    public function hasPattern( bool|string|null $value = null ) : bool {
+    public function hasPattern( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'pattern', $value );
     }
 
 
-    public function hasSize( bool|string|null $value = null ) : bool {
+    public function hasSize( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'size', $value );
     }
 
 
-    public function hasType( bool|string|null $value = null ) : bool {
+    public function hasType( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'type', $value );
     }
 
 
-    public function max( float|int|false|null $value ) : static {
+    public function max( false|float|int|null $value ) : static {
         return $this->setMax( is_int( $value ) || is_float( $value ) ? strval( $value ) : false );
     }
 
 
-    public function maxLength( int|false|null $value ) : static {
+    public function maxLength( false|int|null $value ) : static {
         return $this->setMaxLength( is_int( $value ) ? strval( $value ) : false );
     }
 
 
-    public function min( float|int|false|null $value ) : static {
+    public function min( false|float|int|null $value ) : static {
         return $this->setMin( is_int( $value ) || is_float( $value ) ? strval( $value ) : false );
     }
 
 
-    public function pattern( string|false|null $value ) : static {
+    public function pattern( false|string|null $value ) : static {
         return $this->setPattern( $value ?? false );
     }
 
@@ -189,12 +189,12 @@ class Input extends UnclosedElement {
     }
 
 
-    public function size( int|false|null $value ) : static {
+    public function size( false|int|null $value ) : static {
         return $this->setSize( is_int( $value ) ? strval( $value ) : false );
     }
 
 
-    public function type( string|false|null $value ) : static {
+    public function type( false|string|null $value ) : static {
         return $this->setType( $value ?? false );
     }
 

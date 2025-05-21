@@ -22,7 +22,7 @@ class Fieldset extends Element {
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function legend( array|string|Stringable $i_children ) : Legend {
+    public function legend( array|string|Stringable $i_children = [] ) : Legend {
         return ( new Legend( $i_children ) )->withParent( $this );
     }
 

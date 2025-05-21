@@ -16,7 +16,21 @@ require_once __DIR__ . '/TagInfo.php';
 
     array_shift( $argv ); # Don't need the command.
 
-    $stTagName = strtolower( trim( array_shift( $argv ) ?? '' ) );
+    if ( empty( $argv ) ) {
+        $argv = TagInfo::listKeys();
+    }
+
+    foreach ( $argv as $stArg ) {
+        MakeElement( $stArg );
+    }
+
+
+} )( $argv );
+
+
+function MakeElement( string $i_stTagName ) : void {
+
+    $stTagName = strtolower( trim( $i_stTagName ) );
     if ( empty( $stTagName ) ) {
         error_log( 'No class name specified.' );
         exit( 1 );
@@ -30,6 +44,12 @@ require_once __DIR__ . '/TagInfo.php';
     $stNamingInspection = strlen( $tag->className() ) < 3 ? ' /** @noinspection PhpClassNamingConventionInspection */' : '';
     foreach ( $tag->traits() as $stTrait ) {
         $rUse[] = "use JDWX\\HTML5\\Traits\\{$stTrait};";
+    }
+    foreach ( $tag->childTraits() as $stTrait ) {
+        $rUse[] = "use JDWX\\HTML5\\Children\\{$stTrait};";
+    }
+    foreach ( $tag->attrTraits() as $stTrait ) {
+        $rUse[] = "use JDWX\\HTML5\\Attributes\\{$stTrait};";
     }
     sort( $rUse );
     $stUse = implode( "\n", $rUse ) . "\n";
@@ -54,12 +74,23 @@ class {$tag->className()} extends {$tag->baseClass()} {
 ZEND;
 
     $bAnyTraits = false;
+    $rTraits = [];
     foreach ( $tag->traits() as $stTrait ) {
-        $st .= "    use {$stTrait};\n";
+        $rTraits[ $stTrait ] = "    use {$stTrait};";
+        $bAnyTraits = true;
+    }
+    foreach ( $tag->childTraits() as $stTrait ) {
+        $rTraits[ $stTrait ] = "    use {$stTrait};";
+        $bAnyTraits = true;
+    }
+    foreach ( $tag->attrTraits() as $stTrait ) {
+        $rTraits[ $stTrait ] = "    use {$stTrait};";
         $bAnyTraits = true;
     }
     if ( $bAnyTraits ) {
-        $st .= "\n\n";
+        ksort( $rTraits );
+        $st .= implode( "\n", $rTraits );
+        $st .= "\n\n\n";
     }
 
 
@@ -86,5 +117,4 @@ ZEND;
 
     Generator::updateFile( __DIR__ . "/../src/Elements/{$tag->className()}.php", $st, $tag->className() );
 
-
-} )( $argv );
+}

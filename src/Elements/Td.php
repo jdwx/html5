@@ -14,8 +14,10 @@ use JDWX\HTML5\Traits\TdThTrait;
 class Td extends Element {
 
 
+    use TdThTrait;
+
+
     protected const string TAG_NAME = 'td';
 
 
-    use TdThTrait;
 }

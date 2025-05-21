@@ -16,37 +16,37 @@ class Anchor extends Element {
     protected const string TAG_NAME = 'a';
 
 
-    public function addDownload( bool|string ...$values ) : static {
+    public function addDownload( string|true ...$values ) : static {
         return $this->addAttribute( 'download', ...$values );
     }
 
 
-    public function addHref( bool|string ...$values ) : static {
+    public function addHref( string|true ...$values ) : static {
         return $this->addAttribute( 'href', ...$values );
     }
 
 
-    public function addHrefLang( bool|string ...$values ) : static {
+    public function addHrefLang( string|true ...$values ) : static {
         return $this->addAttribute( 'hreflang', ...$values );
     }
 
 
-    public function addMedia( bool|string ...$values ) : static {
+    public function addMedia( string|true ...$values ) : static {
         return $this->addAttribute( 'media', ...$values );
     }
 
 
-    public function addPing( bool|string ...$values ) : static {
+    public function addPing( string|true ...$values ) : static {
         return $this->addAttribute( 'ping', ...$values );
     }
 
 
-    public function addRel( bool|string ...$values ) : static {
+    public function addRel( string|true ...$values ) : static {
         return $this->addAttribute( 'rel', ...$values );
     }
 
 
-    public function addTarget( bool|string ...$values ) : static {
+    public function addTarget( string|true ...$values ) : static {
         return $this->addAttribute( 'target', ...$values );
     }
 
@@ -56,98 +56,98 @@ class Anchor extends Element {
     }
 
 
-    public function getDownload() : bool|string|null {
+    public function getDownload() : string|true|null {
         return $this->getAttribute( 'download' );
     }
 
 
-    public function getHref() : bool|string|null {
+    public function getHref() : string|true|null {
         return $this->getAttribute( 'href' );
     }
 
 
-    public function getHrefLang() : bool|string|null {
+    public function getHrefLang() : string|true|null {
         return $this->getAttribute( 'hreflang' );
     }
 
 
-    public function getMedia() : bool|string|null {
+    public function getMedia() : string|true|null {
         return $this->getAttribute( 'media' );
     }
 
 
-    public function getPing() : bool|string|null {
+    public function getPing() : string|true|null {
         return $this->getAttribute( 'ping' );
     }
 
 
-    public function getRel() : bool|string|null {
+    public function getRel() : string|true|null {
         return $this->getAttribute( 'rel' );
     }
 
 
-    public function getTarget() : bool|string|null {
+    public function getTarget() : string|true|null {
         return $this->getAttribute( 'target' );
     }
 
 
-    public function hasDownload( bool|string|null $value = null ) : bool {
+    public function hasDownload( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'download', $value );
     }
 
 
-    public function hasHref( bool|string|null $value = null ) : bool {
+    public function hasHref( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'href', $value );
     }
 
 
-    public function hasHrefLang( bool|string|null $value = null ) : bool {
+    public function hasHrefLang( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'hreflang', $value );
     }
 
 
-    public function hasMedia( bool|string|null $value = null ) : bool {
+    public function hasMedia( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'media', $value );
     }
 
 
-    public function hasPing( bool|string|null $value = null ) : bool {
+    public function hasPing( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'ping', $value );
     }
 
 
-    public function hasRel( bool|string|null $value = null ) : bool {
+    public function hasRel( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'rel', $value );
     }
 
 
-    public function hasTarget( bool|string|null $value = null ) : bool {
+    public function hasTarget( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'target', $value );
     }
 
 
-    public function href( string|false|null $value ) : static {
+    public function href( false|string|null $value ) : static {
         return $this->setHref( $value ?? false );
     }
 
 
-    public function hrefLang( string|false|null $value ) : static {
+    public function hrefLang( false|string|null $value ) : static {
         return $this->setHrefLang( $value ?? false );
     }
 
 
-    public function media( string|false|null $value ) : static {
+    public function media( false|string|null $value ) : static {
         return $this->setMedia( $value ?? false );
     }
 
 
-    public function ping( string|false|null $value ) : static {
-        return $this->addPing( $value ?? false );
+    public function ping( false|string|null ...$values ) : static {
+        return $this->addAttributeFromBare( 'ping', ...$values );
     }
 
 
-    public function rel( string|false|null $value ) : static {
-        return $this->addRel( $value ?? false );
+    public function rel( false|string|null ...$values ) : static {
+        return $this->addAttributeFromBare( 'rel', ...$values );
     }
 
 
@@ -186,7 +186,7 @@ class Anchor extends Element {
     }
 
 
-    public function target( string|false|null $value ) : static {
+    public function target( false|string|null $value ) : static {
         return $this->setTarget( $value ?? false );
     }
 

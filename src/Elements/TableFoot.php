@@ -14,7 +14,10 @@ use JDWX\HTML5\Element;
 class TableFoot extends Element {
 
 
+    use TableSectionTrait;
+
+
     protected const string TAG_NAME = 'tfoot';
 
-    use TableSectionTrait;
+
 }

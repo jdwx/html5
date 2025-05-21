@@ -16,37 +16,37 @@ class Img extends UnclosedElement {
     protected const string TAG_NAME = 'img';
 
 
-    public function addAlt( bool|string ...$values ) : static {
+    public function addAlt( string|true ...$values ) : static {
         return $this->addAttribute( 'alt', ...$values );
     }
 
 
-    public function addSrc( bool|string ...$values ) : static {
+    public function addSrc( string|true ...$values ) : static {
         return $this->addAttribute( 'src', ...$values );
     }
 
 
-    public function alt( string|false|null $value ) : static {
+    public function alt( false|string|null $value ) : static {
         return $this->setAlt( $value ?? false );
     }
 
 
-    public function getAlt() : bool|string|null {
+    public function getAlt() : string|true|null {
         return $this->getAttribute( 'alt' );
     }
 
 
-    public function getSrc() : bool|string|null {
+    public function getSrc() : string|true|null {
         return $this->getAttribute( 'src' );
     }
 
 
-    public function hasAlt( bool|string|null $value = null ) : bool {
+    public function hasAlt( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'alt', $value );
     }
 
 
-    public function hasSrc( bool|string|null $value = null ) : bool {
+    public function hasSrc( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'src', $value );
     }
 
@@ -61,7 +61,7 @@ class Img extends UnclosedElement {
     }
 
 
-    public function src( string|false|null $value ) : static {
+    public function src( false|string|null $value ) : static {
         return $this->setSrc( $value ?? false );
     }
 

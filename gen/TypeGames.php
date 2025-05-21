@@ -88,8 +88,9 @@ final class TypeGames {
     }
 
 
-    public static function sortTypes( string|array $i_stType ) : string {
-        $rTypes = is_array( $i_stType ) ? $i_stType : explode( '|', $i_stType );
+    /** @param list<string>|string $i_type */
+    public static function sortTypes( array|string $i_type ) : string {
+        $rTypes = is_array( $i_type ) ? $i_type : explode( '|', $i_type );
         $rTypes = array_unique( $rTypes );
 
         # If mixed is present, anything else is irrelevant.

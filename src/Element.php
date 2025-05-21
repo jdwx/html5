@@ -18,7 +18,7 @@ use JDWX\Web\Stream\StringableStreamTrait;
 use Stringable;
 
 
-class Element {
+class Element implements ElementInterface {
 
 
     use AriaTrait;
@@ -91,11 +91,6 @@ class Element {
             }
         }
         return $this;
-    }
-
-
-    public function addClass( bool|string ...$values ) : static {
-        return $this->addAttribute( 'class', ...$values );
     }
 
 

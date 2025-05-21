@@ -117,9 +117,9 @@ class Generator {
     }
 
 
-    /** @param mixed[]|string $i_attrInfo */
-    private static function bareAttribute( string       $i_stAttrName, string $i_stAttrTag, string $i_stAttrMethod,
-                                           array|string $i_attrInfo, bool $i_bInTrait ) : string {
+    /** @param mixed[] $i_attrInfo */
+    private static function bareAttribute( string $i_stAttrName, string $i_stAttrTag, string $i_stAttrMethod,
+                                           array  $i_attrInfo, bool $i_bInTrait ) : string {
         $bUseAdd = $i_attrInfo[ 'useAdd' ] ?? false;
         if ( $bUseAdd ) {
             return self::bareAttributeAdd( $i_stAttrTag, $i_stAttrMethod, $i_attrInfo, $i_bInTrait );
@@ -128,8 +128,9 @@ class Generator {
     }
 
 
-    private static function bareAttributeAdd( string       $i_stAttrTag, string $i_stAttrMethod,
-                                              array|string $i_attrInfo, bool $i_bInTrait ) : string {
+    /** @param mixed[] $i_attrInfo */
+    private static function bareAttributeAdd( string $i_stAttrTag, string $i_stAttrMethod,
+                                              array  $i_attrInfo, bool $i_bInTrait ) : string {
         $stAttrType = strtolower( trim( $i_attrInfo[ 'type' ] ?? '' ) );
         assert( TypeGames::sameType( $stAttrType, 'string|bool' )
             || TypeGames::sameType( $stAttrType, 'string' ) );
@@ -144,6 +145,7 @@ class Generator {
     }
 
 
+    /** @param mixed[] $i_attrInfo */
     private static function bareAttributeSet( string       $i_stAttrName, string $i_stAttrMethod,
                                               array|string $i_attrInfo, bool $i_bInTrait ) : string {
         $stDefaultValue = isset( $i_attrInfo[ 'default' ] )
@@ -156,27 +158,6 @@ class Generator {
         }
         $stParameterType = TypeGames::sortTypes( $stParameterType );
         $stSetCode = self::setCode( 'value', $stParameterType, $i_attrInfo[ 'mapBool' ] ?? false );
-
-
-        /*
-        if ( $i_attrInfo[ 'mapBool' ] ?? null ) {
-            if ( $i_attrInfo[ 'mapBool' ] === true ) {
-                $i_attrInfo[ 'mapBool' ] = [ 'true' => 'true', 'false' => 'false' ];
-            }
-            $stTrue = isset( $i_attrInfo[ 'mapBool' ][ 'true' ] )
-                ? "'{$i_attrInfo[ 'mapBool' ][ 'true' ]}'"
-                : 'true';
-            $stFalse = isset( $i_attrInfo[ 'mapBool' ][ 'false' ] )
-                ? "'{$i_attrInfo[ 'mapBool' ][ 'false' ]}'"
-                : 'false';
-            $stSetCode = "is_bool( \$value ) ? ( \$value ? {$stTrue} : {$stFalse} ) : ";
-            if ( $stAttrType === 'bool' ) {
-                $stSetCode .= 'false';
-            } else {
-                $stSetCode .= "( \$value ?? false )";
-            }
-        }
-        */
 
         return self::traitSuppressComment( $i_bInTrait ) . <<<ZEND
             public function {$i_stAttrMethod}( {$stParameterType} \$value{$stDefaultValue} ) : static {
@@ -196,6 +177,7 @@ class Generator {
     }
 
 
+    /** @param mixed[] $i_attrInfo */
     private static function getExAttribute( string $i_stAttrName, string $i_stAttrTag, array $i_attrInfo ) : string {
         if ( $i_attrInfo[ 'type' ] == 'string' ) {
             $stReturn = 'string';
@@ -230,7 +212,10 @@ class Generator {
     }
 
 
-    /** @noinspection PhpSameParameterValueInspection */
+    /**
+     * @param array<string, mixed>|bool $i_map
+     * @noinspection PhpSameParameterValueInspection
+     */
     private static function setCode( string $i_stVarName, string $i_stVarType, array|bool $i_map ) : string {
         $stBaseType = TypeGames::removeNull( $i_stVarType );
         $bNullable = TypeGames::isNullable( $i_stVarType );
@@ -260,6 +245,7 @@ class Generator {
     }
 
 
+    /** @param array<string, mixed>|bool $i_map */
     private static function setCodeBool( string $i_stVarName, string $i_stVarType, array|bool $i_map ) : string {
         if ( ! $i_map ) {
             if ( TypeGames::isNullable( $i_stVarType ) ) {

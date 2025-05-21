@@ -16,7 +16,7 @@ trait TableSectionTrait {
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function tr( array|string|Stringable $i_children ) : Tr {
+    public function tr( array|string|Stringable $i_children = [] ) : Tr {
         assert( $this instanceof Element );
         return ( new Tr( $i_children ) )->withParent( $this );
     }

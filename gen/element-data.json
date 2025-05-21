@@ -91,8 +91,33 @@
   },
   "legend": true,
   "li": true,
+  "table": {
+    "children": [
+      "thead",
+      "tbody",
+      "tfoot"
+    ]
+  },
+  "tbody": {
+    "className": "TableBody",
+    "traits": [
+      "TableSectionTrait"
+    ]
+  },
   "td": true,
+  "tfoot": {
+    "className": "TableFoot",
+    "traits": [
+      "TableSectionTrait"
+    ]
+  },
   "th": true,
+  "thead": {
+    "className": "TableHead",
+    "traits": [
+      "TableSectionTrait"
+    ]
+  },
   "tr": {
     "alwaysClose": true,
     "children": [

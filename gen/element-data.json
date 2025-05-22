@@ -96,6 +96,7 @@
   "legend": true,
   "li": true,
   "meta": {
+    "alwaysClose": false,
     "attributes": {
       "charset": "string",
       "content": "string",

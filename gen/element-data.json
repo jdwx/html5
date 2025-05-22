@@ -95,6 +95,16 @@
   },
   "legend": true,
   "li": true,
+  "meta": {
+    "attributes": {
+      "charset": "string",
+      "content": "string",
+      "http-equiv": "string"
+    },
+    "attrTraits": [
+      "NameTrait"
+    ]
+  },
   "table": {
     "children": [
       "thead",

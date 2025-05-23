@@ -1,16 +1,23 @@
 {
   "AccessKey": "string",
-  "ContentEditable": {
-    "default": "true",
-    "type": "bool|string",
-    "mapBool": true
-  },
   "Aria-label": "string",
+  "AutoCorrect": {
+    "type": "bool",
+    "mapBool": {
+      "true": "true",
+      "false": "'off'"
+    }
+  },
   "Class": {
     "type": "string",
     "useAdd": true
   },
   "ColSpan": "int",
+  "ContentEditable": {
+    "default": "true",
+    "type": "bool|string",
+    "mapBool": true
+  },
   "Dir": "string",
   "Draggable": {
     "type": "bool",

@@ -71,6 +71,7 @@ class ElementsTest extends MyTestCase {
 
 
     public function testInput() : void {
+        $this->runAttributeStringTest( Elements\Input::class, 'autocomplete' );
         $this->runAttributeBoolTest( Elements\Input::class, 'checked' );
         $this->runAttributeIntTest( Elements\Input::class, 'max' );
         $this->runAttributeIntTest( Elements\Input::class, 'maxlength' );
@@ -84,9 +85,7 @@ class ElementsTest extends MyTestCase {
 
 
     public function testLabel() : void {
-        $lab = new Elements\Label();
-        $lab->setFor( 'foo' );
-        self::assertEquals( '<label for="foo"></label>', $lab );
+        $this->runAttributeStringTest( Elements\Label::class, 'for' );
     }
 
 

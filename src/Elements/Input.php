@@ -24,6 +24,11 @@ class Input extends UnclosedElement {
     protected const string TAG_NAME = 'input';
 
 
+    public function addAutoComplete( string|true ...$values ) : static {
+        return $this->addAttribute( 'autocomplete', ...$values );
+    }
+
+
     public function addChecked( string|true ...$values ) : static {
         return $this->addAttribute( 'checked', ...$values );
     }
@@ -59,8 +64,18 @@ class Input extends UnclosedElement {
     }
 
 
+    public function autoComplete( false|string|null ...$values ) : static {
+        return $this->addAttributeFromBare( 'autocomplete', ...$values );
+    }
+
+
     public function checked( ?bool $value ) : static {
         return $this->setChecked( $value ?? false );
+    }
+
+
+    public function getAutoComplete() : string|true|null {
+        return $this->getAttribute( 'autocomplete' );
     }
 
 
@@ -96,6 +111,11 @@ class Input extends UnclosedElement {
 
     public function getType() : string|true|null {
         return $this->getAttribute( 'type' );
+    }
+
+
+    public function hasAutoComplete( string|true|null $value = null ) : bool {
+        return $this->hasAttribute( 'autocomplete', $value );
     }
 
 
@@ -151,6 +171,11 @@ class Input extends UnclosedElement {
 
     public function pattern( false|string|null $value ) : static {
         return $this->setPattern( $value ?? false );
+    }
+
+
+    public function setAutoComplete( bool|string ...$values ) : static {
+        return $this->setAttribute( 'autocomplete', ...$values );
     }
 
 

@@ -72,6 +72,10 @@
   "input": {
     "alwaysClose": false,
     "attributes": {
+      "autoComplete": {
+        "type": "string",
+        "useAdd": true
+      },
       "checked": "bool",
       "max": "float|int",
       "maxLength": "int",

@@ -37,6 +37,7 @@
     "mapBool": true
   },
   "Name": "string",
+  "Required": "bool",
   "Style": {
     "type": "string",
     "useAdd": true

@@ -108,10 +108,12 @@
   },
   "option": {
     "attributes": {
+      "multiple": "bool",
       "selected": "bool"
     },
     "attrTraits": [
       "DisabledTrait",
+      "RequiredTrait",
       "ValueTrait"
     ]
   },

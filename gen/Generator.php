@@ -18,6 +18,7 @@ class Generator {
         'bool' => '?bool',
         'bool|string' => 'bool|string|null',
         'float|int' => 'float|int|false|null',
+        'float|int|string' => 'false|float|int|string|null',
         'int' => 'int|false|null',
         'string' => 'false|string|null',
     ];
@@ -247,6 +248,18 @@ class Generator {
             if ( $bNullable ) {
                 return "is_null( \${$i_stVarName} ) ? false : strval( \${$i_stVarName} )";
             }
+        }
+        if ( 'float|int|string' === $stBaseType ) {
+            if ( $bNullable ) {
+                if ( $bFalsy ) {
+                    return "( is_null( \${$i_stVarName} ) || false === \${$i_stVarName} ) ? false : strval( \${$i_stVarName} )";
+                } else {
+                    return "is_null( \${$i_stVarName} ) ? false : strval( \${$i_stVarName} )";
+                }
+            } elseif ( $bFalsy ) {
+                return "( false === strval( \${$i_stVarName} ) ) ? false : strval( \${$i_stVarName} )";
+            }
+            return "strval( \${$i_stVarName} )";
         }
         var_dump( $i_stVarType );
         exit( 1 );

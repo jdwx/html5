@@ -90,6 +90,7 @@
       "min": "float|int",
       "pattern": "string",
       "size": "int",
+      "step": "float|int|string",
       "type": "string"
     },
     "traits": [

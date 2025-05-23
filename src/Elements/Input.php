@@ -69,6 +69,11 @@ class Input extends UnclosedElement {
     }
 
 
+    public function addStep( string|true ...$values ) : static {
+        return $this->addAttribute( 'step', ...$values );
+    }
+
+
     public function addType( string|true ...$values ) : static {
         return $this->addAttribute( 'type', ...$values );
     }
@@ -139,6 +144,11 @@ class Input extends UnclosedElement {
     }
 
 
+    public function getStep() : string|true|null {
+        return $this->getAttribute( 'step' );
+    }
+
+
     public function getType() : string|true|null {
         return $this->getAttribute( 'type' );
     }
@@ -186,6 +196,11 @@ class Input extends UnclosedElement {
 
     public function hasSize( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'size', $value );
+    }
+
+
+    public function hasStep( string|true|null $value = null ) : bool {
+        return $this->hasAttribute( 'step', $value );
     }
 
 
@@ -259,6 +274,11 @@ class Input extends UnclosedElement {
     }
 
 
+    public function setStep( bool|string ...$values ) : static {
+        return $this->setAttribute( 'step', ...$values );
+    }
+
+
     public function setType( bool|string ...$values ) : static {
         return $this->setAttribute( 'type', ...$values );
     }
@@ -266,6 +286,11 @@ class Input extends UnclosedElement {
 
     public function size( false|int|null $value ) : static {
         return $this->setSize( is_int( $value ) ? strval( $value ) : false );
+    }
+
+
+    public function step( false|float|int|string|null $value ) : static {
+        return $this->setStep( ( is_null( $value ) || false === $value ) ? false : strval( $value ) );
     }
 
 

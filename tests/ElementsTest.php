@@ -81,6 +81,9 @@ class ElementsTest extends MyTestCase {
         $this->runAttributeStringTest( Elements\Input::class, 'name' );
         $this->runAttributeStringTest( Elements\Input::class, 'pattern' );
         $this->runAttributeIntTest( Elements\Input::class, 'size' );
+        $this->runAttributeTest( Elements\Input::class, 'step', [
+            [ 'any', 'any' ], [ 2, '2' ], [ 2.1, '2.1' ],
+        ] );
         $this->runAttributeStringTest( Elements\Input::class, 'type' );
         $this->runAttributeStringTest( Elements\Input::class, 'value' );
     }

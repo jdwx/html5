@@ -53,6 +53,7 @@
   "Placeholder": {
     "type": "string"
   },
+  "Role": "string",
   "RowSpan": "int",
   "Value": {
     "type": "string"

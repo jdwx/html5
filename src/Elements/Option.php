@@ -24,18 +24,8 @@ class Option extends Element {
     protected const string TAG_NAME = 'option';
 
 
-    public function addMultiple( string|true ...$values ) : static {
-        return $this->addAttribute( 'multiple', ...$values );
-    }
-
-
     public function addSelected( string|true ...$values ) : static {
         return $this->addAttribute( 'selected', ...$values );
-    }
-
-
-    public function getMultiple() : string|true|null {
-        return $this->getAttribute( 'multiple' );
     }
 
 
@@ -44,28 +34,13 @@ class Option extends Element {
     }
 
 
-    public function hasMultiple( string|true|null $value = null ) : bool {
-        return $this->hasAttribute( 'multiple', $value );
-    }
-
-
     public function hasSelected( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'selected', $value );
     }
 
 
-    public function multiple( ?bool $value ) : static {
-        return $this->setMultiple( $value ?? false );
-    }
-
-
     public function selected( ?bool $value ) : static {
         return $this->setSelected( $value ?? false );
-    }
-
-
-    public function setMultiple( bool|string ...$values ) : static {
-        return $this->setAttribute( 'multiple', ...$values );
     }
 
 

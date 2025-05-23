@@ -133,6 +133,9 @@ class ElementsTest extends MyTestCase {
 
     public function testSelect() : void {
         $this->runChildTest( Elements\Select::class, Elements\Option::class );
+        $this->runAttributeBoolTest( Elements\Select::class, 'disabled' );
+        $this->runAttributeBoolTest( Elements\Select::class, 'multiple' );
+        $this->runAttributeBoolTest( Elements\Select::class, 'required' );
     }
 
 

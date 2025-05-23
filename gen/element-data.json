@@ -121,7 +121,6 @@
   },
   "option": {
     "attributes": {
-      "multiple": "bool",
       "selected": "bool"
     },
     "attrTraits": [
@@ -131,6 +130,9 @@
     ]
   },
   "select": {
+    "attributes": {
+      "multiple": "bool"
+    },
     "children": [
       "option"
     ],

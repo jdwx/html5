@@ -27,4 +27,29 @@ class Select extends Element {
     }
 
 
+    public function addMultiple( string|true ...$values ) : static {
+        return $this->addAttribute( 'multiple', ...$values );
+    }
+
+
+    public function getMultiple() : string|true|null {
+        return $this->getAttribute( 'multiple' );
+    }
+
+
+    public function hasMultiple( string|true|null $value = null ) : bool {
+        return $this->hasAttribute( 'multiple', $value );
+    }
+
+
+    public function multiple( ?bool $value ) : static {
+        return $this->setMultiple( $value ?? false );
+    }
+
+
+    public function setMultiple( bool|string ...$values ) : static {
+        return $this->setAttribute( 'multiple', ...$values );
+    }
+
+
 }

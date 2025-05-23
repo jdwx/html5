@@ -111,6 +111,7 @@
       "selected": "bool"
     },
     "attrTraits": [
+      "DisabledTrait",
       "ValueTrait"
     ]
   },

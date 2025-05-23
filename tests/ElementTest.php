@@ -1,7 +1,10 @@
 <?php declare( strict_types = 1 );
 
 
+use JDWX\HTML5\AttributeModifier;
 use JDWX\HTML5\Element;
+use JDWX\HTML5\Elements\Div;
+use JDWX\HTML5\Elements\Img;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 
@@ -10,6 +13,18 @@ require_once __DIR__ . '/MyTestCase.php';
 
 #[CoversClass( Element::class )]
 final class ElementTest extends MyTestCase {
+
+
+    public function testAddChildClasses() : void {
+        $foo = new Element();
+        $bar = new Element();
+        $baz = new Element();
+        $div = new Element( [ $foo, $bar, 'garply', $baz ] );
+        $div->addChildClasses( 'qux', 'quux', 'corge' );
+        self::assertSame( 'qux', $foo->getClass() );
+        self::assertSame( 'quux', $bar->getClass() );
+        self::assertSame( 'corge', $baz->getClass() );
+    }
 
 
     public function testAddClass() : void {
@@ -67,6 +82,13 @@ final class ElementTest extends MyTestCase {
     }
 
 
+    public function testAppendForModifier() : void {
+        $mod = new AttributeModifier( 'class', 'foo', 'Foo' );
+        $foo = new Element( i_children: $mod );
+        self::assertSame( '<div class="foo">Foo</div>', strval( $foo ) );
+    }
+
+
     public function testChildElements() : void {
         $elChild = new Element( i_children: 'foo' );
         $elParent = new Element( i_children: [ $elChild, 'bar' ] );
@@ -110,37 +132,6 @@ final class ElementTest extends MyTestCase {
         $parent = new Element( [ $el1, $el2, $el3, $el4 ] );
         self::assertSame( 2, $parent->countChildElements() );
     }
-
-
-    /*
-    public function testRenderChild() : void {
-
-        $el = $this->element( 'foo' );
-
-        self::assertEquals( 'bar', $el->myRenderChild( 'bar' ) );
-        self::assertEquals( '2', $el->myRenderChild( 2 ) );
-        self::assertEquals( '2.3', $el->myRenderChild( 2.3 ) );
-        self::assertEquals( 'true', $el->myRenderChild( true ) );
-        self::assertEquals( 'false', $el->myRenderChild( false ) );
-        self::assertEquals( 'barbaz', $el->myRenderChild( [ 'bar', 'baz' ] ) );
-        self::assertEquals( '', $el->myRenderChild( null ) );
-
-        $el2 = $this->element( 'qux' );
-        self::assertEquals( (string) $el2, $el->myRenderChild( $el2 ) );
-
-        self::assertSame( '', $el->myRenderChild( fopen( '/dev/null', 'rb' ) ) );
-    }
-
-
-    public function testSetChecked() : void {
-        $el = $this->element( 'foo' );
-        $el->setChecked( true );
-        self::assertEquals( '<foo checked></foo>', strval( $el ) );
-
-        $el->setChecked( false );
-        self::assertEquals( '<foo></foo>', strval( $el ) );
-    }
-    */
 
 
     public function testCountChildren() : void {
@@ -346,6 +337,32 @@ final class ElementTest extends MyTestCase {
     }
 
 
+    public function testNthChildElementByNotClass() : void {
+        $el = new Element();
+        $el1 = Element::synthetic( 'child' )->id( 'el1' )->class( 'foo' );
+        $el2 = ( new Element() )->id( 'el2' )->class( 'bar' );
+        $el3 = Element::synthetic( 'child' )->id( 'el3' )->class( 'foo' );
+        $el4 = Element::synthetic( 'child' )->id( 'el4' );
+        $el->append( $el1, 'baz', $el2, $el3, $el4 );
+
+        self::assertSame( $el2, $el->nthChildElementByNotClass( 'foo' ) );
+        self::assertSame( $el4, $el->nthChildElementByNotClass( 'foo', 1 ) );
+    }
+
+
+    public function testNthChildElementByNotTagName() : void {
+        $el = new Element();
+        $el1 = Element::synthetic( 'child' )->id( 'el1' )->class( 'foo' );
+        $el2 = ( new Element() )->id( 'el2' )->class( 'bar' );
+        $el3 = Element::synthetic( 'child' )->id( 'el3' )->class( 'foo' );
+        $el4 = Element::synthetic( 'el4' )->id( 'el4' );
+        $el->append( $el1, 'baz', $el2, $el3, $el4 );
+
+        self::assertSame( $el2, $el->nthChildElementByNotTagName( 'child' ) );
+        self::assertSame( $el4, $el->nthChildElementByNotTagName( 'child', 1 ) );
+    }
+
+
     public function testNthChildElementByTagName() : void {
 
         $el = new Element();
@@ -540,6 +557,14 @@ final class ElementTest extends MyTestCase {
 
         } );
         self::assertSame( '<div>foo</div>', strval( $el ) );
+    }
+
+
+    public function testWithParent() : void {
+        $div = new Div();
+        $img = ( new Img() )->alt( 'foo' );
+        $img->withParent( $div );
+        self::assertSame( '<div><img alt="foo"></div>', strval( $div ) );
     }
 
 

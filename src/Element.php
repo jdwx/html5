@@ -43,23 +43,30 @@ class Element implements ElementInterface {
 
     public static function filterByHasAttribute( string           $i_stAttribute,
                                                  true|string|null $i_value = null ) : callable {
-        return fn( $i_el ) => $i_el instanceof Element && $i_el->hasAttribute( $i_stAttribute, $i_value );
+        return fn( $i_el ) => $i_el instanceof ElementInterface && $i_el->hasAttribute( $i_stAttribute, $i_value );
     }
 
 
     public static function filterByNotHasAttribute( string           $i_stAttribute,
-                                                    true|string|null $i_value = null ) : callable {
-        return fn( $i_el ) => ! $i_el instanceof Element || ! $i_el->hasAttribute( $i_stAttribute, $i_value );
+                                                    true|string|null $i_value = null,
+                                                    bool             $i_bOnlyElements = false ) : callable {
+        if ( $i_bOnlyElements ) {
+            return fn( $i_el ) => $i_el instanceof ElementInterface && ! $i_el->hasAttribute( $i_stAttribute, $i_value );
+        }
+        return fn( $i_el ) => ! $i_el instanceof ElementInterface || ! $i_el->hasAttribute( $i_stAttribute, $i_value );
     }
 
 
-    public static function filterByNotTagName( string $i_stTagName ) : callable {
-        return fn( $i_el ) => ! $i_el instanceof Element || $i_el->getTagName() !== $i_stTagName;
+    public static function filterByNotTagName( string $i_stTagName, bool $i_bOnlyElements = false ) : callable {
+        if ( $i_bOnlyElements ) {
+            return fn( $i_el ) => $i_el instanceof ElementInterface && $i_el->getTagName() !== $i_stTagName;
+        }
+        return fn( $i_el ) => ! $i_el instanceof ElementInterface || $i_el->getTagName() !== $i_stTagName;
     }
 
 
     public static function filterByTagName( string $i_stTagName ) : callable {
-        return fn( $i_el ) => $i_el instanceof Element && $i_el->getTagName() === $i_stTagName;
+        return fn( $i_el ) => $i_el instanceof ElementInterface && $i_el->getTagName() === $i_stTagName;
     }
 
 
@@ -77,8 +84,13 @@ class Element implements ElementInterface {
     }
 
 
-    protected static function filterNotHasClass( string $i_stClass ) : callable {
-        return self::filterByNotHasAttribute( 'class', $i_stClass );
+    protected static function filterHasId( string $i_stId ) : callable {
+        return self::filterByHasAttribute( 'id', $i_stId );
+    }
+
+
+    protected static function filterNotHasClass( string $i_stClass, bool $i_bOnlyElements = false ) : callable {
+        return self::filterByNotHasAttribute( 'class', $i_stClass, $i_bOnlyElements );
     }
 
 
@@ -94,19 +106,13 @@ class Element implements ElementInterface {
     }
 
 
-    public function appendChildElement( Element $x ) : Element {
-        $this->appendChild( $x );
-        return $x;
-    }
-
-
-    public function getElementById( string $i_stId ) : Element|null {
+    public function getElementById( string $i_stId ) : ElementInterface|null {
         return $this->nthChildElementById( $i_stId, 0 );
     }
 
 
-    public function hasChildren() : bool {
-        return 0 < $this->countChildren();
+    public function handleModifier( ModifierInterface $i_modifier ) : void {
+        $i_modifier->modify( $this );
     }
 
 
@@ -116,51 +122,45 @@ class Element implements ElementInterface {
     }
 
 
-    public function nthChildElementByClass( string $i_stClass, int $i_n = 0 ) : Element|null {
-        foreach ( $this->childElements( self::filterHasClass( $i_stClass ) ) as $child ) {
-            assert( $child instanceof Element );
-            if ( $child->hasAttribute( 'class', $i_stClass ) ) {
-                if ( 0 === $i_n ) {
-                    return $child;
-                }
-                --$i_n;
+    public function nthChildByFilter( callable $i_fnFilter, int $i_n = 0 ) : ElementInterface|null {
+        foreach ( $this->childElements( $i_fnFilter ) as $child ) {
+            if ( 0 === $i_n ) {
+                return $child;
             }
+            --$i_n;
         }
         return null;
     }
 
 
-    public function nthChildElementById( string $i_stId, int $i_n ) : Element|null {
-        foreach ( $this->childElements() as $child ) {
-            assert( $child instanceof Element );
-            if ( $child->getAttribute( 'id' ) === $i_stId ) {
-                if ( 0 === $i_n ) {
-                    return $child;
-                }
-                --$i_n;
-            }
-        }
-        return null;
+    public function nthChildElementByClass( string $i_stClass, int $i_n = 0 ) : ElementInterface|null {
+        return $this->nthChildByFilter( self::filterHasClass( $i_stClass ), $i_n );
     }
 
 
-    public function nthChildElementByTagName( string $i_stTag, int $i_n = 0 ) : Element|null {
-        foreach ( $this->childElements() as $child ) {
-            assert( $child instanceof Element );
-            if ( $child->getTagName() === $i_stTag ) {
-                if ( 0 === $i_n ) {
-                    return $child;
-                }
-                --$i_n;
-            }
-        }
-        return null;
+    public function nthChildElementById( string $i_stId, int $i_n ) : ElementInterface|null {
+        return $this->nthChildByFilter( self::filterHasId( $i_stId ), $i_n );
+    }
+
+
+    public function nthChildElementByNotClass( string $i_stClass, int $i_n = 0 ) : ElementInterface|null {
+        return $this->nthChildByFilter( self::filterNotHasClass( $i_stClass, true ), $i_n );
+    }
+
+
+    public function nthChildElementByNotTagName( string $i_stTagName, int $i_n = 0 ) : ElementInterface {
+        return $this->nthChildByFilter( self::filterByNotTagName( $i_stTagName, true ), $i_n );
+    }
+
+
+    public function nthChildElementByTagName( string $i_stTagName, int $i_n = 0 ) : ElementInterface|null {
+        return $this->nthChildByFilter( self::filterByTagName( $i_stTagName ), $i_n );
     }
 
 
     public function removeChildById( string $i_stId ) : static {
         foreach ( $this->childElements() as $child ) {
-            assert( $child instanceof Element );
+            assert( $child instanceof ElementInterface );
             if ( $child->getAttribute( 'id' ) === $i_stId ) {
                 $this->removeChild( $child );
                 break;
@@ -170,7 +170,7 @@ class Element implements ElementInterface {
     }
 
 
-    public function withParent( Element $i_parent ) : static {
+    public function withParent( ElementInterface $i_parent ) : static {
         $i_parent->appendChild( $this );
         return $this;
     }

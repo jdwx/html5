@@ -15,7 +15,7 @@ namespace JDWX\HTML5\Traits;
 trait AbstractAttributeTrait {
 
 
-    abstract public function addAttribute( string $i_stName, string ...$i_rstValues ) : static;
+    abstract public function addAttribute( string $i_stName, string|true ...$i_values ) : static;
 
 
     abstract public function getAttribute( string $i_stName ) : string|true|null;

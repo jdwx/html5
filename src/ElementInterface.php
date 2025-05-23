@@ -10,7 +10,7 @@ namespace JDWX\HTML5;
 use Stringable;
 
 
-interface ElementInterface extends Stringable {
+interface ElementInterface extends AttributeInterface, ElementListInterface, Stringable, TagInterface {
 
 
     public function addClass( string|true ...$values ) : static;

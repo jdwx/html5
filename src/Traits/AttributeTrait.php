@@ -16,7 +16,6 @@ trait AttributeTrait {
 
     /** @suppress PhanTypeMismatchReturn */
     public function addAttribute( string $i_stName, string|true ...$i_values ) : static {
-
         foreach ( $i_values as $value ) {
             $this->addOneAttribute( $i_stName, $value );
         }
@@ -56,7 +55,7 @@ trait AttributeTrait {
         if ( true === $xValue || is_string( $xValue ) ) {
             return $xValue;
         }
-        throw new \InvalidArgumentException( 'Attribute "' . $i_stName . '" not set' );
+        throw new \InvalidArgumentException( "Attribute \"{$i_stName}\" not set" );
     }
 
 
@@ -65,7 +64,7 @@ trait AttributeTrait {
         if ( is_string( $xValue ) ) {
             return $xValue;
         }
-        throw new \InvalidArgumentException( 'Attribute "' . $i_stName . '" has no value' );
+        throw new \InvalidArgumentException( "Attribute \"{$i_stName}\" has no value" );
     }
 
 

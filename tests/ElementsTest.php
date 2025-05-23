@@ -16,47 +16,33 @@ use JDWX\HTML5\Elements;
 class ElementsTest extends MyTestCase {
 
 
-    /** @noinspection PhpConditionAlreadyCheckedInspection */
     public function testAnchor() : void {
+        $this->runAttributeBoolTest( Elements\Anchor::class, 'download' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'href' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'hreflang' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'media' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'ping' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'rel' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'target' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'title' );
+    }
 
-        $a = new Elements\Anchor();
-        $a->download( true );
-        self::assertEquals( '<a download></a>', $a );
-        $a->download( 'baz' );
-        self::assertEquals( '<a download="baz"></a>', $a );
-        $a->download( false );
-        self::assertEquals( '<a></a>', $a );
 
-        $a->ping( 'ping' );
-        $a->ping( 'pong' );
-        $a->rel( 'foo' );
-        $a->rel( 'bar' );
-        $a->media( 'nope' );
-        $a->media( 'qux' );
-        $a->hrefLang( 'nope' );
-        $a->hrefLang( 'en-US' );
-        $a->target( 'nope' );
-        $a->target( '_blank' );
-        /** @noinspection HtmlUnknownAttribute */
-        self::assertEquals( '<a hreflang="en-US" media="qux" ping="ping pong" rel="foo bar" target="_blank"></a>', $a );
-
+    public function testDl() : void {
+        $this->runChildTest( Elements\Dl::class, Elements\Dd::class );
+        $this->runChildTest( Elements\Dl::class, Elements\Dt::class );
     }
 
 
     public function testFieldset() : void {
-        $fld = new Elements\Fieldset();
-        $fld->setDisabled( true );
-        $fld->setForm( 'foo' );
-        $fld->setName( 'bar' );
-        self::assertEquals( '<fieldset disabled form="foo" name="bar"></fieldset>', $fld );
+        $this->runChildTest( Elements\Fieldset::class, Elements\Legend::class );
     }
 
 
-    /** @noinspection HtmlUnknownTarget */
     public function testForm() : void {
-        $frm = ( new Elements\Form() )->action( 'foo' )->method( 'POST' );
-        $frm->setEncType( 'multipart/form-data' );
-        self::assertEquals( '<form action="foo" enctype="multipart/form-data" method="POST"></form>', $frm );
+        $this->runAttributeStringTest( Elements\Form::class, 'action' );
+        $this->runAttributeStringTest( Elements\Form::class, 'enctype' );
+        $this->runAttributeStringTest( Elements\Form::class, 'method' );
     }
 
 
@@ -77,44 +63,23 @@ class ElementsTest extends MyTestCase {
 
 
     public function testImg() : void {
-        $img = ( new Elements\Img() )->alt( 'foo' )->src( 'bar' );
-        self::assertEquals( '<img alt="foo" src="bar">', $img );
+        $this->runAttributeStringTest( Elements\Img::class, 'alt' );
+        $this->runAttributeIntTest( Elements\Img::class, 'height' );
+        $this->runAttributeStringTest( Elements\Img::class, 'src' );
+        $this->runAttributeIntTest( Elements\Img::class, 'width' );
     }
 
 
-    /** @noinspection PhpConditionAlreadyCheckedInspection */
     public function testInput() : void {
-        $inp = ( new Elements\Input() )->name( 'foo' )->type( 'text' )->value( 'bar' )
-            ->size( 20 )->maxLength( 30 )->setPlaceholder( 'baz' );
-        self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text" value="bar">',
-            $inp );
-
-        $inp->value( null );
-        self::assertEquals( '<input maxlength="30" name="foo" placeholder="baz" size="20" type="text">', $inp );
-
-        $inp = new Elements\Input();
-        self::assertEquals( '<input>', strval( $inp ) );
-        $inp->setChecked( true );
-        self::assertEquals( '<input checked>', $inp );
-        $inp->setChecked( false );
-        self::assertEquals( '<input>', $inp );
-
-        $inp = new Elements\Input();
-        $inp->setPattern( '[0-9]{5}' );
-        self::assertEquals( '<input pattern="[0-9]{5}">', $inp );
-        $inp->pattern( null );
-        self::assertEquals( '<input>', $inp );
-
-        $inp = new Elements\Input();
-        $inp->max( 10 );
-        self::assertEquals( '<input max="10">', $inp );
-        $inp->min( 5 );
-        self::assertEquals( '<input max="10" min="5">', $inp );
-        $inp->max( null );
-        self::assertEquals( '<input min="5">', $inp );
-        $inp->min( null );
-        self::assertEquals( '<input>', $inp );
-
+        $this->runAttributeBoolTest( Elements\Input::class, 'checked' );
+        $this->runAttributeIntTest( Elements\Input::class, 'max' );
+        $this->runAttributeIntTest( Elements\Input::class, 'maxlength' );
+        $this->runAttributeIntTest( Elements\Input::class, 'min' );
+        $this->runAttributeStringTest( Elements\Input::class, 'name' );
+        $this->runAttributeStringTest( Elements\Input::class, 'pattern' );
+        $this->runAttributeIntTest( Elements\Input::class, 'size' );
+        $this->runAttributeStringTest( Elements\Input::class, 'type' );
+        $this->runAttributeStringTest( Elements\Input::class, 'value' );
     }
 
 
@@ -213,6 +178,58 @@ class ElementsTest extends MyTestCase {
 
     private function checkSimpleUnclosed( Element $i_element, string $i_name ) : void {
         self::assertEquals( "<{$i_name}>", strval( $i_element ) );
+    }
+
+
+    private function runAttributeBoolTest( string $i_stClass, string $i_stAttribute ) : void {
+        $this->runAttributeTest( $i_stClass, $i_stAttribute, [
+            [ true, true ],
+            [ false, null ],
+        ] );
+    }
+
+
+    private function runAttributeIntTest( string $i_stClass, string $i_stAttribute ) : void {
+        $this->runAttributeTest( $i_stClass, $i_stAttribute, [ [ 1, '1' ], [ false, null ] ] );
+    }
+
+
+    private function runAttributeStringTest( string $i_stClass, string $i_stAttribute ) : void {
+        $this->runAttributeTest( $i_stClass, $i_stAttribute, [ [ 'foo', 'foo' ] ] );
+    }
+
+
+    /** @param list<list<mixed>> $i_rBareChecks */
+    private function runAttributeTest( string $i_stClass, string $i_stAttribute, array $i_rBareChecks ) : void {
+        $el = new $i_stClass();
+        $fnAdd = [ $el, "add{$i_stAttribute}" ];
+        $fnGet = [ $el, "get{$i_stAttribute}" ];
+        $fnHas = [ $el, "has{$i_stAttribute}" ];
+        $fnSet = [ $el, "set{$i_stAttribute}" ];
+        $fnBare = [ $el, lcfirst( $i_stAttribute ) ];
+
+        self::assertFalse( $fnHas() );
+        $fnSet( 'Foo', 'Bar' );
+        $fnAdd( 'Baz' );
+        self::assertTrue( $fnHas() );
+        self::assertSame( 'Foo Bar Baz', $fnGet() );
+
+        foreach ( $i_rBareChecks as $row ) {
+            [ $stWrite, $stCheck ] = $row;
+            $fnSet( false );
+            $fnBare( $stWrite );
+            self::assertSame( $stCheck, $fnGet() );
+        }
+
+    }
+
+
+    private function runChildTest( string $i_stClass, string $i_stChild ) : void {
+        $el = new $i_stClass();
+        $cls = new $i_stChild();
+        $fnChild = [ $el, $cls->getTagName() ];
+        $child = $fnChild( 'foo' );
+        self::assertInstanceOf( $i_stChild, $child );
     }
 
 

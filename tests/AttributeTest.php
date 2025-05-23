@@ -29,7 +29,7 @@ final class AttributeTest extends TestCase {
     }
 
 
-    public function testAddAttributeWithTrue() : void {
+    public function testAddAttributeForTrue() : void {
         $obj = $this->newObject();
         $obj->addAttribute( 'foo', true );
         self::assertTrue( $obj->getAttribute( 'foo' ) );
@@ -41,6 +41,18 @@ final class AttributeTest extends TestCase {
         $obj->addAttribute( 'foo', true );
         self::assertEquals( 'bar', $obj->getAttribute( 'foo' ) );
 
+    }
+
+
+    public function testAddAttributeFromBare() : void {
+        $obj = $this->newObject();
+        self::assertNull( $obj->getAttribute( 'foo' ) );
+        $obj->addAttributeFromBarePub( 'foo', 'bar' );
+        self::assertSame( 'bar', $obj->getAttribute( 'foo' ) );
+        $obj->addAttributeFromBarePub( 'foo', 'bar', 'baz', 'qux' );
+        self::assertSame( 'bar bar baz qux', $obj->getAttribute( 'foo' ) );
+        $obj->addAttributeFromBarePub( 'foo', null );
+        self::assertNull( $obj->getAttribute( 'foo' ) );
     }
 
 
@@ -70,6 +82,16 @@ final class AttributeTest extends TestCase {
         self::assertNull( $obj->getAttribute( 'foo' ) );
         self::expectException( InvalidArgumentException::class );
         $obj->getAttributeEx( 'foo' );
+    }
+
+
+    public function testGetAttributeStringEx() : void {
+        $obj = $this->newObject();
+        $obj->setAttribute( 'foo', 'bar' );
+        self::assertSame( 'bar', $obj->getAttributeStringEx( 'foo' ) );
+        $obj->setAttribute( 'foo', true );
+        self::expectException( InvalidArgumentException::class );
+        $obj->getAttributeStringEx( 'foo' );
     }
 
 
@@ -167,6 +189,11 @@ final class AttributeTest extends TestCase {
             /** @return array<string, bool|string> */
             public function list() : array {
                 return iterator_to_array( $this->attrs() );
+            }
+
+
+            public function addAttributeFromBarePub( string $i_stName, string|bool|null ...$i_values ) : static {
+                return $this->addAttributeFromBare( $i_stName, ... $i_values );
             }
 
 

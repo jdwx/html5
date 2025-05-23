@@ -8,6 +8,7 @@ namespace JDWX\HTML5\Traits;
 
 
 use JDWX\HTML5\Element;
+use JDWX\HTML5\ModifierInterface;
 use Stringable;
 
 
@@ -37,6 +38,10 @@ trait ElementListTrait {
 
     /** @suppress PhanTypeMismatchReturn */
     public function appendChild( string|Stringable|null $i_stBody ) : static {
+        if ( $i_stBody instanceof ModifierInterface ) {
+            $this->handleModifier( $i_stBody );
+            return $this->appendChild( $i_stBody->content() );
+        }
         if ( ! is_null( $i_stBody ) ) {
             $this->rChildren[] = $i_stBody;
         }
@@ -76,6 +81,11 @@ trait ElementListTrait {
     }
 
 
+    public function hasChildren() : bool {
+        return 0 < $this->countChildren();
+    }
+
+
     public function nthChild( int $i_n ) : string|Stringable|null {
         return $this->rChildren[ $i_n ] ?? null;
     }
@@ -94,8 +104,19 @@ trait ElementListTrait {
     }
 
 
-    /** @suppress PhanTypeMismatchReturn */
+    /**
+     * There is no prepend() method because it's ambiguous whether
+     * prepending multiple elements at the same time should
+     * prepend them as a group or individually (the latter reversing
+     * the order).
+     *
+     * @suppress PhanTypeMismatchReturn
+     */
     public function prependChild( string|Stringable|null $i_stBody ) : static {
+        if ( $i_stBody instanceof ModifierInterface ) {
+            $this->handleModifier( $i_stBody );
+            return $this->prependChild( $i_stBody->content() );
+        }
         if ( ! is_null( $i_stBody ) ) {
             array_unshift( $this->rChildren, $i_stBody );
         }
@@ -153,6 +174,9 @@ trait ElementListTrait {
         }
         return $this;
     }
+
+
+    protected function handleModifier( ModifierInterface $i_modifier ) : void {}
 
 
 }

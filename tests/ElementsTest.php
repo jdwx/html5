@@ -117,6 +117,7 @@ class ElementsTest extends MyTestCase {
         $opt = new Elements\Option( 'Foo' );
         $opt->value( 'foo' );
         self::assertEquals( '<option value="foo">Foo</option>', $opt );
+        $this->runAttributeBoolTest( Elements\Option::class, 'selected' );
     }
 
 

@@ -107,6 +107,9 @@
     ]
   },
   "option": {
+    "attributes": {
+      "selected": "bool"
+    },
     "attrTraits": [
       "ValueTrait"
     ]

@@ -126,6 +126,11 @@ class ElementsTest extends MyTestCase {
     }
 
 
+    public function testSelect() : void {
+        $this->runChildTest( Elements\Select::class, Elements\Option::class );
+    }
+
+
     public function testSimpleElements() : void {
         $this->checkSimpleElement( new Elements\Article(), 'article' );
         $this->checkSimpleElement( new Elements\Aside(), 'aside' );

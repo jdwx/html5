@@ -81,7 +81,10 @@
         "type": "bool",
         "default": "true"
       },
-      "formNoValidate": "bool",
+      "formNoValidate": {
+        "type": "bool",
+        "default": "true"
+      },
       "max": "float|int",
       "maxLength": "int",
       "min": "float|int",

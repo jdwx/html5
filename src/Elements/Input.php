@@ -89,7 +89,7 @@ class Input extends UnclosedElement {
     }
 
 
-    public function formNoValidate( ?bool $value ) : static {
+    public function formNoValidate( ?bool $value = true ) : static {
         return $this->setFormNoValidate( $value ?? false );
     }
 

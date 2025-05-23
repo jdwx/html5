@@ -1,6 +1,7 @@
 {
   "AccessKey": "string",
   "Aria-label": "string",
+  "AutoCapitalize": "string",
   "AutoCorrect": {
     "type": "bool",
     "mapBool": {
@@ -44,7 +45,10 @@
     "mapBool": true
   },
   "Name": "string",
-  "Required": "bool",
+  "Required": {
+    "type": "bool",
+    "default": "true"
+  },
   "Style": {
     "type": "string",
     "useAdd": true

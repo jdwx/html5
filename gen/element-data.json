@@ -76,7 +76,12 @@
         "type": "string",
         "useAdd": true
       },
-      "checked": "bool",
+      "autoFocus": "bool",
+      "checked": {
+        "type": "bool",
+        "default": "true"
+      },
+      "formNoValidate": "bool",
       "max": "float|int",
       "maxLength": "int",
       "min": "float|int",

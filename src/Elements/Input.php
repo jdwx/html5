@@ -29,8 +29,18 @@ class Input extends UnclosedElement {
     }
 
 
+    public function addAutoFocus( string|true ...$values ) : static {
+        return $this->addAttribute( 'autofocus', ...$values );
+    }
+
+
     public function addChecked( string|true ...$values ) : static {
         return $this->addAttribute( 'checked', ...$values );
+    }
+
+
+    public function addFormNoValidate( string|true ...$values ) : static {
+        return $this->addAttribute( 'formnovalidate', ...$values );
     }
 
 
@@ -69,8 +79,18 @@ class Input extends UnclosedElement {
     }
 
 
-    public function checked( ?bool $value ) : static {
+    public function autoFocus( ?bool $value ) : static {
+        return $this->setAutoFocus( $value ?? false );
+    }
+
+
+    public function checked( ?bool $value = true ) : static {
         return $this->setChecked( $value ?? false );
+    }
+
+
+    public function formNoValidate( ?bool $value ) : static {
+        return $this->setFormNoValidate( $value ?? false );
     }
 
 
@@ -79,8 +99,18 @@ class Input extends UnclosedElement {
     }
 
 
+    public function getAutoFocus() : string|true|null {
+        return $this->getAttribute( 'autofocus' );
+    }
+
+
     public function getChecked() : string|true|null {
         return $this->getAttribute( 'checked' );
+    }
+
+
+    public function getFormNoValidate() : string|true|null {
+        return $this->getAttribute( 'formnovalidate' );
     }
 
 
@@ -119,8 +149,18 @@ class Input extends UnclosedElement {
     }
 
 
+    public function hasAutoFocus( string|true|null $value = null ) : bool {
+        return $this->hasAttribute( 'autofocus', $value );
+    }
+
+
     public function hasChecked( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'checked', $value );
+    }
+
+
+    public function hasFormNoValidate( string|true|null $value = null ) : bool {
+        return $this->hasAttribute( 'formnovalidate', $value );
     }
 
 
@@ -179,8 +219,18 @@ class Input extends UnclosedElement {
     }
 
 
+    public function setAutoFocus( bool|string ...$values ) : static {
+        return $this->setAttribute( 'autofocus', ...$values );
+    }
+
+
     public function setChecked( bool|string ...$values ) : static {
         return $this->setAttribute( 'checked', ...$values );
+    }
+
+
+    public function setFormNoValidate( bool|string ...$values ) : static {
+        return $this->setAttribute( 'formnovalidate', ...$values );
     }
 
 

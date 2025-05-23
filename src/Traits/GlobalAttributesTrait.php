@@ -8,6 +8,7 @@ namespace JDWX\HTML5\Traits;
 
 
 use JDWX\HTML5\Attributes\AccessKeyTrait;
+use JDWX\HTML5\Attributes\AutoCapitalizeTrait;
 use JDWX\HTML5\Attributes\AutoCorrectTrait;
 use JDWX\HTML5\Attributes\ContentEditableTrait;
 use JDWX\HTML5\Attributes\DirTrait;
@@ -25,6 +26,7 @@ trait GlobalAttributesTrait {
 
 
     use AccessKeyTrait;
+    use AutoCapitalizeTrait;
     use AutoCorrectTrait;
     use ContentEditableTrait;
     use DirTrait;

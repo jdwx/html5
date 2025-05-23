@@ -33,7 +33,7 @@ trait RequiredTrait {
 
 
     /** @suppress PhanTypeMismatchReturn */
-    public function required( ?bool $value ) : static {
+    public function required( ?bool $value = true ) : static {
         return $this->setRequired( $value ?? false );
     }
 

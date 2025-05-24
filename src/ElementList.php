@@ -14,10 +14,10 @@ use Stringable;
 
 
 /**
- * ElementList is useful when you want to pass a chunk of Elements around
+ * ElementList is useful when you want to pass a chunk of Elements around,
  * but they're not contained by a closing tag.
  */
-class ElementList implements StringableStreamInterface {
+class ElementList implements ElementListInterface, StringableStreamInterface {
 
 
     use ElementListTrait;

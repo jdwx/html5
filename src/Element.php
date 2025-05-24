@@ -79,6 +79,16 @@ class Element implements ElementInterface {
     }
 
 
+    /** @param iterable<iterable<string|Stringable>|string|Stringable|null> $i_itChildren */
+    public static function zip( iterable $i_itChildren, ?ElementListInterface $i_parent = null ) : ElementListInterface {
+        $i_parent ??= new ElementList();
+        foreach ( $i_itChildren as $child ) {
+            $i_parent->append( is_null( $child ) ? new static() : new static( $child ) );
+        }
+        return $i_parent;
+    }
+
+
     protected static function filterHasClass( string $i_stClass ) : callable {
         return self::filterByHasAttribute( 'class', $i_stClass );
     }

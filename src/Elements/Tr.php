@@ -16,35 +16,27 @@ class Tr extends Element {
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function td( array|string|Stringable $i_children ) : Td {
+    public function td( array|string|Stringable $i_children = [] ) : Td {
         return ( new Td( $i_children ) )->withParent( $this );
     }
 
 
     /** @param array<string|Stringable>|string|Stringable|null $i_rx */
     public function tds( array|string|Stringable|null ...$i_rx ) : static {
-        foreach ( $i_rx as $x ) {
-            if ( is_array( $x ) ) {
-                $this->td( $x );
-            } else {
-                $this->td( strval( $x ) );
-            }
-        }
+        Td::zip( $i_rx, $this );
         return $this;
     }
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function th( array|string|Stringable $i_children ) : Th {
+    public function th( array|string|Stringable $i_children = [] ) : Th {
         return ( new Th( $i_children ) )->withParent( $this );
     }
 
 
     /** @param array<string|Stringable>|string|Stringable|null $i_rx */
     public function ths( array|string|Stringable|null ...$i_rx ) : static {
-        foreach ( $i_rx as $x ) {
-            $this->th( $x );
-        }
+        Th::zip( $i_rx, $this );
         return $this;
     }
 

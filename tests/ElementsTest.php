@@ -9,11 +9,22 @@ require_once __DIR__ . '/MyTestCase.php';
 
 
 use JDWX\HTML5\Element;
-use JDWX\HTML5\ElementFactory;
 use JDWX\HTML5\Elements;
+use JDWX\HTML5\UnclosedElement;
 
 
 class ElementsTest extends MyTestCase {
+
+
+    public function runRenderTest( string $i_stClass ) : void {
+        $el = new $i_stClass();
+        $stTag = $el->getTagName();
+        if ( $el instanceof UnclosedElement ) {
+            self::assertSame( "<{$stTag}>", strval( $el ) );
+        } else {
+            self::assertSame( "<{$stTag}></{$stTag}>", strval( $el ) );
+        }
+    }
 
 
     public function testAnchor() : void {
@@ -25,6 +36,12 @@ class ElementsTest extends MyTestCase {
         $this->runAttributeStringTest( Elements\Anchor::class, 'rel' );
         $this->runAttributeStringTest( Elements\Anchor::class, 'target' );
         $this->runAttributeStringTest( Elements\Anchor::class, 'title' );
+    }
+
+
+    public function testAriaAttributes() : void {
+        $this->runAttributeStringTest( Elements\Anchor::class, 'ariaLabel' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'role' );
     }
 
 
@@ -43,6 +60,31 @@ class ElementsTest extends MyTestCase {
         $this->runAttributeStringTest( Elements\Form::class, 'action' );
         $this->runAttributeStringTest( Elements\Form::class, 'enctype' );
         $this->runAttributeStringTest( Elements\Form::class, 'method' );
+    }
+
+
+    /**
+     * We'll stuff a lot of tests of global attributes here.
+     */
+    public function testGlobalAttributes() : void {
+        $this->runAttributeStringTest( Elements\Anchor::class, 'accesskey' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'autocapitalize' );
+        $this->runAttributeBoolTest( Elements\Anchor::class, 'autocorrect', true, 'off' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'class' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'contenteditable' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'dir' );
+        $this->runAttributeBoolTest( Elements\Anchor::class, 'draggable', 'true', 'false' );
+        $this->runAttributeBoolTest( Elements\Anchor::class, 'hidden' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'id' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'lang' );
+        $this->runAttributeTest( Elements\Anchor::class, 'spellcheck', [
+            [ true, 'true' ],
+            [ false, 'false' ],
+        ] );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'style' );
+        $this->runAttributeIntTest( Elements\Anchor::class, 'tabindex' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'title' );
+        $this->runAttributeBoolTest( Elements\Anchor::class, 'translate', true, 'no' );
     }
 
 
@@ -74,12 +116,14 @@ class ElementsTest extends MyTestCase {
         $this->runAttributeStringTest( Elements\Input::class, 'autocomplete' );
         $this->runAttributeBoolTest( Elements\Input::class, 'autofocus' );
         $this->runAttributeBoolTest( Elements\Input::class, 'checked' );
+        $this->runAttributeStringTest( Elements\Input::class, 'form' );
         $this->runAttributeBoolTest( Elements\Input::class, 'formNoValidate' );
         $this->runAttributeIntTest( Elements\Input::class, 'max' );
         $this->runAttributeIntTest( Elements\Input::class, 'maxlength' );
         $this->runAttributeIntTest( Elements\Input::class, 'min' );
         $this->runAttributeStringTest( Elements\Input::class, 'name' );
         $this->runAttributeStringTest( Elements\Input::class, 'pattern' );
+        $this->runAttributeStringTest( Elements\Input::class, 'placeholder' );
         $this->runAttributeIntTest( Elements\Input::class, 'size' );
         $this->runAttributeTest( Elements\Input::class, 'step', [
             [ 'any', 'any' ], [ 2, '2' ], [ 2.1, '2.1' ],
@@ -101,6 +145,7 @@ class ElementsTest extends MyTestCase {
 
 
     public function testLink() : void {
+        $this->runRenderTest( Elements\Link::class );
         $lnk = ( new Elements\Link() )->href( 'foo' )->rel( 'stylesheet' )
             ->sizes( 'bar' )->type( 'text/css' );
         /** @noinspection HtmlUnknownTarget */
@@ -109,15 +154,20 @@ class ElementsTest extends MyTestCase {
 
 
     public function testMeta() : void {
-        $mta = ElementFactory::meta();
-        $mta->charset( 'UTF-8' );
-        $mta->setContent( 'foo' );
-        $mta->setName( 'bar' );
-        self::assertEquals( '<meta charset="UTF-8" content="foo" name="bar">', strval( $mta ) );
+        $this->runAttributeStringTest( Elements\Meta::class, 'charset' );
+        $this->runAttributeStringTest( Elements\Meta::class, 'content' );
+        $this->runAttributeStringTest( Elements\Meta::class, 'httpEquiv' );
+        $this->runRenderTest( Elements\Meta::class );
+    }
+
+
+    public function testOl() : void {
+        $this->runChildTest( Elements\Ol::class, Elements\Li::class );
     }
 
 
     public function testOption() : void {
+        $this->runRenderTest( Elements\Option::class );
         $opt = new Elements\Option( 'Foo' );
         $opt->value( 'foo' );
         self::assertEquals( '<option value="foo">Foo</option>', $opt );
@@ -173,9 +223,43 @@ class ElementsTest extends MyTestCase {
     }
 
 
+    public function testTable() : void {
+        $this->runChildTest( Elements\Table::class, Elements\TableBody::class );
+        $this->runChildTest( Elements\Table::class, Elements\TableHead::class );
+        $this->runChildTest( Elements\Table::class, Elements\TableFoot::class );
+    }
+
+
+    public function testTableBody() : void {
+        $this->runChildTest( Elements\TableBody::class, Elements\Tr::class );
+    }
+
+
+    public function testTd() : void {
+        $this->runRenderTest( Elements\Td::class );
+        $this->runAttributeIntTest( Elements\Td::class, 'colspan' );
+        $this->runAttributeIntTest( Elements\Td::class, 'rowspan' );
+    }
+
+
     public function testTextArea() : void {
         $txt = ( new Elements\TextArea() )->cols( 3 )->name( 'foo' )->rows( 7 )->placeholder( 'bar' );
         self::assertEquals( '<textarea cols="3" name="foo" placeholder="bar" rows="7"></textarea>', $txt );
+    }
+
+
+    public function testTr() : void {
+        $this->runRenderTest( Elements\Tr::class );
+        $this->runChildTest( Elements\Tr::class, Elements\Th::class );
+        $this->runChildTest( Elements\Tr::class, Elements\Td::class );
+        $tr = new Elements\Tr();
+        $tr->tds( 'foo', 'bar', null, 'baz' );
+        self::assertSame( '<tr><td>foo</td><td>bar</td><td></td><td>baz</td></tr>', strval( $tr ) );
+
+        $tr = new Elements\Tr();
+        $tr->ths( 'foo', 'bar', null, 'baz' );
+        self::assertSame( '<tr><th>foo</th><th>bar</th><th></th><th>baz</th></tr>', strval( $tr ) );
+
     }
 
 
@@ -194,10 +278,11 @@ class ElementsTest extends MyTestCase {
     }
 
 
-    private function runAttributeBoolTest( string $i_stClass, string $i_stAttribute ) : void {
+    private function runAttributeBoolTest( string $i_stClass, string $i_stAttribute, mixed $i_true = true,
+                                           mixed  $i_false = null ) : void {
         $this->runAttributeTest( $i_stClass, $i_stAttribute, [
-            [ true, true ],
-            [ false, null ],
+            [ true, $i_true ],
+            [ false, $i_false ],
         ] );
     }
 

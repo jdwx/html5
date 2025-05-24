@@ -38,6 +38,15 @@ class Element implements ElementInterface {
     public function __construct( array|string|Stringable $i_children = [] ) {
         $this->setTagName( static::TAG_NAME );
         $this->append( $i_children );
+        $this->setAttributeMerger( 'style', function ( string $i_stValue1, string $i_stValue2 ) : string {
+            if ( ! str_ends_with( $i_stValue1, ';' ) ) {
+                $i_stValue1 .= ';';
+            }
+            if ( ! str_ends_with( $i_stValue2, ';' ) ) {
+                $i_stValue2 .= ';';
+            }
+            return "{$i_stValue1} {$i_stValue2}";
+        } );
     }
 
 
@@ -83,6 +92,7 @@ class Element implements ElementInterface {
     public static function zip( iterable $i_itChildren, ?ElementListInterface $i_parent = null ) : ElementListInterface {
         $i_parent ??= new ElementList();
         foreach ( $i_itChildren as $child ) {
+            /** @phpstan-ignore-next-line */
             $i_parent->append( is_null( $child ) ? new static() : new static( $child ) );
         }
         return $i_parent;

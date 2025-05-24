@@ -13,6 +13,9 @@ trait AttributeTrait {
     /** @var array<string, true|string> */
     private array $rAttributes = [];
 
+    /** @var array<string, callable> */
+    private array $rAttributeMergers = [];
+
 
     /** @suppress PhanTypeMismatchReturn */
     public function addAttribute( string $i_stName, string|true ...$i_values ) : static {
@@ -86,6 +89,14 @@ trait AttributeTrait {
     }
 
 
+    public function mergeAttributeValues( string $i_stName, string $i_stValue1, string $i_stValue2 ) : string {
+        if ( isset( $this->rAttributeMergers[ $i_stName ] ) ) {
+            return $this->rAttributeMergers[ $i_stName ]( $i_stValue1, $i_stValue2 );
+        }
+        return $i_stValue1 . ' ' . $i_stValue2;
+    }
+
+
     /** @suppress PhanTypeMismatchReturn */
     public function removeAttribute( string $i_stName, ?string $i_nstValue = null ) : static {
         if ( ! is_string( $i_nstValue ) ) {
@@ -150,7 +161,12 @@ trait AttributeTrait {
             $this->rAttributes[ $i_stName ] = $i_value;
             return;
         }
-        $this->rAttributes[ $i_stName ] .= ' ' . $i_value;
+        $this->rAttributes[ $i_stName ] = $this->mergeAttributeValues( $i_stName, $this->rAttributes[ $i_stName ], $i_value );
+    }
+
+
+    protected function setAttributeMerger( string $i_stName, callable $i_fnMerger ) : void {
+        $this->rAttributeMergers[ $i_stName ] = $i_fnMerger;
     }
 
 

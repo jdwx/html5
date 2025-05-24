@@ -9,6 +9,7 @@ require_once __DIR__ . '/MyTestCase.php';
 
 
 use JDWX\HTML5\Element;
+use JDWX\HTML5\ElementInterface;
 use JDWX\HTML5\Elements;
 use JDWX\HTML5\UnclosedElement;
 
@@ -18,6 +19,7 @@ class ElementsTest extends MyTestCase {
 
     public function runRenderTest( string $i_stClass ) : void {
         $el = new $i_stClass();
+        assert( $el instanceof ElementInterface );
         $stTag = $el->getTagName();
         if ( $el instanceof UnclosedElement ) {
             self::assertSame( "<{$stTag}>", strval( $el ) );
@@ -81,7 +83,7 @@ class ElementsTest extends MyTestCase {
             [ true, 'true' ],
             [ false, 'false' ],
         ] );
-        $this->runAttributeStringTest( Elements\Anchor::class, 'style' );
+        $this->runAttributeStringTest( Elements\Anchor::class, 'style', 'Foo Bar; Baz;' );
         $this->runAttributeIntTest( Elements\Anchor::class, 'tabindex' );
         $this->runAttributeStringTest( Elements\Anchor::class, 'title' );
         $this->runAttributeBoolTest( Elements\Anchor::class, 'translate', true, 'no' );
@@ -292,13 +294,15 @@ class ElementsTest extends MyTestCase {
     }
 
 
-    private function runAttributeStringTest( string $i_stClass, string $i_stAttribute ) : void {
-        $this->runAttributeTest( $i_stClass, $i_stAttribute, [ [ 'foo', 'foo' ] ] );
+    private function runAttributeStringTest( string  $i_stClass, string $i_stAttribute,
+                                             ?string $i_nstGet = null ) : void {
+        $this->runAttributeTest( $i_stClass, $i_stAttribute, [ [ 'foo', 'foo' ] ], $i_nstGet );
     }
 
 
     /** @param list<list<mixed>> $i_rBareChecks */
-    private function runAttributeTest( string $i_stClass, string $i_stAttribute, array $i_rBareChecks ) : void {
+    private function runAttributeTest( string  $i_stClass, string $i_stAttribute, array $i_rBareChecks,
+                                       ?string $i_nstGet = null ) : void {
         $el = new $i_stClass();
         $fnAdd = [ $el, "add{$i_stAttribute}" ];
         $fnGet = [ $el, "get{$i_stAttribute}" ];
@@ -310,7 +314,9 @@ class ElementsTest extends MyTestCase {
         $fnSet( 'Foo', 'Bar' );
         $fnAdd( 'Baz' );
         self::assertTrue( $fnHas() );
-        self::assertSame( 'Foo Bar Baz', $fnGet() );
+        self::assertTrue( $fnHas( 'Foo' ) );
+        $i_nstGet = $i_nstGet ?? 'Foo Bar Baz';
+        self::assertSame( $i_nstGet, $fnGet() );
 
         foreach ( $i_rBareChecks as $row ) {
             [ $stWrite, $stCheck ] = $row;

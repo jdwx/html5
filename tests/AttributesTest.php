@@ -18,7 +18,6 @@ final class AttributesTest extends TestCase {
         $div = new Div();
         $div->style( 'color: red', 'background: blue', 'display: none' );
         self::assertSame( 'color: red; background: blue; display: none;', $div->getStyle() );
-
     }
 
 

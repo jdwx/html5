@@ -42,6 +42,7 @@ class ElementsTest extends MyTestCase {
 
 
     public function testAriaAttributes() : void {
+        $this->runAttributeBoolTest( Elements\Anchor::class, 'ariaHidden', 'true' );
         $this->runAttributeStringTest( Elements\Anchor::class, 'ariaLabel' );
         $this->runAttributeStringTest( Elements\Anchor::class, 'role' );
     }

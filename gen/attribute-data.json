@@ -1,5 +1,12 @@
 {
   "AccessKey": "string",
+  "Aria-Hidden": {
+    "type": "bool",
+    "mapBool": {
+      "true": "'true'",
+      "false": "false"
+    }
+  },
   "Aria-label": "string",
   "AutoCapitalize": "string",
   "AutoCorrect": {

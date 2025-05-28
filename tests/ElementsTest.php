@@ -166,6 +166,8 @@ class ElementsTest extends MyTestCase {
 
     public function testOl() : void {
         $this->runChildTest( Elements\Ol::class, Elements\Li::class );
+        $this->runAttributeBoolTest( Elements\Ol::class, 'reversed' );
+        $this->runAttributeStringTest( Elements\Ol::class, 'start' );
     }
 
 

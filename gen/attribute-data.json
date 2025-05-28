@@ -74,6 +74,8 @@
   },
   "Role": "string",
   "RowSpan": "int",
+  "Start": "string",
+  "Type": "string",
   "Value": {
     "type": "string"
   }

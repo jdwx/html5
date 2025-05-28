@@ -8,6 +8,7 @@ namespace JDWX\HTML5\Elements;
 
 
 use JDWX\HTML5\Attributes\PlaceholderTrait;
+use JDWX\HTML5\Attributes\TypeTrait;
 use JDWX\HTML5\Attributes\ValueTrait;
 use JDWX\HTML5\Traits\FormChildTrait;
 use JDWX\HTML5\UnclosedElement;
@@ -18,6 +19,7 @@ class Input extends UnclosedElement {
 
     use FormChildTrait;
     use PlaceholderTrait;
+    use TypeTrait;
     use ValueTrait;
 
 
@@ -71,11 +73,6 @@ class Input extends UnclosedElement {
 
     public function addStep( string|true ...$values ) : static {
         return $this->addAttribute( 'step', ...$values );
-    }
-
-
-    public function addType( string|true ...$values ) : static {
-        return $this->addAttribute( 'type', ...$values );
     }
 
 
@@ -149,11 +146,6 @@ class Input extends UnclosedElement {
     }
 
 
-    public function getType() : string|true|null {
-        return $this->getAttribute( 'type' );
-    }
-
-
     public function hasAutoComplete( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'autocomplete', $value );
     }
@@ -201,11 +193,6 @@ class Input extends UnclosedElement {
 
     public function hasStep( string|true|null $value = null ) : bool {
         return $this->hasAttribute( 'step', $value );
-    }
-
-
-    public function hasType( string|true|null $value = null ) : bool {
-        return $this->hasAttribute( 'type', $value );
     }
 
 
@@ -279,11 +266,6 @@ class Input extends UnclosedElement {
     }
 
 
-    public function setType( bool|string ...$values ) : static {
-        return $this->setAttribute( 'type', ...$values );
-    }
-
-
     public function size( false|int|null $value ) : static {
         return $this->setSize( is_int( $value ) ? strval( $value ) : false );
     }
@@ -291,11 +273,6 @@ class Input extends UnclosedElement {
 
     public function step( false|float|int|string|null $value ) : static {
         return $this->setStep( ( is_null( $value ) || false === $value ) ? false : strval( $value ) );
-    }
-
-
-    public function type( false|string|null $value ) : static {
-        return $this->setType( $value ?? false );
     }
 
 

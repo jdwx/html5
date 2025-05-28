@@ -90,14 +90,14 @@
       "min": "float|int",
       "pattern": "string",
       "size": "int",
-      "step": "float|int|string",
-      "type": "string"
+      "step": "float|int|string"
     },
     "traits": [
       "FormChildTrait"
     ],
     "attrTraits": [
       "PlaceholderTrait",
+      "TypeTrait",
       "ValueTrait"
     ]
   },
@@ -117,6 +117,18 @@
     },
     "attrTraits": [
       "NameTrait"
+    ]
+  },
+  "ol": {
+    "attributes": {
+      "reversed": "bool"
+    },
+    "attrTraits": [
+      "StartTrait",
+      "TypeTrait"
+    ],
+    "childTraits": [
+      "ListTrait"
     ]
   },
   "option": {
@@ -180,6 +192,14 @@
     "children": [
       "td",
       "th"
+    ]
+  },
+  "ul": {
+    "attrTraits": [
+      "TypeTrait"
+    ],
+    "childTraits": [
+      "ListTrait"
     ]
   }
 }

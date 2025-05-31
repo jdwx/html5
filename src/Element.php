@@ -14,6 +14,7 @@ use JDWX\HTML5\Traits\AttributeTrait;
 use JDWX\HTML5\Traits\ElementListTrait;
 use JDWX\HTML5\Traits\GlobalAttributesTrait;
 use JDWX\HTML5\Traits\TagTrait;
+use JDWX\Web\Stream\StringableList;
 use JDWX\Web\Stream\StringableStreamTrait;
 use Stringable;
 

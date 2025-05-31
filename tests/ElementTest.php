@@ -13,9 +13,9 @@ use JDWX\HTML5\Element;
 use JDWX\HTML5\ElementList;
 use JDWX\HTML5\Elements\Div;
 use JDWX\HTML5\Elements\Img;
-use JDWX\HTML5\StringableList;
-use JDWX\HTML5\Tests\Shims\MyStringable;
 use JDWX\HTML5\Tests\Shims\MyTestCase;
+use JDWX\Web\Stream\SimpleStringable;
+use JDWX\Web\Stream\StringableList;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Stringable;
 
@@ -93,10 +93,10 @@ final class ElementTest extends MyTestCase {
 
 
     public function testAppendForStringableList() : void {
-        $foo = new MyStringable( 'Foo' );
-        $bar = new MyStringable( 'Bar' );
-        $baz = new MyStringable( 'Baz' );
-        $qux = new MyStringable( 'Qux' );
+        $foo = new SimpleStringable( 'Foo' );
+        $bar = new SimpleStringable( 'Bar' );
+        $baz = new SimpleStringable( 'Baz' );
+        $qux = new SimpleStringable( 'Qux' );
         $list = new StringableList( [ $bar, $baz, $qux ] );
         $el = Element::synthetic( 'div', $foo );
         $el->append( $list );
@@ -471,7 +471,7 @@ final class ElementTest extends MyTestCase {
 
 
     public function testToStringForStringable() : void {
-        $foo = new MyStringable( 'Foo' );
+        $foo = new SimpleStringable( 'Foo' );
         $el = new Element( i_children: $foo );
         self::assertSame( '<div>Foo</div>', strval( $el ) );
     }

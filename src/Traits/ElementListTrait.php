@@ -9,6 +9,7 @@ namespace JDWX\HTML5\Traits;
 
 use JDWX\HTML5\Element;
 use JDWX\HTML5\ModifierInterface;
+use JDWX\Web\Stream\StringableListTrait;
 use Stringable;
 
 

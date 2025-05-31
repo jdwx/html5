@@ -12,13 +12,10 @@ use JDWX\HTML5\Element;
 use JDWX\HTML5\ElementList;
 use JDWX\HTML5\Elements\Div;
 use JDWX\HTML5\ModifierInterface;
-use JDWX\HTML5\Tests\Shims\MyStringable;
+use JDWX\Web\Stream\SimpleStringable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Stringable;
-
-
-require_once __DIR__ . '/Shims/MyStringable.php';
 
 
 #[CoversClass( ElementList::class )]
@@ -47,7 +44,7 @@ final class ElementListTest extends TestCase {
 
 
     public function testAppendingToElement() : void {
-        $baz = new MyStringable( 'Baz' );
+        $baz = new SimpleStringable( 'Baz' );
         $qux = new Div( 'Qux' );
         $list = new ElementList( [ 'Foo', 'Bar', $baz, $qux ] );
 

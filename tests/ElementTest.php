@@ -1,14 +1,26 @@
-<?php declare( strict_types = 1 );
+<?php
 
 
+declare( strict_types = 1 );
+
+
+namespace JDWX\HTML5\Tests;
+
+
+use InvalidArgumentException;
 use JDWX\HTML5\AttributeModifier;
 use JDWX\HTML5\Element;
+use JDWX\HTML5\ElementList;
 use JDWX\HTML5\Elements\Div;
 use JDWX\HTML5\Elements\Img;
+use JDWX\HTML5\StringableList;
+use JDWX\HTML5\Tests\Shims\MyStringable;
+use JDWX\HTML5\Tests\Shims\MyTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Stringable;
 
 
-require_once __DIR__ . '/MyTestCase.php';
+require_once __DIR__ . '/Shims/MyTestCase.php';
 
 
 #[CoversClass( Element::class )]
@@ -19,11 +31,13 @@ final class ElementTest extends MyTestCase {
         $foo = new Element();
         $bar = new Element();
         $baz = new Element();
-        $div = new Element( [ $foo, $bar, 'garply', $baz ] );
+        $grault = new Element();
+        $div = new Element( [ $foo, $bar, 'garply', $baz, $grault ] );
         $div->addChildClasses( 'qux', 'quux', 'corge' );
         self::assertSame( 'qux', $foo->getClass() );
         self::assertSame( 'quux', $bar->getClass() );
         self::assertSame( 'corge', $baz->getClass() );
+        self::assertNull( $grault->getClass() );
     }
 
 
@@ -58,34 +72,36 @@ final class ElementTest extends MyTestCase {
     }
 
 
-    public function testAppend() : void {
-        $el = new Element();
-        $el->append( 'Bar', [ 'Baz', 'Qux' ] );
-        self::assertEquals( '<div>BarBazQux</div>', strval( $el ) );
-
-        $child = new Element( i_children: 'Quux' );
-        $el = new Element( i_children: 'Foo' );
-        $el->append( 'Bar', [ 'Baz', $child, [ 'Qux', null ] ] );
-        self::assertSame( '<div>FooBarBaz<div>Quux</div>Qux</div>', strval( $el ) );
-    }
-
-
-    public function testAppendChild() : void {
-        $el = new Element( i_children: 'foo' );
-        $el->appendChild( 'bar' );
-        self::assertSame( '<div>foobar</div>', strval( $el ) );
-
-        $el = new Element( i_children: 'foo' );
-        $el->appendChild( null )
-            ->appendChild( new Element( i_children: 'bar' ) );
-        self::assertSame( '<div>foo<div>bar</div></div>', strval( $el ) );
+    public function testAppendForElementList() : void {
+        $foo = new Element();
+        $bar = new Element();
+        $baz = new Element();
+        $qux = new Element();
+        $list = new ElementList( [ $bar, $baz, $qux ] );
+        $el = new Element( $foo );
+        $el->append( $list );
+        self::assertSame( [ $foo, $bar, $baz, $qux ], iterator_to_array( $el->children(), false ) );
     }
 
 
     public function testAppendForModifier() : void {
         $mod = new AttributeModifier( 'class', 'foo', 'Foo' );
-        $foo = new Element( i_children: $mod );
+        $foo = new Element();
+        $foo->append( $mod );
         self::assertSame( '<div class="foo">Foo</div>', strval( $foo ) );
+    }
+
+
+    public function testAppendForStringableList() : void {
+        $foo = new MyStringable( 'Foo' );
+        $bar = new MyStringable( 'Bar' );
+        $baz = new MyStringable( 'Baz' );
+        $qux = new MyStringable( 'Qux' );
+        $list = new StringableList( [ $bar, $baz, $qux ] );
+        $el = Element::synthetic( 'div', $foo );
+        $el->append( $list );
+        self::assertSame( [ $foo, $bar, $baz, $qux ], iterator_to_array( $el->children(), false ) );
+        self::assertSame( '<div>FooBarBazQux</div>', strval( $el ) );
     }
 
 
@@ -110,12 +126,6 @@ final class ElementTest extends MyTestCase {
     }
 
 
-    public function testChildren() : void {
-        $el = new Element( i_children: [ 'foo', 'bar', 'baz' ] );
-        self::assertSame( [ 'foo', 'bar', 'baz' ], iterator_to_array( $el->children(), false ) );
-    }
-
-
     public function testCountChildElements() : void {
         $el1 = new Element();
         $el2 = new Element();
@@ -131,24 +141,6 @@ final class ElementTest extends MyTestCase {
         };
         $parent = new Element( [ $el1, $el2, $el3, $el4 ] );
         self::assertSame( 2, $parent->countChildElements() );
-    }
-
-
-    public function testCountChildren() : void {
-        $el1 = new Element();
-        $el2 = new Element();
-        $el3 = 'Foo';
-        $el4 = new class() implements Stringable {
-
-
-            public function __toString() : string {
-                return 'Bar';
-            }
-
-
-        };
-        $parent = new Element( [ $el1, $el2, $el3, $el4 ] );
-        self::assertSame( 4, $parent->countChildren() );
     }
 
 
@@ -237,6 +229,19 @@ final class ElementTest extends MyTestCase {
     }
 
 
+    public function testForEach() : void {
+        $el = new Element( [ 'Foo', 'Bar', 'Baz' ] );
+        $bNo = false;
+        $st = '';
+        foreach ( $el as $x ) {
+            $bNo = true;
+            $st .= $x;
+        }
+        self::assertFalse( $bNo );
+        self::assertSame( '', $st );
+    }
+
+
     public function testGetElementById() : void {
 
         $el = new Element();
@@ -291,22 +296,9 @@ final class ElementTest extends MyTestCase {
     }
 
 
-    public function testNthChild() : void {
-        $el = new Element( i_children: [ 'foo', 'bar', 'baz' ] );
-        self::assertSame( 'foo', strval( $el->nthChild( 0 ) ) );
-        self::assertSame( 'bar', strval( $el->nthChild( 1 ) ) );
-        self::assertSame( 'baz', strval( $el->nthChild( 2 ) ) );
-        self::assertNull( $el->nthChild( 3 ) );
-    }
-
-
-    public function testNthChildElement() : void {
-        $elChild1 = new Element( i_children: 'foo' );
-        $elChild2 = new Element( i_children: 'bar' );
-        $el = new Element( i_children: [ 'baz', $elChild1, 'qux', $elChild2, 'corge' ] );
-        self::assertSame( $elChild1, $el->nthChildElement( 0 ) );
-        self::assertSame( $elChild2, $el->nthChildElement( 1 ) );
-        self::assertNull( $el->nthChildElement( 2 ) );
+    public function testIsIterable() : void {
+        $el = new Element( 'test' );
+        self::assertFalse( is_iterable( $el ) );
     }
 
 
@@ -386,77 +378,6 @@ final class ElementTest extends MyTestCase {
 
         self::assertNull( $el->nthChildElementByTagName( 'Foo' ) );
 
-    }
-
-
-    public function testPrependChild() : void {
-        $el = new Element( i_children: 'bar' );
-        $el->prependChild( 'foo' );
-        self::assertSame( '<div>foobar</div>', strval( $el ) );
-
-        $el = new Element( i_children: 'bar' );
-        $el->prependChild( null )
-            ->prependChild( new Element( i_children: 'foo' ) );
-        self::assertSame( '<div><div>foo</div>bar</div>', strval( $el ) );
-    }
-
-
-    public function testRemoveAllChildren() : void {
-        $el = new Element( i_children: [ 'foo', 'bar', 'baz' ] );
-        $el->removeAllChildren();
-        self::assertSame( '<div></div>', strval( $el ) );
-    }
-
-
-    public function testRemoveChildForElement() : void {
-        $child = new Element( i_children: 'Foo' );
-        $parent = new Element( i_children: [ 'Bar', $child, 'Baz' ] );
-        $parent->removeChild( $child );
-        self::assertSame( '<div>BarBaz</div>', strval( $parent ) );
-    }
-
-
-    public function testRemoveChildForNotPresent() : void {
-        $child = new Element( i_children: 'Foo' );
-        $parent = new Element( i_children: [ 'Bar', 'Baz' ] );
-        $parent->removeChild( $child );
-        self::assertSame( '<div>BarBaz</div>', strval( $parent ) );
-    }
-
-
-    public function testRemoveChildForString() : void {
-        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
-        $el->removeChild( 'Bar' );
-        self::assertSame( '<div>FooBaz</div>', strval( $el ) );
-    }
-
-
-    public function testRemoveChildren() : void {
-        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
-        $fn = function ( string|Stringable $child ) : bool {
-            return 'Bar' === strval( $child );
-        };
-        $el->removeChildren( $fn );
-        self::assertSame( '<div>FooBaz</div>', strval( $el ) );
-    }
-
-
-    public function testRemoveNthChild() : void {
-        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
-        $el->removeNthChild();
-        self::assertSame( '<div>BarBaz</div>', strval( $el ) );
-
-        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
-        $el->removeNthChild( 1 );
-        self::assertSame( '<div>FooBaz</div>', strval( $el ) );
-
-        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
-        $el->removeNthChild( 2 );
-        self::assertSame( '<div>FooBar</div>', strval( $el ) );
-
-        $el = new Element( i_children: [ 'Foo', 'Bar', 'Baz' ] );
-        $el->removeNthChild( 3 );
-        self::assertSame( '<div>FooBarBaz</div>', strval( $el ) );
     }
 
 
@@ -547,16 +468,9 @@ final class ElementTest extends MyTestCase {
 
 
     public function testToStringForStringable() : void {
-        $el = new Element( i_children: new class() {
-
-
-            public function __toString() : string {
-                return 'foo';
-            }
-
-
-        } );
-        self::assertSame( '<div>foo</div>', strval( $el ) );
+        $foo = new MyStringable( 'Foo' );
+        $el = new Element( i_children: $foo );
+        self::assertSame( '<div>Foo</div>', strval( $el ) );
     }
 
 

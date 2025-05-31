@@ -7,10 +7,7 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-use Stringable;
-
-
-interface ElementInterface extends AttributeInterface, ElementListInterface, Stringable, TagInterface {
+interface ElementInterface extends AttributeInterface, ElementListInterface, TagInterface {
 
 
     public function addClass( string|true ...$values ) : static;

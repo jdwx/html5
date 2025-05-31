@@ -7,19 +7,15 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-use JDWX\HTML5\Traits\ElementListTrait;
+use JDWX\HTML5\Traits\StringableListTrait;
 use JDWX\Web\Stream\StringableStreamTrait;
 use Stringable;
 
 
-/**
- * ElementList is useful when you want to pass a chunk of Elements around,
- * but they're not contained by a closing tag.
- */
-class ElementList implements ElementListInterface {
+class StringableList implements StringableListInterface {
 
 
-    use ElementListTrait;
+    use StringableListTrait;
     use StringableStreamTrait;
 
 
@@ -36,9 +32,6 @@ class ElementList implements ElementListInterface {
     public function stream() : iterable {
         yield from $this->children();
     }
-
-
-    protected function handleModifier( ModifierInterface $i_modifier ) : void {}
 
 
 }

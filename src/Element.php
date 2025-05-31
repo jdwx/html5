@@ -24,7 +24,9 @@ class Element implements ElementInterface {
     use AriaTrait;
     use AttributeTrait;
     use ClassTrait;
-    use ElementListTrait;
+    use ElementListTrait {
+        appendOne as protected appendOneTrait;
+    }
     use GlobalAttributesTrait;
     use IdTrait;
     use StringableStreamTrait;
@@ -36,8 +38,8 @@ class Element implements ElementInterface {
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
     public function __construct( array|string|Stringable $i_children = [] ) {
-        $this->setTagName( static::TAG_NAME );
         $this->append( $i_children );
+        $this->setTagName( static::TAG_NAME );
         $this->setAttributeMerger( 'style', function ( string $i_stValue1, string $i_stValue2 ) : string {
             if ( ! str_ends_with( $i_stValue1, ';' ) ) {
                 $i_stValue1 .= ';';
@@ -126,13 +128,16 @@ class Element implements ElementInterface {
     }
 
 
-    public function getElementById( string $i_stId ) : ElementInterface|null {
-        return $this->nthChildElementById( $i_stId, 0 );
+    public function appendOne( iterable|Stringable|string|null $i_child ) : static {
+        if ( $i_child instanceof StringableList || $i_child instanceof ElementList ) {
+            $i_child = $i_child->children();
+        }
+        return $this->appendOneTrait( $i_child );
     }
 
 
-    public function handleModifier( ModifierInterface $i_modifier ) : void {
-        $i_modifier->modify( $this );
+    public function getElementById( string $i_stId ) : ElementInterface|null {
+        return $this->nthChildElementById( $i_stId, 0 );
     }
 
 
@@ -193,6 +198,11 @@ class Element implements ElementInterface {
     public function withParent( ElementInterface $i_parent ) : static {
         $i_parent->appendChild( $this );
         return $this;
+    }
+
+
+    protected function handleModifier( ModifierInterface $i_modifier ) : void {
+        $i_modifier->modify( $this );
     }
 
 

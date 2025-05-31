@@ -128,6 +128,7 @@ class Element implements ElementInterface {
     }
 
 
+    /** @param iterable<string|Stringable|iterable<string|Stringable|null>|null>|string|Stringable|null $i_child */
     public function appendOne( iterable|Stringable|string|null $i_child ) : static {
         if ( $i_child instanceof StringableList || $i_child instanceof ElementList ) {
             $i_child = $i_child->children();

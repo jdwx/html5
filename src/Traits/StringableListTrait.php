@@ -117,6 +117,10 @@ trait StringableListTrait {
     }
 
 
+    /**
+     * @param iterable<string|Stringable|iterable<string|Stringable|null>|null>|string|Stringable|null $i_child
+     * @suppress PhanTypeMismatchReturn
+     */
     protected function appendOne( iterable|string|Stringable|null $i_child ) : static {
         if ( is_iterable( $i_child ) ) {
             return $this->append( ... $i_child );

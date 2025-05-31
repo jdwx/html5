@@ -21,6 +21,7 @@ trait ElementListTrait {
     }
 
 
+    /** @suppress PhanTypeMismatchReturn */
     public function appendChild( Stringable|string|null $i_child ) : static {
         if ( $i_child instanceof ModifierInterface ) {
             $this->handleModifier( $i_child );
@@ -60,6 +61,7 @@ trait ElementListTrait {
     }
 
 
+    /** @suppress PhanTypeMismatchReturn */
     public function prependChild( Stringable|string|null $i_child ) : static {
         if ( $i_child instanceof ModifierInterface ) {
             $this->handleModifier( $i_child );
@@ -82,6 +84,9 @@ trait ElementListTrait {
         }
         return $this;
     }
+
+
+    protected function handleModifier( ModifierInterface $i_modifier ) : void {}
 
 
 }

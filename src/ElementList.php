@@ -38,7 +38,4 @@ class ElementList implements ElementListInterface {
     }
 
 
-    protected function handleModifier( ModifierInterface $i_modifier ) : void {}
-
-
 }

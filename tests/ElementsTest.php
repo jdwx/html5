@@ -98,7 +98,7 @@ class ElementsTest extends MyTestCase {
     public function testHr() : void {
         $hr = new Elements\Hr();
         self::assertFalse( $hr->getAlwaysClose() );
-        self::assertEquals( 0, $hr->count() );
+        self::assertEquals( 0, $hr->countChildren() );
         self::assertFalse( $hr->hasChildren() );
         self::assertEquals( '<hr>', $hr );
     }

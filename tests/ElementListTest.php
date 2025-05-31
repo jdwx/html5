@@ -37,7 +37,7 @@ final class ElementListTest extends TestCase {
 
         };
         $list->append( $mod );
-        self::assertSame( 1, $list->count() );
+        self::assertSame( 1, $list->countChildren() );
         self::assertSame( $mod, $list->xMod );
         self::assertSame( [ 'Foo' ], $list->asArray() );
     }
@@ -51,9 +51,9 @@ final class ElementListTest extends TestCase {
         self::assertCount( 4, $list->asArray() );
 
         $el = new Div( 'Quux' );
-        self::assertCount( 1, $el );
+        self::assertSame( 1, $el->countChildren() );
         $el->append( $list );
-        self::assertCount( 5, $el );
+        self::assertSame( 5, $el->countChildren() );
 
     }
 
@@ -69,11 +69,11 @@ final class ElementListTest extends TestCase {
     public function testNthChildElement() : void {
         $elChild1 = new Element( i_children: 'foo' );
         $elChild2 = new Element( i_children: 'bar' );
-        $el = new ElementList( [ 'baz', $elChild1, 'qux', $elChild2, 'corge' ] );
-        self::assertCount( 5, $el );
-        self::assertSame( $elChild1, $el->nthChildElement( 0 ) );
-        self::assertSame( $elChild2, $el->nthChildElement( 1 ) );
-        self::assertNull( $el->nthChildElement( 2 ) );
+        $list = new ElementList( [ 'baz', $elChild1, 'qux', $elChild2, 'corge' ] );
+        self::assertSame( 5, $list->countChildren() );
+        self::assertSame( $elChild1, $list->nthChildElement( 0 ) );
+        self::assertSame( $elChild2, $list->nthChildElement( 1 ) );
+        self::assertNull( $list->nthChildElement( 2 ) );
     }
 
 
@@ -92,7 +92,7 @@ final class ElementListTest extends TestCase {
 
         };
         $list->prependChild( $mod );
-        self::assertSame( 1, $list->count() );
+        self::assertSame( 1, $list->countChildren() );
         self::assertSame( $mod, $list->xMod );
         self::assertSame( [ 'Foo' ], $list->asArray() );
     }

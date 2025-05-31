@@ -229,10 +229,12 @@ final class ElementTest extends MyTestCase {
     }
 
 
+    /** @suppress PhanTypeNoAccessiblePropertiesForeach */
     public function testForEach() : void {
         $el = new Element( [ 'Foo', 'Bar', 'Baz' ] );
         $bNo = false;
         $st = '';
+        /** @phpstan-ignore foreach.nonIterable */
         foreach ( $el as $x ) {
             $bNo = true;
             $st .= $x;
@@ -298,6 +300,7 @@ final class ElementTest extends MyTestCase {
 
     public function testIsIterable() : void {
         $el = new Element( 'test' );
+        /** @phpstan-ignore function.impossibleType */
         self::assertFalse( is_iterable( $el ) );
     }
 

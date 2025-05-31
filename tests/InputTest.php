@@ -4,6 +4,9 @@
 declare( strict_types = 1 );
 
 
+namespace JDWX\HTML5\Tests;
+
+
 use JDWX\HTML5\Elements\Input;
 use PHPUnit\Framework\TestCase;
 

@@ -4,6 +4,9 @@
 declare( strict_types = 1 );
 
 
+namespace JDWX\HTML5\Tests;
+
+
 use JDWX\HTML5\Attributes\StyleTrait;
 use JDWX\HTML5\Elements\Div;
 use PHPUnit\Framework\Attributes\CoversClass;

@@ -4,6 +4,10 @@
 declare( strict_types = 1 );
 
 
+namespace JDWX\HTML5\Tests;
+
+
+use InvalidArgumentException;
 use JDWX\HTML5\Traits\AttributeTrait;
 use PHPUnit\Framework\TestCase;
 

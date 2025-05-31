@@ -4,7 +4,7 @@
 declare( strict_types = 1 );
 
 
-namespace Gen;
+namespace JDWX\HTML5\Tests\Gen;
 
 
 require_once __DIR__ . '/../../gen/TypeGames.php';

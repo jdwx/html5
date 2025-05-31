@@ -4,6 +4,9 @@
 declare( strict_types = 1 );
 
 
+namespace JDWX\HTML5\Tests\Shims;
+
+
 use JDWX\HTML5\Element;
 use PHPUnit\Framework\TestCase;
 

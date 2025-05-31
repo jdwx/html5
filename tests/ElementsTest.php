@@ -4,13 +4,17 @@
 declare( strict_types = 1 );
 
 
+namespace JDWX\HTML5\Tests;
+
+
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/MyTestCase.php';
+require_once __DIR__ . '/Shims/MyTestCase.php';
 
 
 use JDWX\HTML5\Element;
 use JDWX\HTML5\ElementInterface;
 use JDWX\HTML5\Elements;
+use JDWX\HTML5\Tests\Shims\MyTestCase;
 use JDWX\HTML5\UnclosedElement;
 
 
@@ -94,7 +98,7 @@ class ElementsTest extends MyTestCase {
     public function testHr() : void {
         $hr = new Elements\Hr();
         self::assertFalse( $hr->getAlwaysClose() );
-        self::assertEquals( 0, $hr->countChildren() );
+        self::assertEquals( 0, $hr->count() );
         self::assertFalse( $hr->hasChildren() );
         self::assertEquals( '<hr>', $hr );
     }

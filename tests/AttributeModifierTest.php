@@ -4,6 +4,9 @@
 declare( strict_types = 1 );
 
 
+namespace JDWX\HTML5\Tests;
+
+
 use JDWX\HTML5\AbstractModifier;
 use JDWX\HTML5\AttributeModifier;
 use JDWX\HTML5\Elements\Div;

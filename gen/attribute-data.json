@@ -52,6 +52,7 @@
     "mapBool": true
   },
   "Name": "string",
+  "OnClick": "string",
   "Required": {
     "type": "bool",
     "default": "true"

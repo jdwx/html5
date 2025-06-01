@@ -52,6 +52,11 @@ class ElementsTest extends MyTestCase {
     }
 
 
+    public function testDiv() : void {
+        $this->runAttributeStringTest( Elements\Div::class, 'onclick' );
+    }
+    
+
     public function testDl() : void {
         $this->runChildTest( Elements\Dl::class, Elements\Dd::class );
         $this->runChildTest( Elements\Dl::class, Elements\Dt::class );

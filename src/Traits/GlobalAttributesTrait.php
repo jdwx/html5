@@ -15,6 +15,7 @@ use JDWX\HTML5\Attributes\DirTrait;
 use JDWX\HTML5\Attributes\DraggableTrait;
 use JDWX\HTML5\Attributes\HiddenTrait;
 use JDWX\HTML5\Attributes\LangTrait;
+use JDWX\HTML5\Attributes\OnClickTrait;
 use JDWX\HTML5\Attributes\SpellCheckTrait;
 use JDWX\HTML5\Attributes\StyleTrait;
 use JDWX\HTML5\Attributes\TabIndexTrait;
@@ -33,6 +34,7 @@ trait GlobalAttributesTrait {
     use DraggableTrait;
     use HiddenTrait;
     use LangTrait;
+    use OnClickTrait;
     use SpellCheckTrait;
     use StyleTrait;
     use TabIndexTrait;

@@ -52,10 +52,16 @@ class ElementsTest extends MyTestCase {
     }
 
 
+    public function testDetails() : void {
+        $this->runAttributeBoolTest( Elements\Details::class, 'open' );
+        $this->runChildTest( Elements\Details::class, Elements\Summary::class );
+    }
+
+
     public function testDiv() : void {
         $this->runAttributeStringTest( Elements\Div::class, 'onclick' );
     }
-    
+
 
     public function testDl() : void {
         $this->runChildTest( Elements\Dl::class, Elements\Dd::class );
@@ -227,6 +233,7 @@ class ElementsTest extends MyTestCase {
         $this->checkSimpleElement( new Elements\Section(), 'section' );
         $this->checkSimpleElement( new Elements\Select(), 'select' );
         $this->checkSimpleElement( new Elements\Span(), 'span' );
+        $this->checkSimpleElement( new Elements\Summary(), 'summary' );
         $this->checkSimpleElement( new Elements\Ul(), 'ul' );
     }
 

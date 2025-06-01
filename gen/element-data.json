@@ -25,6 +25,17 @@
   },
   "button": true,
   "dd": true,
+  "details": {
+    "attributes": {
+      "open": "bool"
+    },
+    "attrTraits": [
+      "NameTrait"
+    ],
+    "children": [
+      "summary"
+    ]
+  },
   "div": true,
   "dl": {
     "children": [
@@ -152,6 +163,7 @@
       "FormChildTrait"
     ]
   },
+  "summary": true,
   "table": {
     "children": [
       "thead",

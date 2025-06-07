@@ -1,7 +1,7 @@
 {
   "name": "jdwx/html5",
   "type": "library",
-  "description": "Simple PHP tools for building HTML from raw elements.",
+  "description": "Simple PHP module for building HTML from raw elements.",
   "keywords": [
     "html"
   ],
@@ -19,7 +19,6 @@
     "phpunit/phpunit": "^10"
   },
   "require": {
-    "ext-tidy": "*",
     "jdwx/web": "dev-main",
     "php": "^8.3"
   }

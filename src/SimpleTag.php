@@ -9,7 +9,7 @@ namespace JDWX\HTML5;
 
 use JDWX\HTML5\Traits\AttributeTrait;
 use JDWX\HTML5\Traits\TagTrait;
-use JDWX\Web\Stream\StringableStreamTrait;
+use JDWX\Stream\StringableStreamTrait;
 use Stringable;
 
 

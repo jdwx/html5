@@ -14,8 +14,8 @@ use JDWX\HTML5\ElementList;
 use JDWX\HTML5\Elements\Div;
 use JDWX\HTML5\Elements\Img;
 use JDWX\HTML5\Tests\Shims\MyTestCase;
-use JDWX\Web\Stream\SimpleStringable;
-use JDWX\Web\Stream\StringableList;
+use JDWX\Stream\SimpleStringable;
+use JDWX\Stream\StringableList;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Stringable;
 

@@ -12,7 +12,7 @@ use JDWX\HTML5\Element;
 use JDWX\HTML5\ElementList;
 use JDWX\HTML5\Elements\Div;
 use JDWX\HTML5\ModifierInterface;
-use JDWX\Web\Stream\SimpleStringable;
+use JDWX\Stream\SimpleStringable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Stringable;

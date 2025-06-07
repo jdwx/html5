@@ -8,7 +8,7 @@ namespace JDWX\HTML5;
 
 
 use JDWX\HTML5\Traits\ElementListTrait;
-use JDWX\Web\Stream\StringableStreamTrait;
+use JDWX\Stream\StringableStreamTrait;
 use Stringable;
 
 

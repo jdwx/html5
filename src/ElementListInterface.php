@@ -7,7 +7,7 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5;
 
 
-use JDWX\Web\Stream\StringableListInterface;
+use JDWX\Stream\StringableListInterface;
 
 
 interface ElementListInterface extends StringableListInterface {

@@ -39,7 +39,7 @@ final class ElementListTest extends TestCase {
         $list->append( $mod );
         self::assertSame( 1, $list->countChildren() );
         self::assertSame( $mod, $list->xMod );
-        self::assertSame( [ 'Foo' ], $list->asArray() );
+        self::assertSame( [ 'Foo' ], $list->asList() );
     }
 
 
@@ -48,7 +48,7 @@ final class ElementListTest extends TestCase {
         $qux = new Div( 'Qux' );
         $list = new ElementList( [ 'Foo', 'Bar', $baz, $qux ] );
 
-        self::assertCount( 4, $list->asArray() );
+        self::assertCount( 4, $list->asList() );
 
         $el = new Div( 'Quux' );
         self::assertSame( 1, $el->countChildren() );
@@ -62,7 +62,7 @@ final class ElementListTest extends TestCase {
         $mod = new AttributeModifier( 'class', 'foo', 'Foo' );
         $list = new ElementList();
         $list->append( $mod );
-        self::assertSame( [ 'Foo' ], $list->asArray() );
+        self::assertSame( [ 'Foo' ], $list->asList() );
     }
 
 
@@ -94,7 +94,7 @@ final class ElementListTest extends TestCase {
         $list->prependChild( $mod );
         self::assertSame( 1, $list->countChildren() );
         self::assertSame( $mod, $list->xMod );
-        self::assertSame( [ 'Foo' ], $list->asArray() );
+        self::assertSame( [ 'Foo' ], $list->asList() );
     }
 
 

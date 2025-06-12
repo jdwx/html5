@@ -20,7 +20,8 @@ class Html extends Element {
     protected const string TAG_NAME = 'html';
 
 
-    public function __construct( array|string|Stringable $i_children = [] ) {
+    /** @param iterable<string|Stringable>|string|Stringable $i_children */
+    public function __construct( iterable|string|Stringable $i_children = [] ) {
         parent::__construct( $i_children );
         $this->lang( self::DEFAULT_LANG );
     }

@@ -37,8 +37,8 @@ class Element implements ElementInterface {
     protected const string TAG_NAME = 'div';
 
 
-    /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function __construct( array|string|Stringable $i_children = [] ) {
+    /** @param iterable<string|Stringable>|string|Stringable $i_children */
+    public function __construct( iterable|string|Stringable $i_children = [] ) {
         $this->append( $i_children );
         $this->setTagName( static::TAG_NAME );
         $this->setAttributeMerger( 'style', function ( string $i_stValue1, string $i_stValue2 ) : string {
@@ -175,7 +175,7 @@ class Element implements ElementInterface {
     }
 
 
-    public function nthChildElementByNotTagName( string $i_stTagName, int $i_n = 0 ) : ElementInterface {
+    public function nthChildElementByNotTagName( string $i_stTagName, int $i_n = 0 ) : ElementInterface|null {
         return $this->nthChildByFilter( self::filterByNotTagName( $i_stTagName, true ), $i_n );
     }
 

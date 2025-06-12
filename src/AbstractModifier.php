@@ -17,7 +17,7 @@ abstract readonly class AbstractModifier implements ModifierInterface {
 
 
     public function __toString() : string {
-        return $this->content() ?? '';
+        return strval( $this->content() ?? '' );
     }
 
 

@@ -20,7 +20,7 @@ readonly class AttributeModifier extends AbstractModifier {
 
 
     public function modify( ElementInterface $i_element ) : void {
-        $i_element->setAttribute( $this->stAttribute, $this->stValue );
+        $i_element->setAttribute( $this->stAttribute, strval( $this->stValue ) );
     }
 
 

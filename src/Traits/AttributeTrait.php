@@ -7,6 +7,10 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Traits;
 
 
+use JDWX\Strict\OK;
+use JDWX\Strict\TypeIs;
+
+
 trait AttributeTrait {
 
 
@@ -84,7 +88,7 @@ trait AttributeTrait {
         if ( ! is_string( $this->rAttributes[ $i_stName ] ) ) {
             return false;
         }
-        $r = preg_split( '/\s+/', trim( $this->rAttributes[ $i_stName ] ) );
+        $r = OK::preg_split_list( '/\s+/', trim( TypeIs::string( $this->rAttributes[ $i_stName ] ) ) );
         return in_array( $i_value, $r, true );
     }
 
@@ -109,7 +113,7 @@ trait AttributeTrait {
         $stValue = $this->rAttributes[ $i_stName ];
         /** @phpstan-ignore-next-line */
         assert( is_string( $stValue ) );
-        $rValue = preg_split( '/\s+/', trim( $stValue ) );
+        $rValue = OK::preg_split_list( '/\s+/', trim( $stValue ) );
         $rValue = array_diff( $rValue, [ $i_nstValue ] );
         if ( empty( $rValue ) ) {
             unset( $this->rAttributes[ $i_stName ] );
@@ -161,7 +165,9 @@ trait AttributeTrait {
             $this->rAttributes[ $i_stName ] = $i_value;
             return;
         }
-        $this->rAttributes[ $i_stName ] = $this->mergeAttributeValues( $i_stName, $this->rAttributes[ $i_stName ], $i_value );
+        $this->rAttributes[ $i_stName ] = $this->mergeAttributeValues(
+            $i_stName, TypeIs::string( $this->rAttributes[ $i_stName ] ), $i_value
+        );
     }
 
 

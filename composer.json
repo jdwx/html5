@@ -20,7 +20,8 @@
     "phpunit/phpunit": "^10"
   },
   "require": {
+    "php": "^8.3",
     "jdwx/stream": "^1.0",
-    "php": "^8.3"
+	"jdwx/strict": "^1.0"
   }
 }

@@ -8,6 +8,7 @@ namespace JDWX\HTML5\Gen;
 
 
 use JDWX\Json\Json;
+use JDWX\Strict\TypeIs;
 
 
 class AbstractInfo {
@@ -16,7 +17,7 @@ class AbstractInfo {
     protected const string DATA_FILE = '/dev/null';
 
 
-    /** @var mixed[] */
+    /** @var array<string, mixed> */
     public array $rAttributes = [];
 
     public string $stTagName;
@@ -79,7 +80,7 @@ class AbstractInfo {
     public static function listKeys() : array {
         self::load();
         /** @phpstan-ignore-next-line */
-        return array_keys( static::$rData );
+        return TypeIs::listString( array_keys( static::$rData ) );
     }
 
 
@@ -95,19 +96,19 @@ class AbstractInfo {
     }
 
 
-    /** @return mixed[] */
+    /** @return array<string, mixed> */
     public function all() : array {
         return $this->rAttributes;
     }
 
 
-    /** @return mixed[] */
+    /** @return array<string, mixed> */
     public function attributes() : array {
         return $this->rAttributes[ 'attributes' ] ?? [];
     }
 
 
-    /** @return mixed[] */
+    /** @return list<string> */
     public function children() : array {
         return $this->rAttributes[ 'children' ] ?? [];
     }

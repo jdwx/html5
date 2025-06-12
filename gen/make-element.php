@@ -8,7 +8,7 @@ namespace JDWX\HTML5\Gen;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/Generator.php';
+require_once __DIR__ . '/CodeGenerator.php';
 require_once __DIR__ . '/TagInfo.php';
 
 
@@ -100,10 +100,10 @@ ZEND;
 
     foreach ( $tag->children() as $stChildTag ) {
         $tagChild = new TagInfo( $stChildTag, true );
-        $rMethods[ $tagChild->name() ] = Generator::generateChild( $stChildTag, false );
+        $rMethods[ $tagChild->name() ] = CodeGenerator::generateChild( $stChildTag, false );
     }
 
-    $rMethods += Generator::attributeMethodsList( $tag, false );
+    $rMethods += CodeGenerator::attributeMethodsList( $tag, false );
 
     ksort( $rMethods );
 
@@ -115,6 +115,6 @@ ZEND;
     $st .= "}\n";
 
 
-    Generator::updateFile( __DIR__ . "/../src/Elements/{$tag->className()}.php", $st, $tag->className() );
+    CodeGenerator::updateFile( __DIR__ . "/../src/Elements/{$tag->className()}.php", $st, $tag->className() );
 
 }

@@ -16,7 +16,7 @@ class ChildrenInfo extends TraitInfo {
     protected const string DATA_FILE = __DIR__ . '/children-data.json';
 
 
-    /** @var mixed[] */
+    /** @var array<string, mixed> */
     public static array $rData;
 
 

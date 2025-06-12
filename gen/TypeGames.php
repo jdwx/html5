@@ -7,6 +7,9 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Gen;
 
 
+use JDWX\Strict\TypeIs;
+
+
 final class TypeGames {
 
 
@@ -77,7 +80,7 @@ final class TypeGames {
             $rTypes = array_diff( $rTypes, [ 'bool' ] );
             $rTypes[] = 'false';
         }
-        return self::sortTypes( $rTypes );
+        return self::sortTypes( TypeIs::listString( $rTypes ) );
     }
 
 

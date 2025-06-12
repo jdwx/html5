@@ -8,7 +8,7 @@ namespace JDWX\HTML5\Gen;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/Generator.php';
+require_once __DIR__ . '/CodeGenerator.php';
 require_once __DIR__ . '/AttributeInfo.php';
 
 
@@ -53,7 +53,7 @@ function MakeAttribute( string $i_stAttribute ) : void {
     ZEND;
 
     $rMethods = [];
-    $rMethods += Generator::attributeMethods( $trait->name(), $trait->tag(), $trait->all(), true );
+    $rMethods += CodeGenerator::attributeMethods( $trait->name(), $trait->tag(), $trait->all(), true );
     ksort( $rMethods );
 
     foreach ( $rMethods as $stMethod ) {
@@ -64,7 +64,7 @@ function MakeAttribute( string $i_stAttribute ) : void {
     $st .= "}\n";
 
     $stFilename = __DIR__ . "/../src/Attributes/{$trait->trait()}.php";
-    Generator::updateFile( $stFilename, $st, $trait->name() );
+    CodeGenerator::updateFile( $stFilename, $st, $trait->name() );
 
 
 }

@@ -15,7 +15,7 @@ class AttributeInfo extends TraitInfo {
 
     protected const string DATA_FILE = __DIR__ . '/attribute-data.json';
 
-    /** @var mixed[] */
+    /** @var array<string, mixed> */
     public static array $rData;
 
 

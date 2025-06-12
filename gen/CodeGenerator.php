@@ -7,11 +7,14 @@ declare( strict_types = 1 );
 namespace JDWX\HTML5\Gen;
 
 
+use JDWX\Strict\OK;
+
+
 require_once __DIR__ . '/TypeGames.php';
 require_once __DIR__ . '/TagInfo.php';
 
 
-class Generator {
+class CodeGenerator {
 
 
     private const array MAP_TYPE_TO_PARAMETER = [
@@ -37,14 +40,14 @@ class Generator {
             $i_attrInfo = [ 'type' => $i_attrInfo ];
         }
 
-        $rMethods[ "add{$stAttrName}" ] = Generator::addAttribute( $stAttrName, $stAttrTag, $i_bInTrait );
-        $rMethods[ "get{$stAttrName}" ] = Generator::getAttribute( $stAttrName, $stAttrTag );
-        $rMethods[ "has{$stAttrName}" ] = Generator::hasAttribute( $stAttrName, $stAttrTag );
-        $rMethods[ "set{$stAttrName}" ] = Generator::setAttribute( $stAttrName, $stAttrTag, $i_bInTrait );
-        $rMethods[ $stAttrMethod ] = Generator::bareAttribute( $stAttrName, $stAttrTag, $stAttrMethod,
+        $rMethods[ "add{$stAttrName}" ] = CodeGenerator::addAttribute( $stAttrName, $stAttrTag, $i_bInTrait );
+        $rMethods[ "get{$stAttrName}" ] = CodeGenerator::getAttribute( $stAttrName, $stAttrTag );
+        $rMethods[ "has{$stAttrName}" ] = CodeGenerator::hasAttribute( $stAttrName, $stAttrTag );
+        $rMethods[ "set{$stAttrName}" ] = CodeGenerator::setAttribute( $stAttrName, $stAttrTag, $i_bInTrait );
+        $rMethods[ $stAttrMethod ] = CodeGenerator::bareAttribute( $stAttrName, $stAttrTag, $stAttrMethod,
             $i_attrInfo, $i_bInTrait );
         if ( $i_attrInfo[ 'withEx' ] ?? false ) {
-            $rMethods[ "get{$stAttrName}Ex" ] = Generator::getExAttribute( $stAttrName, $stAttrTag, $i_attrInfo );
+            $rMethods[ "get{$stAttrName}Ex" ] = CodeGenerator::getExAttribute( $stAttrName, $stAttrTag, $i_attrInfo );
         }
         return $rMethods;
     }
@@ -63,7 +66,7 @@ class Generator {
 
 
     public static function diff( string $i_stFromFile, string $i_stToString ) : void {
-        $stTempFile = tempnam( sys_get_temp_dir(), 'html5-element' );
+        $stTempFile = OK::tempnam( sys_get_temp_dir(), 'html5-element' );
         file_put_contents( $stTempFile, $i_stToString );
         $stDiff = escapeshellcmd( 'diff' ) . ' --color=always -u ' . escapeshellarg( $i_stFromFile )
             . ' ' . escapeshellarg( $stTempFile );
@@ -88,13 +91,13 @@ class Generator {
 
     public static function updateFile( string $i_stFilename, string $i_stContent, string $i_stName ) : void {
         if ( file_exists( $i_stFilename ) ) {
-            $i_stFilename = realpath( $i_stFilename );
-            $stExisting = trim( file_get_contents( $i_stFilename ) ) . "\n";
+            $i_stFilename = OK::realpath( $i_stFilename );
+            $stExisting = trim( OK::file_get_contents( $i_stFilename ) ) . "\n";
             if ( $stExisting === $i_stContent ) {
                 echo "{$i_stFilename} unchanged for {$i_stName}.\n";
                 return;
             }
-            Generator::diff( $i_stFilename, $i_stContent );
+            CodeGenerator::diff( $i_stFilename, $i_stContent );
             /** @noinspection PhpComposerExtensionStubsInspection */
             $x = readline( 'Is this OK? (y/n) ' );
             if ( ! $x || $x[ 0 ] !== 'y' ) {

@@ -8,7 +8,7 @@ namespace JDWX\HTML5\Gen;
 
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/Generator.php';
+require_once __DIR__ . '/CodeGenerator.php';
 require_once __DIR__ . '/ChildrenInfo.php';
 
 
@@ -50,7 +50,7 @@ require_once __DIR__ . '/ChildrenInfo.php';
 
     $rMethods = [];
     foreach ( $trait->all() as $stChildTag ) {
-        $rMethods[ $stChildTag ] = Generator::generateChild( $stChildTag, true );
+        $rMethods[ $stChildTag ] = CodeGenerator::generateChild( $stChildTag, true );
     }
 
     ksort( $rMethods );
@@ -63,7 +63,7 @@ require_once __DIR__ . '/ChildrenInfo.php';
     $st .= "}\n";
 
     $stFilename = __DIR__ . "/../src/Children/{$trait->trait()}.php";
-    Generator::updateFile( $stFilename, $st, $trait->name() );
+    CodeGenerator::updateFile( $stFilename, $st, $trait->name() );
 
 
 } )( $argv );

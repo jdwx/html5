@@ -12,11 +12,11 @@ use JDWX\HTML5\Elements\Li;
 use Stringable;
 
 
-trait ListTrait {
+trait ListTrait {  
 
 
     /** @param array<string|Stringable>|string|Stringable $i_children */
-    public function li( array|string|Stringable $i_children ) : Li {
+    public function li( array|string|Stringable $i_children = [] ) : Li {
         assert( $this instanceof Element );
         return ( new Li( $i_children ) )->withParent( $this );
     }

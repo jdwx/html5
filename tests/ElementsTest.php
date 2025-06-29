@@ -52,6 +52,11 @@ class ElementsTest extends MyTestCase {
     }
 
 
+    public function testBlockQuote() : void {
+        $this->runAttributeStringTest( Elements\Blockquote::class, 'cite' );
+    }
+
+
     public function testDetails() : void {
         $this->runAttributeBoolTest( Elements\Details::class, 'open' );
         $this->runChildTest( Elements\Details::class, Elements\Summary::class );
